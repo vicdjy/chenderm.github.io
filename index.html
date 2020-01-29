@@ -1,0 +1,218 @@
+<html>
+
+<head>
+    <title>Data Visualization For Literacy</title>
+
+    <!-- JS -->
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <script src="scripts/script r.js"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.1"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@0.7.4"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="style/style.css">
+    <!--link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"-->
+</head>
+
+<!-- HTML -->
+<body>
+    <div class="container">
+        <div class="col1">
+            <img class="logo" src="img/logo.png">
+
+            <h2>Data</h2>
+
+            <div class="row">
+                <h3>Graph 1:</h3>
+                Database (DB):
+                <select id="database1" onchange="verifyDB(1)">
+                    <option value=""></option>
+                    <option value="Populations" selected>Populations</option>
+                    <option value="Military" selected>Military</option>
+                    <option value="GDP per capita" selected>GDP per capita</option>
+
+                </select>
+                <p></p>
+                X axis:
+                <select id="xaxis1" onchange="verifyOptions(1)">
+                    <option value="" selected></option>
+                </select>
+                <p></p>
+                Y axis:
+                <select id="yaxis1" onchange="verifyOptions(1)">
+                    <option value="" selected></option>
+                </select>
+                <p></p>
+                Graph type:
+                <select id="gtype1" onchange="verifyOptions(1)">
+                    <option value="" selected></option>
+                    <option value="line" selected>line</option>
+                    <option value="bar" selected>bar</option>
+                </select>
+                <p></p>
+                <button id="submit1" onclick="submitGraphData(1)">Submit</button>
+            </div>
+            <br>
+            <div class="row">
+                <h3>Graph 2:</h3>
+                Database (DB):
+                <select id="database2" onchange="verifyDB(2)">
+                    <option value=""></option>
+                    <option value="Populations" selected>Populations</option>
+                    <option value="Military" selected>Military</option>
+                    <option value="GDP per capita" selected>GDP per capita</option>
+                </select>
+                <p></p>
+                X axis:
+                <select id="xaxis2" onchange="verifyOptions(2)">
+                    <option value="" selected></option>
+                </select>
+                <p></p>
+                Y axis:
+                <select id="yaxis2" onchange="verifyOptions(2)">
+                    <option value="" selected></option>
+                </select>
+                <p></p>
+                Graph type:
+                <select id="gtype2" onchange="verifyOptions(2)">
+                    <option value="" selected></option>
+                    <option value="line" selected>line</option>
+                    <option value="bar" selected>bar</option>
+                </select>
+                <p></p>
+                <button id="submit2" onclick="submitGraphData(2)">Submit</button>
+            </div>
+            <br>
+            <button id="default" onclick="switchToDefault()">DEFAULT</button>
+            <button id="clear" onclick="clearAllValues()">CLEAR</button>
+        </div>
+
+        <div class="col2">
+            <h2>Graphs</h2>
+
+            <div id="driving_question1" style="font-size: 14px"></div>
+            <div class="graphRegion">
+                <canvas id="canvas1"></canvas>
+                <button class="saveButton" id="save1" onclick="saveGraph(0, 1, true, false)">SAVE GRAPH 1</button>
+            </div>
+
+            <br><br>
+            <div id="driving_question2" style="font-size: 14px"></div>
+            <div class="graphRegion">
+                <canvas id="canvas2"></canvas>
+                <button class="saveButton" id="save2" onclick="saveGraph(0, 2, true, false)">SAVE GRAPH 2</button>
+            </div>
+        </div>
+
+        <div class="col3">
+            <h2>Saved</h2>
+            <div class="pillar">
+
+                <div class="frame" id="frame1">
+                    <span class="helper"></span>
+                    <div class="tile" id="tile1">
+                        <div class="tooltiptext" id="tip1"></div>
+                        <canvas id="saved1"></canvas>
+                    </div>
+                </div>
+
+                <div class="frame">
+                    <span class="helper"></span>
+                    <div class="tile">
+                        <span class="tooltiptext" id="tip2"></span>
+                        <canvas id="saved2"></canvas>
+                    </div>
+                </div>
+
+                <div class="frame">
+                    <span class="helper"></span>
+                    <div class="tile">
+                        <span class="tooltiptext" id="tip3"></span>
+                        <canvas id="saved3"></canvas>
+                    </div>
+                </div>
+
+                <div class="frame">
+                    <span class="helper"></span>
+                    <div class="tile">
+                        <span class="tooltiptext" id="tip4"></span>
+                        <canvas id="saved4"></canvas>
+                    </div>
+                </div>
+
+                <div class="frame">
+                    <span class="helper"></span>
+                    <div class="tile">
+                        <span class="tooltiptext" id="tip5"></span>
+                        <canvas id="saved5"></canvas>
+                    </div>
+                </div>
+
+                <div class="frame">
+                    <span class="helper"></span>
+                    <div class="tile">
+                        <span class="tooltiptext" id="tip6"></span>
+                        <canvas id="saved6"></canvas>
+                    </div>
+                </div>
+
+            </div>
+            <div class="pillar">
+
+                <div class="frame">
+                    <span class="helper"></span>
+                    <div class="tile">
+                        <span class="tooltiptext" id="tip7"></span>
+                        <canvas id="saved7"></canvas>
+                    </div>
+                </div>
+
+                <div class="frame">
+                    <span class="helper"></span>
+                    <div class="tile">
+                        <span class="tooltiptext" id="tip8"></span>
+                        <canvas id="saved8"></canvas>
+                    </div>
+                </div>
+
+                <div class="frame">
+                    <span class="helper"></span>
+                    <div class="tile">
+                        <span class="tooltiptext" id="tip9"></span>
+                        <canvas id="saved9"></canvas>
+                    </div>
+                </div>
+
+                <div class="frame">
+                    <span class="helper"></span>
+                    <div class="tile">
+                        <span class="tooltiptext" id="tip10"></span>
+                        <canvas id="saved10"></canvas>
+                    </div>
+                </div>
+
+                <div class="frame">
+                    <span class="helper"></span>
+                    <div class="tile">
+                        <span class="tooltiptext" id="tip11"></span>
+                        <canvas id="saved11"></canvas>
+                    </div>
+                </div>
+
+                <div class="frame">
+                    <span class="helper"></span>
+                    <div class="tile">
+                        <span class="tooltiptext" id="tip12"></span>
+                        <canvas id="saved12"></canvas>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
