@@ -457,7 +457,13 @@ function saveGraph(saveNum, graphNum, increment, swap) {
     }
     else {
         destination = saveNum;
-        deleteGraph(saveNum);
+        var g = savedGraphs[savedNum - 1];
+        g.destroy();
+        savedGraphs[savedNum - 1] = undefined;
+        var tip = document.getElementById("tip" + savedNum);
+        tip.style.display = "none";
+        tip.style.backgroundColor = "transparent";
+        tip.innerHTML = "";
     }
 
     if (graphNum == 1) {
