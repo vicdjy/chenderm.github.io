@@ -457,6 +457,7 @@ function saveGraph(saveNum, graphNum, increment, swap) {
     }
     else {
         destination = saveNum;
+        deleteGraph(saveNum);
     }
 
     if (graphNum == 1) {
