@@ -1,0 +1,137 @@
+body {
+  background-color:#015c92ff;
+}
+
+* {
+ font-family: Arial;
+}
+
+.logo {
+  margin-left: -5px;
+  height: 81px;
+  width: 322px;
+}
+
+.container {
+  height: 100%;
+  width: 100%;
+  min-width: 1300px;
+  min-height: 600px;
+}
+
+.col1 {
+  float: left;
+  height: 100%;
+  width: 30%;
+  padding-right: 10px;
+  padding-left: 10px;
+  color: white;
+}
+
+.row {
+  font-size: 14px;
+  line-height: 1%;
+  padding-top: 1px;
+  padding-right: 5px;
+  padding-bottom: 10px;
+  padding-left: 5px;
+  background-color:#aabdd9;
+}
+
+.col2 {
+  float: left;
+  height: 100%;
+  width: 32%;
+  padding-right: 20px;
+  padding-bottom: 5px;
+  padding-left: 20px;
+  color: #524636;
+  background-color:#EFE0B9;
+}
+
+.col3 {
+  float: left;
+  height: 100%;
+  width: 30%;
+  padding-right: 10px;
+  padding-bottom: 5px;
+  padding-left: 20px;
+  color: white;
+  background-color:#aabdd9;
+}
+
+.pillar {
+  float: left;
+  height: 100% - 50px;
+  width: 50%;
+  min-width: 100px;
+  overflow: hidden;
+}
+
+.frame {
+  position: relative;
+  float: top;
+  height: 15%;
+  width: 100%;
+  min-height: 75px;
+  color: #aabdd9;
+}
+
+.helper {
+  display: inline-block;
+  height: 10%;
+  vertical-align: middle;
+}
+
+.tile {
+  float: none;
+  display: block;
+  width: 80%;
+  height: 80%;
+  margin: auto;
+  border: 1px solid white;
+}
+
+#submit1 {
+  background-color: #f8d605;
+  color: #015c92;
+}
+
+#submit2 {
+  background-color: #f8d605;
+  color: #015c92;
+}
+
+#default {
+  background-color: #b7b7b7;
+  color: black;
+}
+
+#clear {
+  background-color: #990000;
+  color: white;
+}
+
+.graphRegion {
+  height: 33%;
+}
+
+.saveButton {
+  background-color: #E2953D;
+  color: white;
+  z-index: 2;
+}
+
+.tile .tooltiptext {
+  visibility: hidden;
+  width: 70%;
+  position: absolute;
+}
+
+.tile:hover .tooltiptext {
+  font-size: 10;
+  display: none;
+  visibility: visible;
+  text-align: left;
+  padding: 5px;
+}
