@@ -544,6 +544,7 @@ function swap(savedNum, graphNum) {
     var savedY = savedGraph.Y;
     var savedType = savedGraph.type;
 
+    deleteGraph(savedNum);
     saveGraph(savedNum, graphNum, false, true);
     graphData(savedDB, savedX, savedY, graphNum, savedType);
 
