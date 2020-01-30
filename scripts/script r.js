@@ -457,10 +457,10 @@ function saveGraph(saveNum, graphNum, increment, swap) {
     }
     else {
         destination = saveNum;
-        var g = savedGraphs[savedNum - 1];
+        var g = savedGraphs[saveNum - 1];
         g.destroy();
-        savedGraphs[savedNum - 1] = undefined;
-        var tip = document.getElementById("tip" + savedNum);
+        savedGraphs[saveNum - 1] = undefined;
+        var tip = document.getElementById("tip" + saveNum);
         tip.style.display = "none";
         tip.style.backgroundColor = "transparent";
         tip.innerHTML = "";
