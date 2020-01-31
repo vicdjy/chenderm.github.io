@@ -29,9 +29,6 @@ var graph2 = undefined;
 
 var savedGraphs = [];
 
-// let scatter1 = false;
-// let scatter2 = false;
-
 //When the page first loads.
 $(document).ready( function() {
     console.log("Ready!");
@@ -44,26 +41,14 @@ $(document).ready( function() {
     switchToDefault();
 });
 
-// //Change scatter1 and scatter2 if user decides to include or not include scatterplot
-// function changeScatter(n) {
-//     if (n == 1) {
-//         scatter1 = !scatter1;
-//     }
-//     else {
-//         scatter2 = !scatter2;
-//     }
-// }
-
 //Graphs data for the first graph.
 function graphData(database, xaxis, yaxis, n, gtype) {
-    if (n == 1 && graph1 !== undefined) {
+    if (n == 1 && graph1 !== undefined)
         graph1.destroy();
-    }
-    else if (n == 2 && graph2 !== undefined) {
+    else if (n == 2 && graph2 !== undefined)
         graph2.destroy();
-    }
 
-
+    //add labels and data to respective arrays
     d3.csv("/csv/" + database + ".csv")
     .then(function(data) {
         var labelsArr = [];
@@ -80,6 +65,7 @@ function graphData(database, xaxis, yaxis, n, gtype) {
             dq.innerHTML = question;
         })
 
+        //create graph
         var ctx = document.getElementById("canvas" + n);
         ctx = ctx.getContext("2d");
         if (n == 1) {
@@ -112,6 +98,8 @@ function graphData(database, xaxis, yaxis, n, gtype) {
                 }
             });
 
+            //create descriptions & properties for graphs
+            //needed for tooltip hover in saved region
             graph1.description = "DB: " + database + "<br>X axis: " + xaxis + "<br>Y axis: " + yaxis + "<br>Type: " + gtype;
             graph1.DB = database;
             graph1.X = xaxis;
@@ -148,6 +136,9 @@ function graphData(database, xaxis, yaxis, n, gtype) {
                     }
                 }
             });
+
+            //create descriptions & properties for graphs
+            //needed for tooltip hover in saved region
             graph2.description = "DB: " + database + "<br>X axis: " + xaxis + "<br>Y axis: " + yaxis+ "<br>Type: " + gtype;
             graph2.DB = database;
             graph2.X = xaxis;
@@ -164,23 +155,24 @@ function graphData(database, xaxis, yaxis, n, gtype) {
 function submitGraphData(n) {
     var el = document.getElementById("database" + n);
     var dbOption = el.options[el.selectedIndex].value;
-    el = document.getElementById("xaxis" + n);
-    var xOption = el.options[el.selectedIndex].value;
+
+    var xOption = "Year";
+
     el = document.getElementById("yaxis" + n);
     var yOption = el.options[el.selectedIndex].value;
+
     el = document.getElementById("gtype" + n);
     var gtype = el.options[el.selectedIndex].value;
+
     graphData(dbOption, xOption, yOption, n, gtype);
 }
 
 //Runs when the user clicks the default button.
-//Switches all database, x-axis, y-axis values to
+//Switches all database, y-axis, graph type values to
 //default values, which are set at the top of this file.
-//Enables x-axis and y-axis select menus
+//Enables y-axis, graph type select menus
 function switchToDefault() {
     //set database 1 to default
-    // var fs = require('fs');
-    // var files = fs.readdirSync('/csv/');
     var el = document.getElementById("database1");
     for (var i = 0; i < el.options.length; i++) {
         if (el.options[i].text === defaultDatabase1) {
@@ -189,6 +181,7 @@ function switchToDefault() {
         }
     }
 
+    //reset graph type menu
     clearMenu("gtype1", false);
     el = document.getElementById("gtype1");
     var option = document.createElement("option");
@@ -201,7 +194,7 @@ function switchToDefault() {
     option.value = "line";
     el.appendChild(option);
 
-    clearMenu("xaxis1", false);
+    //clear y-axis menu
     clearMenu("yaxis1", false);
 
     //read the csv file to get all keys
@@ -209,19 +202,13 @@ function switchToDefault() {
     .then(function(data) {
         var keys = Object.keys(data[0]);
         keys.sort();
-        //add each key to x-axis and y-axis menu
+        //add each key to y-axis menu
         for (var i = 0; i < keys.length; i++) {
-            var elX = document.getElementById("xaxis1");
-            var option = document.createElement("option");
-            option.appendChild(document.createTextNode(keys[i]));
-            option.value = keys[i];
-            elX.appendChild(option);
-            if (keys[i] == defaultXAxis1) {
-                elX.selectedIndex = i + 1;
-            }
+            if (keys[i] == "Year")
+                continue;
 
             var elY = document.getElementById("yaxis1");
-            option = document.createElement("option");
+            var option = document.createElement("option");
             option.appendChild(document.createTextNode(keys[i]));
             option.value = keys[i];
             elY.appendChild(option);
@@ -251,6 +238,7 @@ function switchToDefault() {
         }
     }
 
+    //reset graph type menu
     clearMenu("gtype2", false);
     el = document.getElementById("gtype2");
     var option = document.createElement("option");
@@ -263,7 +251,7 @@ function switchToDefault() {
     option.value = "line";
     el.appendChild(option);
 
-    clearMenu("xaxis2", false);
+    //clear y-axis menu
     clearMenu("yaxis2", false);
 
     //read the csv file to get all keys
@@ -271,19 +259,13 @@ function switchToDefault() {
     .then(function(data) {
         var keys = Object.keys(data[0]);
         keys.sort();
-        //add each key to x-axis and y-axis menu
+        //add each key to y-axis menu
         for (var i = 0; i < keys.length; i++) {
-            var elX = document.getElementById("xaxis2");
-            var option = document.createElement("option");
-            option.appendChild(document.createTextNode(keys[i]));
-            option.value = keys[i];
-            elX.appendChild(option);
-            if (keys[i] == defaultXAxis2) {
-                elX.selectedIndex = i + 1;
-            }
+            if (keys[i] == "Year")
+                continue;
 
             var elY = document.getElementById("yaxis2");
-            option = document.createElement("option");
+            var option = document.createElement("option");
             option.appendChild(document.createTextNode(keys[i]));
             option.value = keys[i];
             elY.appendChild(option);
@@ -312,11 +294,10 @@ function clearAllValues() {
     clearValues(2);
 }
 
-//Clears values for database, x-axis, and y-axis.
+//Clears values for database and y-axis.
 function clearValues(n) {
     var el = document.getElementById("database" + n);
     el.selectedIndex = 0;
-    clearMenu("xaxis" + n, true);
     clearMenu("yaxis" + n, true);
     clearMenu("gtype" + n, true);
     document.getElementById("submit" + n).disabled = true;
@@ -329,6 +310,7 @@ function clearValues(n) {
         graph2.destroy();
         document.getElementById("save" + n).style.display = "none";
     }
+
     // clear driving question
     var dq1 = document.getElementById("driving_question1");
     dq1.innerHTML = "";
@@ -337,43 +319,40 @@ function clearValues(n) {
 }
 
 //Runs when the option for database changes.
-//If the empty option is selected, the x-axis and y-axis menus
+//If the empty option is selected, the y-axis, graph type menus
 //and submit button are disabled.
-//If a non-empty option is selected, the x-axis and y-axis menus
+//If a non-empty option is selected, the y-axis, graph type menus
 //are enabled, but the submit button will remain disabled
-//until there are non-empty values for x-axis and y-axis menus.
+//until there are non-empty values for y-axis, graph type menus.
 function verifyDB(n) {
     var menu = document.getElementById("database" + n);
     var dbOption = menu.options[menu.selectedIndex].value;
     if (dbOption == "") {
-        //if no database selected, disable x-axis, y-axis, submit button
-        clearMenu("xaxis" + n, true);
+        //if no database selected, disable y-axis, graph type, submit button
         clearMenu("yaxis" + n, true);
         clearMenu("gtype" + n, true);
         document.getElementById("submit" + n).disabled = true;
     }
     else {
-        //enable x-axis, y-axis
-        //disable submit button because x-axis and y-axis are empty
-        clearMenu("xaxis" + n, false);
+        //enable y-axis, graph type
+        //disable submit button because y-axis, graph type are empty
         clearMenu("yaxis" + n, false);
         clearMenu("gtype" + n, false);
         document.getElementById("submit" + n).disabled = true;
 
-        //load keys into x-axis, y-axis menus
+        //load keys into y-axis menu
         d3.csv("/csv/" + dbOption + ".csv")
         .then(function(data) {
             var keys = Object.keys(data[0]);
             keys.sort();
-            for (var i = 0; i < keys.length; i++) {
-                var elX = document.getElementById("xaxis" + n);
-                var option = document.createElement("option");
-                option.appendChild(document.createTextNode(keys[i]));
-                option.value = keys[i];
-                elX.appendChild(option);
 
+            //add each key to y-axis menu
+            for (var i = 0; i < keys.length; i++) {
+                if (keys[i] == "Year")
+                    continue;
+    
                 var elY = document.getElementById("yaxis" + n);
-                option = document.createElement("option");
+                var option = document.createElement("option");
                 option.appendChild(document.createTextNode(keys[i]));
                 option.value = keys[i];
                 elY.appendChild(option);
@@ -385,6 +364,7 @@ function verifyDB(n) {
             }
         })
 
+        //reset graph type menu
         var el = document.getElementById("gtype" + n);
         var option = document.createElement("option");
         option.appendChild(document.createTextNode("bar"));
@@ -413,14 +393,14 @@ function clearMenu(name, disable) {
 //If either are empty, the submit button is disabled.
 //Once both are non-empty, the submit button is enabled.
 function verifyOptions(n) {
-    var el = document.getElementById("xaxis" + n);
-    var xOption = el.options[el.selectedIndex].value;
-    el = document.getElementById("yaxis" + n);
+    var el = document.getElementById("yaxis" + n);
     var yOption = el.options[el.selectedIndex].value;
+
     el = document.getElementById("gtype" + n);
     var gtype = el.options[el.selectedIndex].value;
-    //enable submit button if both x-axis and y-axis menus are non-empty
-    if (xOption == "" || yOption == "" || gtype == "") {
+
+    //enable submit button if both y-axis and graph type menus are non-empty
+    if (yOption == "" || gtype == "") {
         document.getElementById("submit" + n).disabled = true;
     }
     else {
@@ -438,7 +418,7 @@ function nextAvailableSaveSpot() {
 }
 
 //Runs when the user clicks SAVE GRAPH
-function saveGraph(saveNum, graphNum, increment, swap) {
+function saveGraph(saveNum, graphNum, swap) {
     var labelsArr = undefined;
     var dataArr = undefined;
     var hoverText = undefined;
@@ -550,7 +530,7 @@ function swap(savedNum, graphNum) {
     var savedY = savedGraph.Y;
     var savedType = savedGraph.type;
 
-    saveGraph(savedNum, graphNum, false, true);
+    saveGraph(savedNum, graphNum, true);
     graphData(savedDB, savedX, savedY, graphNum, savedType);
 
     //updating the controls on the left side
@@ -571,34 +551,18 @@ function swap(savedNum, graphNum) {
         }
     }
 
-
-    clearMenu("xaxis" + graphNum, false);
     clearMenu("yaxis" + graphNum, false);
-
-    var el = document.getElementById("gtype" + graphNum);
-    for (var i = 0; i < el.options.length; i++) {
-        if (el.options[i].text === savedType) {
-            el.selectedIndex = i;
-            break;
-        }
-    }
 
     d3.csv("/csv/" + savedDB + ".csv")
     .then(function(data) {
         var keys = Object.keys(data[0]);
         keys.sort();
         for (var i = 0; i < keys.length; i++) {
-            var elX = document.getElementById("xaxis" + graphNum);
-            var option = document.createElement("option");
-            option.appendChild(document.createTextNode(keys[i]));
-            option.value = keys[i];
-            elX.appendChild(option);
-            if (keys[i] == savedX) {
-                elX.selectedIndex = i + 1;
-            }
+            if (keys[i] == "Year")
+                continue;
 
             var elY = document.getElementById("yaxis" + graphNum);
-            option = document.createElement("option");
+            var option = document.createElement("option");
             option.appendChild(document.createTextNode(keys[i]));
             option.value = keys[i];
             elY.appendChild(option);
