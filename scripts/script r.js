@@ -100,7 +100,7 @@ function graphData(database, xaxis, yaxis, n, gtype) {
 
             //create descriptions & properties for graphs
             //needed for tooltip hover in saved region
-            graph1.description = "DB: " + database + "<br>X axis: " + xaxis + "<br>Y axis: " + yaxis + "<br>Type: " + gtype;
+            graph1.description = "DB: " + database + "<br>X axis: " + xaxis + "<br>Y axis: " + yaxis;
             graph1.DB = database;
             graph1.X = xaxis;
             graph1.Y = yaxis;
@@ -139,7 +139,7 @@ function graphData(database, xaxis, yaxis, n, gtype) {
 
             //create descriptions & properties for graphs
             //needed for tooltip hover in saved region
-            graph2.description = "DB: " + database + "<br>X axis: " + xaxis + "<br>Y axis: " + yaxis+ "<br>Type: " + gtype;
+            graph2.description = "DB: " + database + "<br>X axis: " + xaxis + "<br>Y axis: " + yaxis;
             graph2.DB = database;
             graph2.X = xaxis;
             graph2.Y = yaxis;
