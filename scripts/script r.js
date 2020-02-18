@@ -584,3 +584,11 @@ function deleteGraph(savedNum) {
     tip.style.backgroundColor = "transparent";
     tip.innerHTML = "";
 }
+
+function showToolTip(savedNum) {
+    var tip = document.getElementById("tip" + savedNum);
+    if (tip.style.visibility != "visible")
+        tip.style.visibility = "visible";
+    else
+        tip.style.visibility = "hidden";
+}

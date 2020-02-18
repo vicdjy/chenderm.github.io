@@ -126,12 +126,9 @@ body {
   visibility: hidden;
   width: 70%;
   position: absolute;
-}
-
-.tile:hover .tooltiptext {
   font-size: 10;
   display: none;
-  visibility: visible;
   text-align: left;
   padding: 5px;
+  z-index: 20;
 }
