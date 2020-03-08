@@ -29,6 +29,9 @@ var graph2 = undefined;
 
 var savedGraphs = [];
 
+window.drivingQuestion = {};
+var line = "";
+
 //When the page first loads.
 $(document).ready( function() {
     console.log("Ready!");
@@ -40,6 +43,96 @@ $(document).ready( function() {
 
     switchToDefault();
 });
+
+let modal = document.querySelector(".modal")
+
+function displayModal(){
+    let modal = document.querySelector(".modal")
+    modal.style.display = "block"
+}
+function closeModal(){
+    let modal = document.querySelector(".modal")
+    modal.style.display = "none" 
+}
+window.onclick = function(e){
+    let modal = document.querySelector(".modal")
+    if(e.target == modal){
+        modal.style.display = "none"
+    }
+}
+
+function handleFiles(files) {
+    // Check for the various File API support.
+    if (window.FileReader) {
+        // FileReader are supported.
+        getAsText(files[0]);
+    } else {
+        alert('FileReader are not supported in this browser.');
+    }
+}
+
+function getAsText(fileToRead) {
+    var reader = new FileReader();
+    // Read file into memory as UTF-8      
+    reader.readAsText(fileToRead);
+    // Handle errors load
+    reader.onload = loadHandler;
+    reader.onerror = errorHandler;
+}
+
+function loadHandler(event) {
+    var csv = event.target.result;
+    processData(csv);
+}
+
+function processData(csv) {
+    var allTextLines = csv.split(/\r\n|\n/);
+    for (var i=0; i<1; i++) {
+        var data = allTextLines[i].split(';');
+        var tarr = [];
+        for (var j=0; j<data.length; j++) {
+            tarr.push(data[j]);
+        }
+        line = tarr;
+        console.log(line);
+    }
+
+}
+
+function errorHandler(evt) {
+    if(evt.target.error.name == "NotReadableError") {
+        alert("Canno't read file !");
+    }
+}
+
+function submitDrivingQuestions(){
+    var checkboxes = document.getElementsByName("database_selection");  
+    var numberOfCheckedItems = 0;  
+    for(var i = 0; i < checkboxes.length; i++)  
+    {  
+        if(checkboxes[i].checked)
+        { 
+            numberOfCheckedItems++;
+            drivingQuestion[checkboxes[i].value] = line;
+        }
+        if (numberOfCheckedItems == 0)
+        {  
+            alert("You have to select a database");  
+            return false;  
+        }
+    }
+    alert(drivingQuestion["Populations"]);
+}
+
+
+/*function displayQuestion(){
+    var dq = document.getElementById("driving_question1");
+    const selectedFile = document.getElementById('driving_question_input').files[0];
+    d3.csv(selectedFile).then(function(q_data){
+        question = q_data[0]['Populations'];
+        dq.innerHTML = question;
+    })
+}*/
 
 //Graphs data for the first graph.
 function graphData(database, xaxis, yaxis, n, gtype) {
@@ -60,10 +153,18 @@ function graphData(database, xaxis, yaxis, n, gtype) {
 
         //add driving question
         var dq = document.getElementById("driving_question" + n);
-        d3.csv("/csv/driving-questions.csv").then(function(q_data){
-            question = q_data[0][database];
-            dq.innerHTML = question;
-        })
+        var question = "";
+        console.log(database);
+        console.log(drivingQuestion["Populations"]);
+        if (typeof drivingQuestion[database] === 'undefined') {
+            //alert("this database does not have a driving question");
+            question = "default driving question";
+        }
+        else {
+            question = drivingQuestion[database];
+        }
+          
+        dq.innerHTML = question;
 
         //create graph
         var ctx = document.getElementById("canvas" + n);

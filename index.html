@@ -141,6 +141,30 @@
 
         <div class="col2">
             <h2>Graphs</h2>
+            
+            <button id="modal-btn" onclick="displayModal()"> Upload Questions</button>
+            <div class="modal">
+                <div class="modal-content">
+                    <span class="close-btn" onclick="closeModal()">&times;</span>
+                    <form onsubmit="submitDrivingQuestions();return false">
+                        <label for="question"><b>Driving Question</b></label>
+                        <input type="file" id="driving_question_input" onchange="handleFiles(this.files)" accept=".csv"> <br>
+                        <br>
+                        Select datasets this driving question applies to:
+                        <br>
+                        <fieldset>
+                            <legend>Populations:</legend>
+                            <input type="checkbox" id="Populations" name="database_selection" value="Populations"> Populations <br>
+                            <input type="checkbox" id="Population Female Percentage" name="database_selection" value="Population Female Percentage"> 
+                                Population Female % <br>
+                            <input type="checkbox" id="Population Female Percentage at Birth" name=database_selection" value="Population Female Percentage">
+                                Population Female % at Birth<br>
+
+                        </fieldset>
+                        <input type="submit" value="Submit">
+                    </form>
+                </div>
+            </div>
 
             <div id="driving_question1" style="font-size: 14px"></div>
             <div class="graphRegion">
