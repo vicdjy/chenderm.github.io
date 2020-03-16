@@ -115,13 +115,13 @@ function submitDrivingQuestions(){
             numberOfCheckedItems++;
             drivingQuestion[checkboxes[i].value] = line;
         }
-        if (numberOfCheckedItems == 0)
-        {  
-            alert("You have to select a database");  
-            return false;  
-        }
     }
-    alert(drivingQuestion["Populations"]);
+    if (numberOfCheckedItems == 0)
+    {  
+        alert("You have to select a database");  
+        return false;  
+    }
+    alert("Submitted");
 }
 
 
