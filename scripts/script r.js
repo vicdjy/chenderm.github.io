@@ -38,11 +38,31 @@ $(document).ready( function() {
         savedGraphs.push(undefined);
     }
 
+    //initialize date range sliders
+    $("#range1").ionRangeSlider({//http://ionden.com/a/plugins/ion.rangeSlider/start.html
+        type: "double",
+        min: 0,
+        max: 0,
+        from: 0,
+        to: 0,
+        hide_min_max: true,
+        prettify_enabled: false,
+    });
+    $("#range2").ionRangeSlider({
+        type: "double",
+        min: 0,
+        max: 0,
+        from: 0,
+        to: 0,
+        hide_min_max: true,
+        prettify_enabled: false,
+    });
+
     switchToDefault();
 });
 
-//Graphs data for the first graph.
-function graphData(database, xaxis, yaxis, n, gtype) {
+//Graphs data for the nth graph.
+function graphData(database, xaxis, yaxis, n, lowDate, highDate, gtype) {
     if (n == 1 && graph1 !== undefined)
         graph1.destroy();
     else if (n == 2 && graph2 !== undefined)
@@ -54,8 +74,10 @@ function graphData(database, xaxis, yaxis, n, gtype) {
         var labelsArr = [];
         var dataArr = [];
         for (var i = 0; i < data.length; i++) {
-            labelsArr.push(data[i][xaxis]);
-            dataArr.push(data[i][yaxis]);
+            if (parseInt(data[i][xaxis], 10) >= lowDate && parseInt(data[i][xaxis], 10) <= highDate) {
+                labelsArr.push(data[i][xaxis]);
+                dataArr.push(data[i][yaxis]);
+            }
         }
 
         //add driving question
@@ -100,10 +122,12 @@ function graphData(database, xaxis, yaxis, n, gtype) {
 
             //create descriptions & properties for graphs
             //needed for tooltip hover in saved region
-            graph1.description = "DB: " + database + "<br>X axis: " + xaxis + "<br>Y axis: " + yaxis;
+            graph1.description = "DB: " + database + "<br>Y axis: " + yaxis + "<br>X axis: " + xaxis + " " + lowDate + "-" + highDate;
             graph1.DB = database;
             graph1.X = xaxis;
             graph1.Y = yaxis;
+            graph1.lowDate = lowDate;
+            graph1.highDate = highDate;
             graph1.type = gtype;
             document.getElementById("save" + n).style.display = "block";
         }
@@ -139,10 +163,12 @@ function graphData(database, xaxis, yaxis, n, gtype) {
 
             //create descriptions & properties for graphs
             //needed for tooltip hover in saved region
-            graph2.description = "DB: " + database + "<br>X axis: " + xaxis + "<br>Y axis: " + yaxis;
+            graph2.description = "DB: " + database + "<br>Y axis: " + yaxis + "<br>X axis: " + xaxis + " " + lowDate + "-" + highDate;
             graph2.DB = database;
             graph2.X = xaxis;
             graph2.Y = yaxis;
+            graph2.lowDate = lowDate;
+            graph2.highDate = highDate;
             graph2.type = gtype;
             document.getElementById("save" + n).style.display = "block";
         }
@@ -164,13 +190,18 @@ function submitGraphData(n) {
     el = document.getElementById("gtype" + n);
     var gtype = el.options[el.selectedIndex].value;
 
-    graphData(dbOption, xOption, yOption, n, gtype);
+    var lowDate = $("#range1").data("from");
+    var highDate = $("#range1").data("to");
+
+    graphData(dbOption, xOption, yOption, n, lowDate, highDate, gtype);
 }
 
 //Runs when the user clicks the default button.
 //Switches all database, y-axis, graph type values to
 //default values, which are set at the top of this file.
 //Enables y-axis, graph type select menus
+//Updates date range sliders to proper mins & maxes
+//Enables date range sliders
 function switchToDefault() {
     //set database 1 to default
     var el = document.getElementById("database1");
@@ -217,11 +248,18 @@ function switchToDefault() {
             }
         }
 
+        //update date range slider values
+        var years = [];
+        for (var i = 0; i < data.length; i++) {
+            years.push(data[i]["Year"]);
+        }
+        updateSlider(1, years[0], years[years.length - 1]);
+
         //enable the submit button
         document.getElementById("submit1").disabled = false;
 
         //graph data
-        graphData(defaultDatabase1, defaultXAxis1, defaultYAxis1, 1, 'bar');
+        graphData(defaultDatabase1, defaultXAxis1, defaultYAxis1, 1, years[0], years[years.length - 1], 'bar');
     })
     .catch(function(error) {
         if (error.message === "404 Not Found") {
@@ -274,11 +312,18 @@ function switchToDefault() {
             }
         }
 
+        //update date range slider values
+        var years = [];
+        for (var i = 0; i < data.length; i++) {
+            years.push(data[i]["Year"]);
+        }
+        updateSlider(2, years[0], years[years.length - 1]);
+
         //enable the submit button
         document.getElementById("submit2").disabled = false;
 
         //graph data
-        graphData(defaultDatabase2, defaultXAxis2, defaultYAxis2, 2, 'bar');
+        graphData(defaultDatabase2, defaultXAxis2, defaultYAxis2, 2, years[0], years[years.length - 1], 'bar');
     })
     .catch(function(error) {
         if (error.message === "404 Not Found") {
@@ -294,51 +339,58 @@ function clearAllValues() {
     clearValues(2);
 }
 
-//Clears values for database and y-axis.
+//Clears values for database, y-axis, graph type menus.
+//Clears date range sliders
+//Disables submit buttons
+//Clears graphs and driving questions
+//Disables save buttons
 function clearValues(n) {
     var el = document.getElementById("database" + n);
     el.selectedIndex = 0;
     clearMenu("yaxis" + n, true);
     clearMenu("gtype" + n, true);
+    clearSlider(n);
     document.getElementById("submit" + n).disabled = true;
 
-    if (n == 1) {
+    if (n == 1)
         graph1.destroy();
-        document.getElementById("save" + n).style.display = "none";
-    }
-    else if (n == 2) {
+    else if (n == 2)
         graph2.destroy();
-        document.getElementById("save" + n).style.display = "none";
-    }
+    document.getElementById("save" + n).style.display = "none";
 
     // clear driving question
-    var dq1 = document.getElementById("driving_question1");
-    dq1.innerHTML = "";
-    var dq2 = document.getElementById("driving_question2");
-    dq2.innerHTML = "";
+    document.getElementById("driving_question1").innerHTML = "";
+    document.getElementById("driving_question2").innerHTML = "";
 }
 
 //Runs when the option for database changes.
-//If the empty option is selected, the y-axis, graph type menus
-//and submit button are disabled.
-//If a non-empty option is selected, the y-axis, graph type menus
-//are enabled, but the submit button will remain disabled
+//If the empty option is selected, the y-axis, graph type menus,
+//date range sliders, and submit button are disabled.
+//If a non-empty option is selected, the y-axis, graph type menus, and
+//date range sliders are enabled, but the submit button will remain disabled
 //until there are non-empty values for y-axis, graph type menus.
 function verifyDB(n) {
     var menu = document.getElementById("database" + n);
     var dbOption = menu.options[menu.selectedIndex].value;
     if (dbOption == "") {
-        //if no database selected, disable y-axis, graph type, submit button
+        //if no database selected, disable y-axis, graph type, date range slider, submit button
         clearMenu("yaxis" + n, true);
         clearMenu("gtype" + n, true);
+        clearSlider(n);
         document.getElementById("submit" + n).disabled = true;
     }
     else {
+        //save all previous data
+        var previousYAxisMenu = document.getElementById("yaxis" + n);
+        var previousYAxisValue = previousYAxisMenu.options[previousYAxisMenu.selectedIndex].value;
+        var previousLowDate = $("#range" + n).data("from");
+        var previousHighDate = $("#range" + n).data("to");
+        var previousGTypeMenu = document.getElementById("gtype" + n);
+        var previousGTypeValue = previousGTypeMenu.options[previousGTypeMenu.selectedIndex].value;
+        
         //enable y-axis, graph type
-        //disable submit button because y-axis, graph type are empty
         clearMenu("yaxis" + n, false);
         clearMenu("gtype" + n, false);
-        document.getElementById("submit" + n).disabled = true;
 
         //load keys into y-axis menu
         d3.csv("/csv/" + dbOption + ".csv")
@@ -356,7 +408,19 @@ function verifyDB(n) {
                 option.appendChild(document.createTextNode(keys[i]));
                 option.value = keys[i];
                 elY.appendChild(option);
+                if (keys[i] == previousYAxisValue)
+                    elY.selectedIndex = i + 1;
             }
+
+            //update date range slider values
+            var years = [];
+            for (var i = 0; i < data.length; i++) {
+                years.push(data[i]["Year"]);
+            }
+            if (years[0] > previousLowDate || years[years.length - 1] < previousHighDate)
+                updateSlider(n, years[0], years[years.length - 1]);
+            else
+                updateSliderOnlyRange(n, years[0], years[years.length - 1], previousLowDate, previousHighDate);
         })
         .catch(function(error) {
             if (error.message === "404 Not Found") {
@@ -370,11 +434,14 @@ function verifyDB(n) {
         option.appendChild(document.createTextNode("bar"));
         option.value = "bar";
         el.appendChild(option);
-        el.selectedIndex = 0;
+        if (previousGTypeValue == "bar")
+            el.selectedIndex = 1;
         option = document.createElement("option");
         option.appendChild(document.createTextNode("line"));
         option.value = "line";
         el.appendChild(option);
+        if (previousGTypeValue == "line")
+            el.selectedIndex = 2;
     }
 }
 
@@ -387,6 +454,44 @@ function clearMenu(name, disable) {
         menu.remove(menu.options.length - 1);
     }
     menu.disabled = disable;
+}
+
+//Clears all values in slider
+//Can also disable slider
+function clearSlider(n) {
+    $("#range" + n).data("ionRangeSlider").update({
+        min: 0,
+        max: 0,
+        from: 0,
+        to: 0,
+        disable: true,
+    });
+}
+
+//Updates min, max in slider
+//Sets from = min, to = max
+//Can also enable slider
+function updateSlider(n, minimum, maximum) {
+    $("#range" + n).data("ionRangeSlider").update({
+        min: minimum,
+        max: maximum,
+        from: minimum,
+        to: maximum,
+        disable: false,
+    });
+}
+
+//Updates min, max in slider
+//Sets from = lowDate, to = highDate
+//Can also enable slider
+function updateSliderOnlyRange(n, minimum, maximum, lowDate, highDate) {
+    $("#range" + n).data("ionRangeSlider").update({
+        min: minimum,
+        max: maximum,
+        from: lowDate,
+        to: highDate,
+        disable: false,
+    });
 }
 
 //Runs when the option for x-axis or y-axis menu option changes.
@@ -408,6 +513,7 @@ function verifyOptions(n) {
     }
 }
 
+//Finds the next available spot to save a graph, returns this number
 function nextAvailableSaveSpot() {
     for (var i = 0; i < savedGraphs.length; i++) {
         if (savedGraphs[i] == undefined) {
@@ -425,6 +531,8 @@ function saveGraph(saveNum, graphNum, swap) {
     var db = undefined;
     var x = undefined;
     var y = undefined;
+    var lowDate = undefined;
+    var highDate = undefined;
     var graph_type = undefined;
 
     var destination = undefined;
@@ -453,6 +561,8 @@ function saveGraph(saveNum, graphNum, swap) {
         db = graph1.DB;
         x = graph1.X;
         y = graph1.Y;
+        lowDate = graph1.lowDate;
+        highDate = graph1.highDate;
         graph_type = graph1.type;
     }
     else if (graphNum == 2) {
@@ -462,6 +572,8 @@ function saveGraph(saveNum, graphNum, swap) {
         db = graph2.DB;
         x = graph2.X;
         y = graph2.Y;
+        lowDate = graph2.lowDate;
+        highDate = graph2.highDate;
         graph_type = graph2.type;
     }
 
@@ -512,6 +624,8 @@ function saveGraph(saveNum, graphNum, swap) {
     g.DB = db;
     g.X = x;
     g.Y = y;
+    g.lowDate = lowDate;
+    g.highDate = highDate;
     g.type = graph_type;
     savedGraphs[destination - 1] = g;
 
@@ -528,10 +642,12 @@ function swap(savedNum, graphNum) {
     var savedDB = savedGraph.DB;
     var savedX = savedGraph.X;
     var savedY = savedGraph.Y;
+    var savedLowDate = savedGraph.lowDate;
+    var savedHighDate = savedGraph.highDate;
     var savedType = savedGraph.type;
 
     saveGraph(savedNum, graphNum, true);
-    graphData(savedDB, savedX, savedY, graphNum, savedType);
+    graphData(savedDB, savedX, savedY, graphNum, savedLowDate, savedHighDate, savedType);
 
     //updating the controls on the left side
     //set database 1 to savedDB
@@ -575,6 +691,7 @@ function swap(savedNum, graphNum) {
     });
 }
 
+//Removes a graph from the saved section
 function deleteGraph(savedNum) {
     var g = savedGraphs[savedNum - 1];
     g.destroy();
@@ -585,6 +702,7 @@ function deleteGraph(savedNum) {
     tip.innerHTML = "";
 }
 
+//Shows tooltip over saved graph
 function showToolTip(savedNum) {
     var tip = document.getElementById("tip" + savedNum);
     if (tip.style.visibility != "visible")
