@@ -1,0 +1,22 @@
+{
+ "Graphs": [
+  { 
+   "Id": 1,
+   "DB": "Populations",
+   "Yaxis": "Norway",
+   "Xaxis": "Year",
+   "lowDate": 1800,
+   "highDate": 2000,
+   "gtype": "bar"
+  },
+  { 
+   "Id": 2,
+   "DB": "Populations",
+   "Yaxis": "North Korea",
+   "Xaxis": "Year",
+   "lowDate": 1830,
+   "highDate": 1900,
+   "gtype": "bar"
+  }
+ ]
+}

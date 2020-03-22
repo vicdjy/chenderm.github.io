@@ -29,6 +29,8 @@ var graph2 = undefined;
 
 var savedGraphs = [];
 
+var jsonObj = {};
+
 //When the page first loads.
 $(document).ready( function() {
     console.log("Ready!");
@@ -60,6 +62,47 @@ $(document).ready( function() {
 
     switchToDefault();
 });
+
+function handleFiles(files) {
+    // Check for the various File API support.
+    if (window.FileReader) {
+        // FileReader are supported.
+        getAsText(files[0]);
+    } else {
+        alert('FileReader are not supported in this browser.');
+    }
+}
+
+function getAsText(fileToRead) {
+    var reader = new FileReader();
+    // Read file into memory as UTF-8      
+    reader.readAsText(fileToRead);
+    // Handle errors load
+    reader.onload = loadHandler;
+    reader.onerror = errorHandler;
+}
+
+function loadHandler(event) {
+    jsonObj = JSON.parse(event.target.result);
+    
+    for (i in jsonObj.Graphs) {
+        g = jsonObj.Graphs[i];
+        database = g.DB;
+        xaxis = g.Xaxis;
+        yaxis = g.Yaxis;
+        n = g.Id;
+        lowDate = g.lowDate;
+        highDate = g.highDate;
+        gtype = g.gtype;
+        setOptions(database, yaxis, xaxis, gtype, lowDate, highDate, n);
+    }
+}
+
+function errorHandler(evt) {
+    if(evt.target.error.name == "NotReadableError") {
+        alert("Cannot read file !");
+    }
+}
 
 //Graphs data for the nth graph.
 function graphData(database, xaxis, yaxis, n, lowDate, highDate, gtype) {
@@ -196,6 +239,89 @@ function submitGraphData(n) {
     graphData(dbOption, xOption, yOption, n, lowDate, highDate, gtype);
 }
 
+/* setOption does the following two things:
+   1. set the meun on the right to the appropriate values: 
+   input parameters (databaseName, yaxis, xaixs, gtype, lowDate, highDate)
+   2. plot graphs based on input. 
+*/
+function setOptions(databaseName, yaxis, xaxis, gtype, lowDate, highDate, n) {
+    //set database 1 to default
+    var el = document.getElementById("database" + n);
+    for (var i = 0; i < el.options.length; i++) {
+        if (el.options[i].text === databaseName) {
+            el.selectedIndex = i;
+            break;
+        }
+    }
+
+    //reset graph type menu
+    clearMenu("gtype"+n, false);
+    el = document.getElementById("gtype" + n);
+    var option = document.createElement("option");
+    option.appendChild(document.createTextNode("bar"));
+    option.value = "bar";
+    el.appendChild(option);
+    option = document.createElement("option");
+    option.appendChild(document.createTextNode("line"));
+    option.value = "line";
+    el.appendChild(option);
+
+    for (var i = 0; i < el.options.length; i++) {
+        if (el.options[i].value === gtype) {
+            el.selectedIndex = i;
+            break;
+        }
+    }
+    
+    //clear y-axis menu
+    clearMenu("yaxis" + n, false);
+
+    //read the csv file to get all keys
+    d3.csv("/csv/" + databaseName + ".csv")
+    .then(function(data) {
+        var keys = Object.keys(data[0]);
+        keys.sort();
+        //add each key to y-axis menu
+        for (var i = 0; i < keys.length; i++) {
+            if (keys[i] == "Year")
+                continue;
+
+            var elY = document.getElementById("yaxis" + n);
+            var option = document.createElement("option");
+            option.appendChild(document.createTextNode(keys[i]));
+            option.value = keys[i];
+            elY.appendChild(option);
+            if (keys[i] == yaxis) {
+                elY.selectedIndex = i + 1;
+            }
+        }
+
+        //update date range slider values
+        if (highDate === 0) {
+            var years = [];
+            for (var i = 0; i < data.length; i++) {
+                years.push(data[i]["Year"]);
+            }
+            lowDate = years[0];
+            highDate = years[years.length - 1];
+        }
+
+        updateSlider(n, lowDate, highDate);
+
+        //enable the submit button
+        document.getElementById("submit" + n).disabled = false;
+
+        //graph data
+        graphData(databaseName, xaxis, yaxis, n, lowDate, highDate, gtype);
+    })
+    .catch(function(error) {
+        if (error.message === "404 Not Found") {
+            alert("File not found: " + databaseName);
+        }
+    })
+
+}
+
 //Runs when the user clicks the default button.
 //Switches all database, y-axis, graph type values to
 //default values, which are set at the top of this file.
@@ -203,133 +329,8 @@ function submitGraphData(n) {
 //Updates date range sliders to proper mins & maxes
 //Enables date range sliders
 function switchToDefault() {
-    //set database 1 to default
-    var el = document.getElementById("database1");
-    for (var i = 0; i < el.options.length; i++) {
-        if (el.options[i].text === defaultDatabase1) {
-            el.selectedIndex = i;
-            break;
-        }
-    }
-
-    //reset graph type menu
-    clearMenu("gtype1", false);
-    el = document.getElementById("gtype1");
-    var option = document.createElement("option");
-    option.appendChild(document.createTextNode("bar"));
-    option.value = "bar";
-    el.appendChild(option);
-    el.selectedIndex = 1;
-    option = document.createElement("option");
-    option.appendChild(document.createTextNode("line"));
-    option.value = "line";
-    el.appendChild(option);
-
-    //clear y-axis menu
-    clearMenu("yaxis1", false);
-
-    //read the csv file to get all keys
-    d3.csv("/csv/" + defaultDatabase1 + ".csv")
-    .then(function(data) {
-        var keys = Object.keys(data[0]);
-        keys.sort();
-        //add each key to y-axis menu
-        for (var i = 0; i < keys.length; i++) {
-            if (keys[i] == "Year")
-                continue;
-
-            var elY = document.getElementById("yaxis1");
-            var option = document.createElement("option");
-            option.appendChild(document.createTextNode(keys[i]));
-            option.value = keys[i];
-            elY.appendChild(option);
-            if (keys[i] == defaultYAxis1) {
-                elY.selectedIndex = i + 1;
-            }
-        }
-
-        //update date range slider values
-        var years = [];
-        for (var i = 0; i < data.length; i++) {
-            years.push(data[i]["Year"]);
-        }
-        updateSlider(1, years[0], years[years.length - 1]);
-
-        //enable the submit button
-        document.getElementById("submit1").disabled = false;
-
-        //graph data
-        graphData(defaultDatabase1, defaultXAxis1, defaultYAxis1, 1, years[0], years[years.length - 1], 'bar');
-    })
-    .catch(function(error) {
-        if (error.message === "404 Not Found") {
-            alert("File not found: " + database);
-        }
-    })
-
-    //set database 2 to default
-    el = document.getElementById("database2");
-    for (var i = 0; i < el.options.length; i++) {
-        if (el.options[i].text === defaultDatabase2) {
-            el.selectedIndex = i;
-            break;
-        }
-    }
-
-    //reset graph type menu
-    clearMenu("gtype2", false);
-    el = document.getElementById("gtype2");
-    var option = document.createElement("option");
-    option.appendChild(document.createTextNode("bar"));
-    option.value = "bar";
-    el.appendChild(option);
-    el.selectedIndex = 1;
-    option = document.createElement("option");
-    option.appendChild(document.createTextNode("line"));
-    option.value = "line";
-    el.appendChild(option);
-
-    //clear y-axis menu
-    clearMenu("yaxis2", false);
-
-    //read the csv file to get all keys
-    d3.csv("/csv/" + defaultDatabase2 + ".csv")
-    .then(function(data) {
-        var keys = Object.keys(data[0]);
-        keys.sort();
-        //add each key to y-axis menu
-        for (var i = 0; i < keys.length; i++) {
-            if (keys[i] == "Year")
-                continue;
-
-            var elY = document.getElementById("yaxis2");
-            var option = document.createElement("option");
-            option.appendChild(document.createTextNode(keys[i]));
-            option.value = keys[i];
-            elY.appendChild(option);
-            if (keys[i] == defaultYAxis2) {
-                elY.selectedIndex = i + 1;
-            }
-        }
-
-        //update date range slider values
-        var years = [];
-        for (var i = 0; i < data.length; i++) {
-            years.push(data[i]["Year"]);
-        }
-        updateSlider(2, years[0], years[years.length - 1]);
-
-        //enable the submit button
-        document.getElementById("submit2").disabled = false;
-
-        //graph data
-        graphData(defaultDatabase2, defaultXAxis2, defaultYAxis2, 2, years[0], years[years.length - 1], 'bar');
-    })
-    .catch(function(error) {
-        if (error.message === "404 Not Found") {
-            alert("File not found: " + database);
-        }
-    })
+    setOptions(defaultDatabase1, defaultYAxis1, defaultXAxis1, 'bar', 0, 0, 1);
+    setOptions(defaultDatabase2, defaultYAxis2, defaultXAxis2, 'bar', 0, 0, 2);
 }
 
 //Runs when the user clicks the clear button.
