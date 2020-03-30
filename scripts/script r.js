@@ -63,6 +63,23 @@ $(document).ready( function() {
     switchToDefault();
 });
 
+let modal = document.querySelector(".modal")
+
+function displayModal(){
+    let modal = document.querySelector(".modal")
+    modal.style.display = "block"
+}
+function closeModal(){
+    let modal = document.querySelector(".modal")
+    modal.style.display = "none" 
+}
+window.onclick = function(e){
+    let modal = document.querySelector(".modal")
+    if(e.target == modal){
+        modal.style.display = "none"
+    }
+}
+
 function handleFiles(files) {
     // Check for the various File API support.
     if (window.FileReader) {
@@ -83,7 +100,20 @@ function getAsText(fileToRead) {
 }
 
 function loadHandler(event) {
-    jsonObj = JSON.parse(event.target.result);
+    var textFromFileLoaded = event.target.result;
+    document.getElementById("inputText").value = textFromFileLoaded;
+}
+
+function errorHandler(evt) {
+    if(evt.target.error.name == "NotReadableError") {
+        alert("Cannot read file !");
+    }
+}
+
+function submitScript(){
+    var textFromFileLoaded = document.getElementById("inputText").value;
+
+    jsonObj = JSON.parse(textFromFileLoaded);
     
     for (i in jsonObj.Graphs) {
         g = jsonObj.Graphs[i];
@@ -96,12 +126,7 @@ function loadHandler(event) {
         gtype = g.gtype;
         setOptions(database, yaxis, xaxis, gtype, lowDate, highDate, n);
     }
-}
-
-function errorHandler(evt) {
-    if(evt.target.error.name == "NotReadableError") {
-        alert("Cannot read file !");
-    }
+    closeModal();
 }
 
 //Graphs data for the nth graph.
