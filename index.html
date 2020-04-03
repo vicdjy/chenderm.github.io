@@ -23,153 +23,167 @@
 <body>
     <div class="container">
         <div class="col1">
-            <img class="logo" src="img/logo.png">
+            <div style="width: 50%">
+                <img class="logo" src="img/logo.png">
 
-            <button id="modal-btn" onclick="displayModal()"> Upload Script</button>
-            <div class="modal">
-                <div class="modal-content">
-                    <span class="close-btn" onclick="closeModal()">&times;</span>
-                    <form onsubmit="submitScript();return false">
-                        <label for="question"><b>Driving Question</b></label>
-                        <input type="file" id="script_input" onchange="handleFiles(this.files)" accept=".json"> <br>
-                        <textarea id="inputText" cols="80" rows="25"></textarea>
-                        <input type="submit" value="Submit"><br>
-                    </form>
+                <button id="modal-btn" onclick="displayModal()"> Upload Script</button>
+                <div class="modal">
+                    <div class="modal-content">
+                        <span class="close-btn" onclick="closeModal()">&times;</span>
+                        <form onsubmit="submitScript();return false">
+                            <label for="question"><b>Driving Question</b></label>
+                            <input type="file" id="script_input" onchange="handleFiles(this.files)" accept=".json"> <br>
+                            <textarea id="inputText" cols="80" rows="25"></textarea>
+                            <input type="submit" value="Submit"><br>
+                        </form>
+                    </div>
+                </div>
+
+                <div>
+                    <h2 style="color: white; display: inline-block; margin-right: 30%;">Data</h2>
+                    <button id="default" onclick="switchToDefault()">DEFAULT</button>
+                    <button id="clear" onclick="clearAllValues()">CLEAR</button>
                 </div>
             </div>
-
-            <div>
-                <h2 style="color: white; display: inline-block; margin-right: 30%;">Data</h2>
-                <button id="default" onclick="switchToDefault()">DEFAULT</button>
-                <button id="clear" onclick="clearAllValues()">CLEAR</button>
-            </div>
-
 
             <div class="row">
-                <h3>Graph 1:</h3>
+                <div style="width: 47%; display: inline-block;">
+                    <h3>Graph 1:</h3>
 
-                Database (DB):
-                <select id="database1" onchange="verifyDB(1)">
-                    <option value=""></option>
-                    <optgroup label="Life, Death, Populations">
-                        <option value="Populations" selected>Populations</option>
-                        <option value="Population Female Percentage" selected>Population Female %</option>
-                        <option value="Population Female Percentage at Birth" selected>Population Female % at Birth</option>
-                        <option value="Life Expectancy - Continents">Life Expectancy - Continents</option>
-                        <option value="Median Age">Median Age</option>
-                        <option value="Births">Births</option>
-                        <option value="Births Per Woman">Births Per Woman</option>
-                        <option value="Births Per 1000 People">Births Per 1000 People</option>
-                        <option value="Child Deaths">Child Deaths</option>
-                        <option value="Child Mortality Rates">Child Mortality Rates</option>
-                        <option value="Survival Rate to Age 65 - Male">Survival Rate to Age 65 - Male</option>
-                        <option value="Survival Rate to Age 65 - Female">Survival Rate to Age 65 - Female</option>
-                    </optgroup>
-                    <optgroup label="Military">
-                        <option value="Military Personnel">Military Personnel</option>
-                        <option value="Military Personnel Percent of Population">Military Personnel % Population</option>
-                        <option value="Military Spending">Military Spending</option>
-                        <option value="Military Spending Percent of GDP">Military Spending % GDP</option>
-                    </optgroup>
-                    <optgroup label="Economies">
-                        <option value="GDP">GDP</option>
-                        <option value="GDP Per Capita">GDP Per Capita</option>
-                        <option value="Economic Freedom Scores">Economic Freedom Scores</option>
-                    </optgroup>
-                    <optgroup label="Environment">
-                        <option value="CO2 Emissions">CO2 Emissions</option>
-                        <option value="CO2 Emissions Per Capita">CO2 Emissions Per Capita</option>
-                        <option value="CO2 Emissions Percentages">CO2 Emissions %</option>
-                        <option value="CO2 Emissions Cumulative">CO2 Emissions Cumulative</option>
-                        <option value="CO2 Emissions Cumulative Percentages">CO2 Emissions Cumulative %</option>
-                    </optgroup>
-                </select>
-                <p></p>
+                    Database (DB):
+                    <select id="database1" onchange="verifyDB(1)">
+                        <option value=""></option>
+                        <optgroup label="Life, Death, Populations">
+                            <option value="Populations" selected>Populations</option>
+                            <option value="Population Female Percentage" selected>Population Female %</option>
+                            <option value="Population Female Percentage at Birth" selected>Population Female % at Birth</option>
+                            <option value="Life Expectancy - Continents">Life Expectancy - Continents</option>
+                            <option value="Median Age">Median Age</option>
+                            <option value="Births">Births</option>
+                            <option value="Births Per Woman">Births Per Woman</option>
+                            <option value="Births Per 1000 People">Births Per 1000 People</option>
+                            <option value="Child Deaths">Child Deaths</option>
+                            <option value="Child Mortality Rates">Child Mortality Rates</option>
+                            <option value="Survival Rate to Age 65 - Male">Survival Rate to Age 65 - Male</option>
+                            <option value="Survival Rate to Age 65 - Female">Survival Rate to Age 65 - Female</option>
+                        </optgroup>
+                        <optgroup label="Military">
+                            <option value="Military Personnel">Military Personnel</option>
+                            <option value="Military Personnel Percent of Population">Military Personnel % Population</option>
+                            <option value="Military Spending">Military Spending</option>
+                            <option value="Military Spending Percent of GDP">Military Spending % GDP</option>
+                        </optgroup>
+                        <optgroup label="Economies">
+                            <option value="GDP">GDP</option>
+                            <option value="GDP Per Capita">GDP Per Capita</option>
+                            <option value="Economic Freedom Scores">Economic Freedom Scores</option>
+                        </optgroup>
+                        <optgroup label="Environment">
+                            <option value="CO2 Emissions">CO2 Emissions</option>
+                            <option value="CO2 Emissions Per Capita">CO2 Emissions Per Capita</option>
+                            <option value="CO2 Emissions Percentages">CO2 Emissions %</option>
+                            <option value="CO2 Emissions Cumulative">CO2 Emissions Cumulative</option>
+                            <option value="CO2 Emissions Cumulative Percentages">CO2 Emissions Cumulative %</option>
+                        </optgroup>
+                    </select>
+                    <p></p>
 
-                Y axis:
-                <select id="yaxis1" onchange="verifyOptions(1)">
-                    <option value="" selected></option>
-                </select>
-                <p></p>
-                
-                Year Range:
-                <div style="margin-left: 7px; width: 75%; display: inline-block;">
-                    <input type="text" class="js-range-slider" id="range1" value=""/>
+                    Y axis:
+                    <select id="yaxis1" onchange="verifyOptions(1)">
+                        <option value="" selected></option>
+                    </select>
+                    <p></p>
+                    
+                    Year Range:
+                    <div style="margin-left: 7px; width: 75%; display: inline-block;">
+                        <input type="text" class="js-range-slider" id="range1" value=""/>
+                    </div>
+                    <p></p>
+                    
+                    Graph type:
+                    <select id="gtype1" onchange="verifyOptions(1)">
+                        <option value="" selected></option>
+                        <option value="line">line</option>
+                        <option value="bar">bar</option>
+                    </select>
+                    <p></p>
+
+                    <button id="submit1" onclick="submitGraphData(1)">SUBMIT</button>
                 </div>
-                <p></p>
                 
-                Graph type:
-                <select id="gtype1" onchange="verifyOptions(1)">
-                    <option value="" selected></option>
-                    <option value="line">line</option>
-                    <option value="bar">bar</option>
-                </select>
-                <p></p>
-
-                <button id="submit1" onclick="submitGraphData(1)">SUBMIT</button>
+                <div style="height: 190px; width: 47%; float: right; margin-right: 5%; margin-top: 15px;">
+                    <textarea class="form-control" id="box1" style="height: 100%; width: 100%;"></textarea>
+                </div>
             </div>
+            
             <br>
             <div class="row">
-                <h3>Graph 2:</h3>
+                <div style="width: 47%; display: inline-block;">
+                    <h3>Graph 2:</h3>
 
-                Database (DB):
-                <select id="database2" onchange="verifyDB(2)">
-                    <option value=""></option>
-                    <optgroup label="Life, Death, Populations">
-                        <option value="Populations" selected>Populations</option>
-                        <option value="Population Female Percentage" selected>Population Female %</option>
-                        <option value="Population Female Percentage at Birth" selected>Population Female % at Birth</option>
-                        <option value="Life Expectancy - Continents">Life Expectancy - Continents</option>
-                        <option value="Median Age">Median Age</option>
-                        <option value="Births">Births</option>
-                        <option value="Births Per Woman">Births Per Woman</option>
-                        <option value="Births Per 1000 People">Births Per 1000 People</option>
-                        <option value="Child Deaths">Child Deaths</option>
-                        <option value="Child Mortality Rates">Child Mortality Rates</option>
-                        <option value="Survival Rate to Age 65 - Male">Survival Rate to Age 65 - Male</option>
-                        <option value="Survival Rate to Age 65 - Female">Survival Rate to Age 65 - Female</option>
-                    </optgroup>
-                    <optgroup label="Military">
-                        <option value="Military Personnel">Military Personnel</option>
-                        <option value="Military Personnel Percent of Population">Military Personnel % Population</option>
-                        <option value="Military Spending">Military Spending</option>
-                        <option value="Military Spending Percent of GDP">Military Spending % GDP</option>
-                    </optgroup>
-                    <optgroup label="Economies">
-                        <option value="GDP">GDP</option>
-                        <option value="GDP Per Capita">GDP Per Capita</option>
-                        <option value="Economic Freedom Scores">Economic Freedom Scores</option>
-                    </optgroup>
-                    <optgroup label="Environment">
-                        <option value="CO2 Emissions">CO2 Emissions</option>
-                        <option value="CO2 Emissions Per Capita">CO2 Emissions Per Capita</option>
-                        <option value="CO2 Emissions Percentages">CO2 Emissions %</option>
-                        <option value="CO2 Emissions Cumulative">CO2 Emissions Cumulative</option>
-                        <option value="CO2 Emissions Cumulative Percentages">CO2 Emissions Cumulative %</option>
-                    </optgroup>
-                </select>
-                <p></p>
+                    Database (DB):
+                    <select id="database2" onchange="verifyDB(2)">
+                        <option value=""></option>
+                        <optgroup label="Life, Death, Populations">
+                            <option value="Populations" selected>Populations</option>
+                            <option value="Population Female Percentage" selected>Population Female %</option>
+                            <option value="Population Female Percentage at Birth" selected>Population Female % at Birth</option>
+                            <option value="Life Expectancy - Continents">Life Expectancy - Continents</option>
+                            <option value="Median Age">Median Age</option>
+                            <option value="Births">Births</option>
+                            <option value="Births Per Woman">Births Per Woman</option>
+                            <option value="Births Per 1000 People">Births Per 1000 People</option>
+                            <option value="Child Deaths">Child Deaths</option>
+                            <option value="Child Mortality Rates">Child Mortality Rates</option>
+                            <option value="Survival Rate to Age 65 - Male">Survival Rate to Age 65 - Male</option>
+                            <option value="Survival Rate to Age 65 - Female">Survival Rate to Age 65 - Female</option>
+                        </optgroup>
+                        <optgroup label="Military">
+                            <option value="Military Personnel">Military Personnel</option>
+                            <option value="Military Personnel Percent of Population">Military Personnel % Population</option>
+                            <option value="Military Spending">Military Spending</option>
+                            <option value="Military Spending Percent of GDP">Military Spending % GDP</option>
+                        </optgroup>
+                        <optgroup label="Economies">
+                            <option value="GDP">GDP</option>
+                            <option value="GDP Per Capita">GDP Per Capita</option>
+                            <option value="Economic Freedom Scores">Economic Freedom Scores</option>
+                        </optgroup>
+                        <optgroup label="Environment">
+                            <option value="CO2 Emissions">CO2 Emissions</option>
+                            <option value="CO2 Emissions Per Capita">CO2 Emissions Per Capita</option>
+                            <option value="CO2 Emissions Percentages">CO2 Emissions %</option>
+                            <option value="CO2 Emissions Cumulative">CO2 Emissions Cumulative</option>
+                            <option value="CO2 Emissions Cumulative Percentages">CO2 Emissions Cumulative %</option>
+                        </optgroup>
+                    </select>
+                    <p></p>
 
-                Y axis:
-                <select id="yaxis2" onchange="verifyOptions(2)">
-                    <option value="" selected></option>
-                </select>
-                <p></p>
-                
-                Year Range:
-                <div style="margin-left: 7px; width: 75%; display: inline-block;">
-                    <input type="text" class="js-range-slider" id="range2" value=""/>
+                    Y axis:
+                    <select id="yaxis2" onchange="verifyOptions(2)">
+                        <option value="" selected></option>
+                    </select>
+                    <p></p>
+                    
+                    Year Range:
+                    <div style="margin-left: 7px; width: 75%; display: inline-block;">
+                        <input type="text" class="js-range-slider" id="range2" value=""/>
+                    </div>
+                    <p></p>
+
+                    Graph type:
+                    <select id="gtype2" onchange="verifyOptions(2)">
+                        <option value="" selected></option>
+                        <option value="line">line</option>
+                        <option value="bar">bar</option>
+                    </select>
+                    <p></p>
+                    <button id="submit2" onclick="submitGraphData(2)">SUBMIT</button>
                 </div>
-                <p></p>
-
-                Graph type:
-                <select id="gtype2" onchange="verifyOptions(2)">
-                    <option value="" selected></option>
-                    <option value="line">line</option>
-                    <option value="bar">bar</option>
-                </select>
-                <p></p>
-                <button id="submit2" onclick="submitGraphData(2)">SUBMIT</button>
+                
+                <div style="height: 190px; width: 47%; float: right; margin-right: 5%; margin-top: 15px;">
+                    <textarea class="form-control" id="box2" style="height: 100%; width: 100%;"></textarea>
+                </div>
             </div>
         </div>
 
@@ -187,112 +201,6 @@
             <div class="graphRegion">
                 <canvas id="canvas2"></canvas>
                 <button class="saveButton" id="save2" onclick="saveGraph(0, 2, false)">SAVE GRAPH 2</button>
-            </div>
-        </div>
-
-        <div class="col3">
-            <h2>Saved</h2>
-            <div class="pillar">
-
-                <div class="frame" id="frame1">
-                    <span class="helper"></span>
-                    <div class="tile" onclick="showToolTip(1)">
-                        <div class="tooltiptext" id="tip1"></div>
-                        <canvas id="saved1"></canvas>
-                    </div>
-                </div>
-
-                <div class="frame">
-                    <span class="helper"></span>
-                    <div class="tile" onclick="showToolTip(2)">
-                        <span class="tooltiptext" id="tip2"></span>
-                        <canvas id="saved2"></canvas>
-                    </div>
-                </div>
-
-                <div class="frame">
-                    <span class="helper"></span>
-                    <div class="tile" onclick="showToolTip(3)">
-                        <span class="tooltiptext" id="tip3"></span>
-                        <canvas id="saved3"></canvas>
-                    </div>
-                </div>
-
-                <div class="frame">
-                    <span class="helper"></span>
-                    <div class="tile" onclick="showToolTip(4)">
-                        <span class="tooltiptext" id="tip4"></span>
-                        <canvas id="saved4"></canvas>
-                    </div>
-                </div>
-
-                <div class="frame">
-                    <span class="helper"></span>
-                    <div class="tile" onclick="showToolTip(5)">
-                        <span class="tooltiptext" id="tip5"></span>
-                        <canvas id="saved5"></canvas>
-                    </div>
-                </div>
-
-                <div class="frame">
-                    <span class="helper"></span>
-                    <div class="tile" onclick="showToolTip(6)">
-                        <span class="tooltiptext" id="tip6"></span>
-                        <canvas id="saved6"></canvas>
-                    </div>
-                </div>
-
-            </div>
-            <div class="pillar">
-
-                <div class="frame">
-                    <span class="helper"></span>
-                    <div class="tile" onclick="showToolTip(7)">
-                        <span class="tooltiptext" id="tip7"></span>
-                        <canvas id="saved7"></canvas>
-                    </div>
-                </div>
-
-                <div class="frame">
-                    <span class="helper"></span>
-                    <div class="tile" onclick="showToolTip(8)">
-                        <span class="tooltiptext" id="tip8"></span>
-                        <canvas id="saved8"></canvas>
-                    </div>
-                </div>
-
-                <div class="frame">
-                    <span class="helper"></span>
-                    <div class="tile" onclick="showToolTip(9)">
-                        <span class="tooltiptext" id="tip9"></span>
-                        <canvas id="saved9"></canvas>
-                    </div>
-                </div>
-
-                <div class="frame">
-                    <span class="helper"></span>
-                    <div class="tile" onclick="showToolTip(10)">
-                        <span class="tooltiptext" id="tip10"></span>
-                        <canvas id="saved10"></canvas>
-                    </div>
-                </div>
-
-                <div class="frame">
-                    <span class="helper"></span>
-                    <div class="tile" onclick="showToolTip(11)">
-                        <span class="tooltiptext" id="tip11"></span>
-                        <canvas id="saved11"></canvas>
-                    </div>
-                </div>
-
-                <div class="frame">
-                    <span class="helper"></span>
-                    <div class="tile" onclick="showToolTip(12)">
-                        <span class="tooltiptext" id="tip12"></span>
-                        <canvas id="saved12"></canvas>
-                    </div>
-                </div>
-
             </div>
         </div>
     </div>

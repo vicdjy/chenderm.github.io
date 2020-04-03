@@ -22,10 +22,9 @@ body {
 .col1 {
   float: left;
   height: 100%;
-  width: 30%;
+  width: 60%;
   padding-right: 10px;
   padding-left: 10px;
-  /*color: white;*/
 }
 
 .row {
@@ -46,49 +45,6 @@ body {
   padding-left: 20px;
   color: #524636;
   background-color:#EFE0B9;
-}
-
-.col3 {
-  float: left;
-  height: 100%;
-  width: 30%;
-  padding-right: 10px;
-  padding-bottom: 5px;
-  padding-left: 20px;
-  color: white;
-  background-color:#aabdd9;
-}
-
-.pillar {
-  float: left;
-  height: 100% - 50px;
-  width: 50%;
-  min-width: 100px;
-  overflow: hidden;
-}
-
-.frame {
-  position: relative;
-  float: top;
-  height: 15%;
-  width: 100%;
-  min-height: 75px;
-  color: #aabdd9;
-}
-
-.helper {
-  display: inline-block;
-  height: 10%;
-  vertical-align: middle;
-}
-
-.tile {
-  float: none;
-  display: block;
-  width: 80%;
-  height: 80%;
-  margin: auto;
-  border: 1px solid white;
 }
 
 #submit1 {
