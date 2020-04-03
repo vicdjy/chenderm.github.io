@@ -12,12 +12,13 @@
     <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@0.7.4"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/js/ion.rangeSlider.min.js"></script>
-    
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-colorschemes"></script>
+
     <!-- CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/css/ion.rangeSlider.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/css/ion.rangeSlider.min.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="style/style.css">
-    </head>
+</head>
 
 <!-- HTML -->
 <body>
@@ -92,6 +93,16 @@
                 </select>
                 <p></p>
 
+                <span>
+                    Color Scheme: 
+                    <select id="colorScheme1">
+                        <option class="Orange" value="brewer.PuOr3">Orange</option>","
+                        <option class="Green" value="office.GreenYellow6">Green</option>","
+                        <option class="Blue" value="office.Office6">Blue</option>","
+                    </select>
+                </span>
+                <p></p>
+
                 <button id="submit1" onclick="submitGraphData(1)">SUBMIT</button>
             </div>
             <br>
@@ -141,10 +152,10 @@
                     <option value="" selected></option>
                 </select>
                 <p></p>
-                
+
                 Year Range:
                 <div style="margin-left: 7px; width: 75%; display: inline-block;">
-                    <input type="text" class="js-range-slider" id="range2" value=""/>
+                    <input type="text" class="js-range-slider" id="range2" value="" />
                 </div>
                 <p></p>
 
@@ -155,6 +166,17 @@
                     <option value="bar">bar</option>
                 </select>
                 <p></p>
+
+                <span>
+                    Color Scheme:
+                    <select id="colorScheme2">
+                        <option class="Orange" value="brewer.PuOr6">Orange</option>","
+                        <option class="Green" value="office.Green6">Green</option>","
+                        <option class="Blue" value="office.OfficeClassic6">Blue</option>","
+                    </select>
+                </span>
+                <p></p>
+
                 <button id="submit2" onclick="submitGraphData(2)">SUBMIT</button>
             </div>
         </div>

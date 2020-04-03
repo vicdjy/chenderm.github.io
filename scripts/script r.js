@@ -29,6 +29,18 @@ var graph2 = undefined;
 
 var savedGraphs = [];
 
+var colorScheme1 = {
+    Orange: "brewer.PuOr3",
+    Green: "office.GreenYellow6",
+    Blue: "office.Office6"
+};
+
+var colorScheme2 = {
+    Orange: "brewer.PuOr6",
+    Green: "office.Green6",
+    Blue: "office.OfficeClassic6"
+};
+
 //When the page first loads.
 $(document).ready( function() {
     console.log("Ready!");
@@ -62,7 +74,7 @@ $(document).ready( function() {
 });
 
 //Graphs data for the nth graph.
-function graphData(database, xaxis, yaxis, n, lowDate, highDate, gtype) {
+function graphData(database, xaxis, yaxis, n, lowDate, highDate, gtype, colorScheme) {
     if (n == 1 && graph1 !== undefined)
         graph1.destroy();
     else if (n == 2 && graph2 !== undefined)
@@ -97,8 +109,6 @@ function graphData(database, xaxis, yaxis, n, lowDate, highDate, gtype) {
                     datasets: [{
                         label: yaxis + " (" + gtype + ")",
                         data: dataArr,
-                        backgroundColor: "rgba(183, 82, 30, 1)",
-                        hoverBackgroundColor: "rgba(228, 176, 74, 1)",
                     }],
                     labels: labelsArr
                 },
@@ -115,10 +125,16 @@ function graphData(database, xaxis, yaxis, n, lowDate, highDate, gtype) {
                                 mode: 'x',
                                 speed: 3000,
                             }
+                        },
+                        colorschemes: {
+                            scheme: colorScheme1[colorScheme],
                         }
                     }
                 }
             });
+            //console.log(colorScheme);
+            //console.log(colorScheme1);
+            //console.log(colorScheme1.colorScheme);
 
             //create descriptions & properties for graphs
             //needed for tooltip hover in saved region
@@ -129,6 +145,7 @@ function graphData(database, xaxis, yaxis, n, lowDate, highDate, gtype) {
             graph1.lowDate = lowDate;
             graph1.highDate = highDate;
             graph1.type = gtype;
+            graph1.colorScheme = colorScheme;
             document.getElementById("save" + n).style.display = "block";
         }
         else if (n == 2) {
@@ -138,8 +155,6 @@ function graphData(database, xaxis, yaxis, n, lowDate, highDate, gtype) {
                     datasets: [{
                         label: yaxis + " (" + gtype + ")",
                         data: dataArr,
-                        backgroundColor: "rgba(228, 176, 74, 1)",
-                        hoverBackgroundColor: "rgba(183, 82, 30, 1)",
                     }],
                     labels: labelsArr
                 },
@@ -156,6 +171,9 @@ function graphData(database, xaxis, yaxis, n, lowDate, highDate, gtype) {
                                 mode: 'x',
                                 speed: 3000,
                             }
+                        },
+                        colorschemes: {
+                            scheme: colorScheme2[colorScheme],
                         }
                     }
                 }
@@ -170,6 +188,7 @@ function graphData(database, xaxis, yaxis, n, lowDate, highDate, gtype) {
             graph2.lowDate = lowDate;
             graph2.highDate = highDate;
             graph2.type = gtype;
+            graph2.colorScheme = colorScheme;
             document.getElementById("save" + n).style.display = "block";
         }
     })
@@ -193,7 +212,10 @@ function submitGraphData(n) {
     var lowDate = $("#range1").data("from");
     var highDate = $("#range1").data("to");
 
-    graphData(dbOption, xOption, yOption, n, lowDate, highDate, gtype);
+    el = document.getElementById("colorScheme" + n);
+    var colorScheme = el.options[el.selectedIndex].class;
+
+    graphData(dbOption, xOption, yOption, n, lowDate, highDate, gtype, colorScheme);
 }
 
 //Runs when the user clicks the default button.
@@ -223,6 +245,26 @@ function switchToDefault() {
     option = document.createElement("option");
     option.appendChild(document.createTextNode("line"));
     option.value = "line";
+    el.appendChild(option);
+
+    //reset color scheme
+    clearMenu("colorScheme1", false);
+    el = document.getElementById("colorScheme1");
+    var option = document.createElement("option");
+    option.appendChild(document.createTextNode("Orange"));
+    option.value = "brewer.PuOr3";
+    option.class = "Orange";
+    el.appendChild(option);
+    el.selectedIndex = 0;
+    option = document.createElement("option");
+    option.appendChild(document.createTextNode("Green"));
+    option.value = "office.GreenYellow6";
+    option.class = "Green";
+    el.appendChild(option);
+    option = document.createElement("option");
+    option.appendChild(document.createTextNode("Blue"));
+    option.value = "office.Office6";
+    option.class = "Blue";
     el.appendChild(option);
 
     //clear y-axis menu
@@ -259,7 +301,7 @@ function switchToDefault() {
         document.getElementById("submit1").disabled = false;
 
         //graph data
-        graphData(defaultDatabase1, defaultXAxis1, defaultYAxis1, 1, years[0], years[years.length - 1], 'bar');
+        graphData(defaultDatabase1, defaultXAxis1, defaultYAxis1, 1, years[0], years[years.length - 1], 'bar', 'Orange');
     })
     .catch(function(error) {
         if (error.message === "404 Not Found") {
@@ -287,6 +329,26 @@ function switchToDefault() {
     option = document.createElement("option");
     option.appendChild(document.createTextNode("line"));
     option.value = "line";
+    el.appendChild(option);
+
+    //reset color scheme
+    clearMenu("colorScheme2", false);
+    el = document.getElementById("colorScheme2");
+    var option = document.createElement("option");
+    option.appendChild(document.createTextNode("Orange"));
+    option.value = "brewer.PuOr6";
+    option.class = "Orange";
+    el.appendChild(option);
+    el.selectedIndex = 0;
+    option = document.createElement("option");
+    option.appendChild(document.createTextNode("Green"));
+    option.value = "office.Green6";
+    option.class = "Green";
+    el.appendChild(option);
+    option = document.createElement("option");
+    option.appendChild(document.createTextNode("Blue"));
+    option.value = "office.OfficeClassic6";
+    option.class = "Blue";
     el.appendChild(option);
 
     //clear y-axis menu
@@ -323,7 +385,7 @@ function switchToDefault() {
         document.getElementById("submit2").disabled = false;
 
         //graph data
-        graphData(defaultDatabase2, defaultXAxis2, defaultYAxis2, 2, years[0], years[years.length - 1], 'bar');
+        graphData(defaultDatabase2, defaultXAxis2, defaultYAxis2, 2, years[0], years[years.length - 1], 'bar', 'Orange');
     })
     .catch(function(error) {
         if (error.message === "404 Not Found") {
@@ -450,7 +512,11 @@ function verifyDB(n) {
 function clearMenu(name, disable) {
     var menu = document.getElementById(name);
     menu.selectedIndex = 0;
-    while (menu.options.length != 1) {
+    var length = 1;
+    if (name == "colorScheme1" || name == "colorScheme2") {
+        length = 0;
+    }
+    while (menu.options.length != length) {
         menu.remove(menu.options.length - 1);
     }
     menu.disabled = disable;
@@ -534,6 +600,7 @@ function saveGraph(saveNum, graphNum, swap) {
     var lowDate = undefined;
     var highDate = undefined;
     var graph_type = undefined;
+    var colorScheme = undefined;
 
     var destination = undefined;
     if (saveNum == 0) {
@@ -564,6 +631,7 @@ function saveGraph(saveNum, graphNum, swap) {
         lowDate = graph1.lowDate;
         highDate = graph1.highDate;
         graph_type = graph1.type;
+        colorScheme = graph1.colorScheme;
     }
     else if (graphNum == 2) {
         labelsArr = graph2.config.data.labels;
@@ -575,6 +643,7 @@ function saveGraph(saveNum, graphNum, swap) {
         lowDate = graph2.lowDate;
         highDate = graph2.highDate;
         graph_type = graph2.type;
+        colorScheme = graph2.colorScheme;
     }
 
     //check if current graph is already saved
@@ -627,6 +696,7 @@ function saveGraph(saveNum, graphNum, swap) {
     g.lowDate = lowDate;
     g.highDate = highDate;
     g.type = graph_type;
+    g.colorScheme = colorScheme;
     savedGraphs[destination - 1] = g;
 
     var tip = document.getElementById("tip" + destination);
@@ -645,9 +715,10 @@ function swap(savedNum, graphNum) {
     var savedLowDate = savedGraph.lowDate;
     var savedHighDate = savedGraph.highDate;
     var savedType = savedGraph.type;
+    var savedColor = savedGraph.colorScheme;
 
     saveGraph(savedNum, graphNum, true);
-    graphData(savedDB, savedX, savedY, graphNum, savedLowDate, savedHighDate, savedType);
+    graphData(savedDB, savedX, savedY, graphNum, savedLowDate, savedHighDate, savedType, savedColor);
 
     //updating the controls on the left side
     //set database 1 to savedDB
@@ -662,6 +733,14 @@ function swap(savedNum, graphNum) {
     var el = document.getElementById("gtype" + graphNum);
     for (var i = 0; i < el.options.length; i++) {
         if (el.options[i].text === savedType) {
+            el.selectedIndex = i;
+            break;
+        }
+    }
+
+    var el = document.getElementById("colorScheme" + graphNum);
+    for (var i = 0; i < el.options.length; i++) {
+        if (el.options[i].text === savedColor) {
             el.selectedIndex = i;
             break;
         }
