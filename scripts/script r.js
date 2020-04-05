@@ -101,7 +101,15 @@ function getAsText(fileToRead) {
 
 function loadHandler(event) {
     var textFromFileLoaded = event.target.result;
-    document.getElementById("inputText").value = textFromFileLoaded;
+    
+    jsonObj = JSON.parse(textFromFileLoaded);
+    for (i in jsonObj.Graphs) {
+        g = jsonObj.Graphs[i];
+        textValue = JSON.stringify(g, null, 2);
+        console.log(i);
+        document.getElementById("box"+i).value = textValue;
+        submitText(i);
+    }
 }
 
 function errorHandler(evt) {
@@ -110,23 +118,20 @@ function errorHandler(evt) {
     }
 }
 
-function submitScript(){
-    var textFromFileLoaded = document.getElementById("inputText").value;
+function submitText(id) {
+    console.log('submitText');
+    var textFromFileLoaded = document.getElementById("box"+id).value;
 
-    jsonObj = JSON.parse(textFromFileLoaded);
-    
-    for (i in jsonObj.Graphs) {
-        g = jsonObj.Graphs[i];
-        database = g.DB;
-        xaxis = g.Xaxis;
-        yaxis = g.Yaxis;
-        n = g.Id;
-        lowDate = g.lowDate;
-        highDate = g.highDate;
-        gtype = g.gtype;
-        setOptions(database, yaxis, xaxis, gtype, lowDate, highDate, n);
-    }
-    closeModal();
+    g = JSON.parse(textFromFileLoaded);
+    database = g.DB;
+    xaxis = g.Xaxis;
+    yaxis = g.Yaxis;
+    n = g.Id;
+    lowDate = g.lowDate;
+    highDate = g.highDate;
+    gtype = g.gtype;
+
+    setOptions(database, yaxis, xaxis, gtype, lowDate, highDate, n);
 }
 
 //Graphs data for the nth graph.
