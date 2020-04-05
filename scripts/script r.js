@@ -66,10 +66,16 @@ $(document).ready( function() {
 let modal = document.querySelector(".modal")
 
 function displayModal(){
+    /*
+    This function display the fileUpload Modal.
+    Opens up a new window from the browser to allow users
+    to upload a script file from their local computer.
+    */
     let modal = document.querySelector(".modal")
     modal.style.display = "block"
 }
 function closeModal(){
+    //Close the fileupload window
     let modal = document.querySelector(".modal")
     modal.style.display = "none" 
 }
@@ -81,7 +87,9 @@ window.onclick = function(e){
 }
 
 function handleFiles(files) {
-    // Check for the various File API support.
+    /*
+    This function is called when a script file is being uploaded.
+    */
     if (window.FileReader) {
         // FileReader are supported.
         getAsText(files[0]);
@@ -91,22 +99,32 @@ function handleFiles(files) {
 }
 
 function getAsText(fileToRead) {
+    /*
+    The function reads the uploaded script file as text.
+    Calls loadHandler function when the file finish loading.
+    */
     var reader = new FileReader();
     // Read file into memory as UTF-8      
     reader.readAsText(fileToRead);
-    // Handle errors load
     reader.onload = loadHandler;
+    // Handle errors load
     reader.onerror = errorHandler;
 }
 
 function loadHandler(event) {
+    /*
+    This function is called when a script file is uploaded.
+    It does the following:
+    1. Parses the script as a json object
+    2. Write the script into the text boxes
+    3. Plot graphs based on script input
+    */
     var textFromFileLoaded = event.target.result;
-    
+
     jsonObj = JSON.parse(textFromFileLoaded);
     for (i in jsonObj.Graphs) {
         g = jsonObj.Graphs[i];
         textValue = JSON.stringify(g, null, 2);
-        console.log(i);
         document.getElementById("box"+i).value = textValue;
         submitText(i);
     }
@@ -119,7 +137,10 @@ function errorHandler(evt) {
 }
 
 function submitText(id) {
-    console.log('submitText');
+    /*
+    The function is called whenever the scripts in the text boxes are changed.
+    It reads the script and plot the new graphs.
+    */
     var textFromFileLoaded = document.getElementById("box"+id).value;
 
     g = JSON.parse(textFromFileLoaded);
@@ -270,7 +291,7 @@ function submitGraphData(n) {
 }
 
 /* setOption does the following two things:
-   1. set the meun on the right to the appropriate values: 
+   1. set the meun on the left to the appropriate values: 
    input parameters (databaseName, yaxis, xaixs, gtype, lowDate, highDate)
    2. plot graphs based on input. 
 */
