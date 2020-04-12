@@ -660,7 +660,11 @@ function saveGraph(saveNum, graphNum, swap) {
     var tip = document.getElementById("tip" + destination);
     tip.style.display = "block";
     tip.style.backgroundColor = "#0000005c";
-    tip.innerHTML = "<span onclick='deleteGraph(" + destination + ")' style='cursor: pointer; background-color: black;'>X</span><br>" + hoverText + "<br><span onclick='swap(" + destination + ", 1)' style='cursor: pointer; background-color: black;'>Transfer to Graph 1</span><br><span onclick='swap(" + destination + ", 2)' style='cursor: pointer; background-color: black;'>Transfer to Graph 2</span>";
+    tip.innerHTML = hoverText + "<br><span onclick='swap(" + destination + ", 1)' style='cursor: pointer; background-color: black;'>Transfer to Graph 1</span><br><span onclick='swap(" + destination + ", 2)' style='cursor: pointer; background-color: black;'>Transfer to Graph 2</span>";
+    tip.style.visibility = "hidden";
+
+    var exit = document.getElementById("exit" + destination);
+    exit.style.visibility = "visible";
 }
 
 //Transfers a saved graph to one of the main graphs,
@@ -728,10 +732,15 @@ function deleteGraph(savedNum) {
     var g = savedGraphs[savedNum - 1];
     g.destroy();
     savedGraphs[savedNum - 1] = undefined;
+
     var tip = document.getElementById("tip" + savedNum);
     tip.style.display = "none";
     tip.style.backgroundColor = "transparent";
     tip.innerHTML = "";
+    tip.style.visibility = "hidden";
+
+    var exit = document.getElementById("exit" + savedNum);
+    exit.style.visibility = "hidden";
 }
 
 //Shows tooltip over saved graph
