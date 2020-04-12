@@ -34,7 +34,7 @@ $(document).ready( function() {
     console.log("Ready!");
     Chart.defaults.global.defaultFontColor = "#524636";
 
-    for (var i = 0; i < 12; i++) {
+    for (var i = 0; i < 10; i++) {
         savedGraphs.push(undefined);
     }
 
@@ -123,7 +123,16 @@ function graphData(database, xaxis, yaxis, n, lowDate, highDate, gtype, color, c
 
             //create descriptions & properties for graphs
             //needed for tooltip hover in saved region
-            graph1.description = "DB: " + database + "<br>Y axis: " + yaxis + "<br>X axis: " + xaxis + " " + lowDate + "-" + highDate;
+            var description = { 
+                "Id": 1,
+                "DB": database,
+                "Yaxis": yaxis,
+                "Xaxis": xaxis,
+                "lowDate": lowDate,
+                "highDate": highDate,
+                "gtype": gtype
+            }
+            graph1.description = JSON.stringify(description, null, 2);
             graph1.DB = database;
             graph1.X = xaxis;
             graph1.Y = yaxis;
@@ -167,7 +176,16 @@ function graphData(database, xaxis, yaxis, n, lowDate, highDate, gtype, color, c
 
             //create descriptions & properties for graphs
             //needed for tooltip hover in saved region
-            graph2.description = "DB: " + database + "<br>Y axis: " + yaxis + "<br>X axis: " + xaxis + " " + lowDate + "-" + highDate;
+            var description = { 
+                "Id": 2,
+                "DB": database,
+                "Yaxis": yaxis,
+                "Xaxis": xaxis,
+                "lowDate": lowDate,
+                "highDate": highDate,
+                "gtype": gtype
+            }
+            graph2.description = JSON.stringify(description, null, 2);
             graph2.DB = database;
             graph2.X = xaxis;
             graph2.Y = yaxis;
@@ -660,6 +678,9 @@ function saveGraph(saveNum, graphNum, swap) {
     var tip = document.getElementById("tip" + destination);
     tip.style.display = "block";
     tip.style.backgroundColor = "#0000005c";
+    hoverText = hoverText.replace(/\n( *)/g, function (match, p1) {
+        return '<br>' + '&nbsp;'.repeat(p1.length);
+    });
     tip.innerHTML = hoverText + "<br><span onclick='swap(" + destination + ", 1)' style='cursor: pointer; background-color: black;'>Transfer to Graph 1</span><br><span onclick='swap(" + destination + ", 2)' style='cursor: pointer; background-color: black;'>Transfer to Graph 2</span>";
     tip.style.visibility = "hidden";
 
