@@ -7,7 +7,9 @@
    "Xaxis": "Year",
    "lowDate": 1800,
    "highDate": 2000,
-   "gtype": "bar"
+   "gtype": "bar",
+   "color": "#f2d908",
+   "colorScheme": "office.Orbit6"
   },
   { 
    "Id": 2,
@@ -16,7 +18,9 @@
    "Xaxis": "Year",
    "lowDate": 1830,
    "highDate": 1900,
-   "gtype": "bar"
+   "gtype": "bar",
+   "color": "#f2d908",
+   "colorScheme": "office.Orbit6"
   }
  ]
 }

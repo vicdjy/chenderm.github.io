@@ -12,12 +12,13 @@
     <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@0.7.4"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/js/ion.rangeSlider.min.js"></script>
-    
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-colorschemes"></script>
+
     <!-- CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/css/ion.rangeSlider.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/css/ion.rangeSlider.min.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="style/style.css">
-    </head>
+</head>
 
 <!-- HTML -->
 <body>
@@ -91,19 +92,42 @@
                         <option value="" selected></option>
                     </select>
                     <p></p>
-                    
+
                     Year Range:
                     <div style="margin-left: 7px; width: 75%; display: inline-block;">
-                        <input type="text" class="js-range-slider" id="range1" value=""/>
+                        <input type="text" class="js-range-slider" id="range1" value="" />
                     </div>
                     <p></p>
-                    
+
                     Graph type:
                     <select id="gtype1" onchange="verifyOptions(1)">
                         <option value="" selected></option>
                         <option value="line">line</option>
                         <option value="bar">bar</option>
                     </select>
+                    <div style="display: inline-block; position: relative;">
+                        <c style="margin-left: 10px;">Color:</c>
+                        <button class="colorButton" id="colorButton1" onclick="showColorWheel(1)"></button>
+                        <div class="colorwheelMenu" id="colorWheel1">
+                            <item style="background-color: #ffffff" onclick="changeColorButton(1,this.style.backgroundColor,'brewer.Greys8')"></item>
+                            <item style="background-color: #f2d908" onclick="changeColorButton(1,this.style.backgroundColor,'office.Orbit6')"></item>
+                            <item style="background-color: #f09415" onclick="changeColorButton(1,this.style.backgroundColor,'office.Basis6')"></item>
+                            <item style="background-color: #f81b02" onclick="changeColorButton(1,this.style.backgroundColor,'office.Atlas6')"></item>
+                            <item style="background-color: #ff388c" onclick="changeColorButton(1,this.style.backgroundColor,'office.Verve6')"></item>
+                            <item style="background-color: #762a83" onclick="changeColorButton(1,this.style.backgroundColor,'brewer.PRGn7')"></item>
+                            <item style="background-color: #1d86cd" onclick="changeColorButton(1,this.style.backgroundColor,'office.Story6')"></item>
+                            <item style="background-color: #76c5ef" onclick="changeColorButton(1,this.style.backgroundColor,'office.Kilter6')"></item>
+                            <item style="background-color: #7fd13b" onclick="changeColorButton(1,this.style.backgroundColor,'office.Metro6')"></item>
+                            <item style="background-color: #09622a" onclick="changeColorButton(1,this.style.backgroundColor,'tableau.ClassicGreenBlue11')"></item>
+                            <item style="background-color: #543005" onclick="changeColorButton(1,this.style.backgroundColor,'brewer.BrBG11')"></item>
+                            <item style="background-color: #8c510a" onclick="changeColorButton(1,this.style.backgroundColor,'brewer.BrBG7')"></item>
+                            <item style="background-color: #a6611a" onclick="changeColorButton(1,this.style.backgroundColor,'brewer.BrBG4')"></item>
+                            <item style="background-color: #d8b365" onclick="changeColorButton(1,this.style.backgroundColor,'brewer.BrBG3')"></item>
+                            <item style="background-color: #c3c3c3" onclick="changeColorButton(1,this.style.backgroundColor,'tableau.ClassicGray13')"></item>
+                            <item style="background-color: #6f6f6f" onclick="changeColorButton(1,this.style.backgroundColor,'office.Mesh6')"></item>
+                        </div>
+                    </div>
+
                     <p></p>
 
                     <button id="submit1" onclick="submitGraphData(1)">SUBMIT</button>
@@ -163,10 +187,10 @@
                         <option value="" selected></option>
                     </select>
                     <p></p>
-                    
+
                     Year Range:
                     <div style="margin-left: 7px; width: 75%; display: inline-block;">
-                        <input type="text" class="js-range-slider" id="range2" value=""/>
+                        <input type="text" class="js-range-slider" id="range2" value="" />
                     </div>
                     <p></p>
 
@@ -176,6 +200,28 @@
                         <option value="line">line</option>
                         <option value="bar">bar</option>
                     </select>
+                    <div style="display: inline-block; position: relative;">
+                        <c style="margin-left: 10px;">Color:</c>
+                        <button class="colorButton" id="colorButton2" onclick="showColorWheel(2)"></button>
+                        <div class="colorwheelMenu" id="colorWheel2">
+                            <item style="background-color: #ffffff" onclick="changeColorButton(2,this.style.backgroundColor,'brewer.Greys8')"></item>
+                            <item style="background-color: #f2d908" onclick="changeColorButton(2,this.style.backgroundColor,'office.Orbit6')"></item>
+                            <item style="background-color: #f09415" onclick="changeColorButton(2,this.style.backgroundColor,'office.Basis6')"></item>
+                            <item style="background-color: #f81b02" onclick="changeColorButton(2,this.style.backgroundColor,'office.Atlas6')"></item>
+                            <item style="background-color: #ff388c" onclick="changeColorButton(2,this.style.backgroundColor,'office.Verve6')"></item>
+                            <item style="background-color: #762a83" onclick="changeColorButton(2,this.style.backgroundColor,'brewer.PRGn7')"></item>
+                            <item style="background-color: #1d86cd" onclick="changeColorButton(2,this.style.backgroundColor,'office.Story6')"></item>
+                            <item style="background-color: #76c5ef" onclick="changeColorButton(2,this.style.backgroundColor,'office.Kilter6')"></item>
+                            <item style="background-color: #7fd13b" onclick="changeColorButton(2,this.style.backgroundColor,'office.Metro6')"></item>
+                            <item style="background-color: #09622a" onclick="changeColorButton(2,this.style.backgroundColor,'tableau.ClassicGreenBlue11')"></item>
+                            <item style="background-color: #543005" onclick="changeColorButton(2,this.style.backgroundColor,'brewer.BrBG11')"></item>
+                            <item style="background-color: #8c510a" onclick="changeColorButton(2,this.style.backgroundColor,'brewer.BrBG7')"></item>
+                            <item style="background-color: #a6611a" onclick="changeColorButton(2,this.style.backgroundColor,'brewer.BrBG4')"></item>
+                            <item style="background-color: #d8b365" onclick="changeColorButton(2,this.style.backgroundColor,'brewer.BrBG3')"></item>
+                            <item style="background-color: #c3c3c3" onclick="changeColorButton(2,this.style.backgroundColor,'tableau.ClassicGray13')"></item>
+                            <item style="background-color: #6f6f6f" onclick="changeColorButton(2,this.style.backgroundColor,'office.Mesh6')"></item>
+                        </div>
+                    </div>
                     <p></p>
                     <button id="submit2" onclick="submitGraphData(2)">SUBMIT</button>
                 </div>
