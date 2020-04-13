@@ -139,3 +139,28 @@ body {
   from {top:-300px; opacity:0}
   to {top:0; opacity:1}
 }
+
+.colorButton {
+    /*margin-left: 10px;*/
+    height: 15px;
+}
+
+.colorwheelMenu {
+    visibility: hidden;
+    left: 45px;
+    padding-left: 4px;
+    position: absolute;
+    bottom: 15px;
+    z-index: 1;
+    width: 160px;
+    border: 2px solid black;
+}
+
+    .colorwheelMenu item {
+        color: black;
+        height: 20px;
+        width: 20px;
+        margin-left: -4px;
+        display: inline-block;
+        cursor: pointer;
+    }

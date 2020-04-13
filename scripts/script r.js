@@ -24,6 +24,34 @@ var defaultDatabase2 = "Populations";
 var defaultXAxis2 = "Year";
 var defaultYAxis2 = "Algeria";
 
+var defaultTextValue = {
+    "Graphs": [
+        {
+            "Id": 1,
+            "DB": "Populations",
+            "Yaxis": "Rwanda",
+            "Xaxis": "Year",
+            "lowDate": 1800,
+            "highDate": 2019,
+            "gtype": "bar",
+            "color": "#f09415",
+            "colorScheme": "office.Basis6"
+        },
+        {
+            "Id": 2,
+            "DB": "Populations",
+            "Yaxis": "Algeria",
+            "Xaxis": "Year",
+            "lowDate": 1800,
+            "highDate": 2019,
+            "gtype": "bar",
+            "color": "#543005",
+            "colorScheme": "brewer.BrBG11"
+        }
+    ]
+};
+var firstLoad = true;
+
 var graph1 = undefined;
 var graph2 = undefined;
 
@@ -61,6 +89,7 @@ $(document).ready(function () {
     });
 
     switchToDefault();
+    firstLoad = false;
 });
 
 let modal = document.querySelector(".modal")
@@ -96,6 +125,7 @@ function handleFiles(files) {
     } else {
         alert('FileReader are not supported in this browser.');
     }
+    closeModal();
 }
 
 function getAsText(fileToRead) {
@@ -104,7 +134,7 @@ function getAsText(fileToRead) {
     Calls loadHandler function when the file finish loading.
     */
     var reader = new FileReader();
-    // Read file into memory as UTF-8      
+    // Read file into memory as UTF-8
     reader.readAsText(fileToRead);
     reader.onload = loadHandler;
     // Handle errors load
@@ -125,6 +155,7 @@ function loadHandler(event) {
     for (i in jsonObj.Graphs) {
         g = jsonObj.Graphs[i];
         textValue = JSON.stringify(g, null, 2);
+        console.log(textValue);
         document.getElementById("box" + i).value = textValue;
         submitText(i);
     }
@@ -192,9 +223,7 @@ function graphData(database, xaxis, yaxis, n, lowDate, highDate, gtype, color, c
                     data: {
                         datasets: [{
                             label: yaxis + " (" + gtype + ")",
-                            data: dataArr,
-                            backgroundColor: "rgba(183, 82, 30, 1)",
-                            hoverBackgroundColor: "rgba(228, 176, 74, 1)",
+                            data: dataArr
                         }],
                         labels: labelsArr
                     },
@@ -238,9 +267,7 @@ function graphData(database, xaxis, yaxis, n, lowDate, highDate, gtype, color, c
                     data: {
                         datasets: [{
                             label: yaxis + " (" + gtype + ")",
-                            data: dataArr,
-                            backgroundColor: "rgba(228, 176, 74, 1)",
-                            hoverBackgroundColor: "rgba(183, 82, 30, 1)",
+                            data: dataArr
                         }],
                         labels: labelsArr
                     },
@@ -394,6 +421,16 @@ function setOptions(databaseName, yaxis, xaxis, gtype, lowDate, highDate, n, col
         changeColorButton(2, "#543005", "brewer.BrBG11");
     }
     document.getElementById("colorButton" + n).disabled = false;
+
+    if (firstLoad) {
+        for (i in defaultTextValue.Graphs) {
+            g = defaultTextValue.Graphs[i];
+            textValue = JSON.stringify(g, null, 2);
+            console.log(textValue);
+            document.getElementById("box" + i).value = textValue;
+        }
+    }
+    
 }
 
 //Runs when the user clicks the default button.
@@ -404,9 +441,9 @@ function setOptions(databaseName, yaxis, xaxis, gtype, lowDate, highDate, n, col
 //Enables date range sliders
 function switchToDefault() {
     setOptions(defaultDatabase1, defaultYAxis1, defaultXAxis1, 'bar', 0, 0, 1,
-        document.getElementById("colorButton1").style.backgroundColor, document.getElementById("colorButton1").description);
+        '#f09415', 'office.Basis6');
     setOptions(defaultDatabase2, defaultYAxis2, defaultXAxis2, 'bar', 0, 0, 2,
-        document.getElementById("colorButton2").style.backgroundColor, document.getElementById("colorButton2").description);
+        '#543005', 'brewer.BrBG11');
 }
 
 //Runs when the user clicks the clear button.
