@@ -212,8 +212,10 @@ body {
 .tile .tooltiptext {
   visibility: hidden;
   width: 70%;
+  background-color: #555;
+  color: #fff;
   position: absolute;
-  font-size: 10;
+  font-size: 13;
   display: none;
   text-align: left;
   padding: 5px;
