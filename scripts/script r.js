@@ -575,24 +575,15 @@ function saveGraph(saveNum, graphNum, swap) {
     var color = undefined;
     var colorScheme = undefined;
 
-    var destination = undefined;
-    if (saveNum == 0) {
-        destination = nextAvailableSaveSpot();
-        if (destination == -1) {
-            alert("No more space available to save graphs! Try deleting some");
-            return;
-        }
-    }
-    else {
-        destination = saveNum;
-        var g = savedGraphs[saveNum - 1];
+    var destination = saveNum;
+    var g = savedGraphs[saveNum - 1];
+    if (g != null)
         g.destroy();
-        savedGraphs[saveNum - 1] = undefined;
-        var tip = document.getElementById("tip" + saveNum);
-        tip.style.display = "none";
-        tip.style.backgroundColor = "transparent";
-        tip.innerHTML = "";
-    }
+    savedGraphs[saveNum - 1] = undefined;
+    var tip = document.getElementById("tip" + saveNum);
+    tip.style.display = "none";
+    tip.style.backgroundColor = "transparent";
+    tip.innerHTML = "";
 
     if (graphNum == 1) {
         labelsArr = graph1.config.data.labels;
@@ -625,7 +616,7 @@ function saveGraph(saveNum, graphNum, swap) {
     for (var i = 0; i < savedGraphs.length; i++) {
         if (savedGraphs[i] != undefined && hoverText == savedGraphs[i].description) {
             if (!swap) {
-                alert("Graph " + graphNum + " is already saved at box #" + i + 1);
+                alert("Graph " + graphNum + " is already saved at box #" + (i + 1));
             }
             return;
         }
@@ -794,4 +785,21 @@ function changeColorButton(num, color, description) {
 //Reset color button
 function resetColorButton(num) {
     changeColorButton(num, "#ffffff", "brewer.Greys8");
+}
+
+//Runs when dragging to save a graph
+function drag(ev, graphNum) {
+    ev.dataTransfer.setData("text", graphNum);
+}
+
+//Runs when dropping a graph over a saved region
+function drop(ev, saveNum) {
+    ev.preventDefault();
+    var graphNum = ev.dataTransfer.getData("text");
+    saveGraph(saveNum, graphNum, false);
+}
+
+//Allows drops to occur
+function allowDrop(ev) {
+    ev.preventDefault();
 }

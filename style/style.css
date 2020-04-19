@@ -64,7 +64,7 @@ body {
   height: 100% - 50px;
   width: 50%;
   min-width: 100px;
-  overflow: visible;
+  overflow: hidden;
 }
 
 .frame {
@@ -72,15 +72,9 @@ body {
   position: relative;
   height: 15%;
   width: 100%;
-  margin-top: 20px;
+  margin-bottom: 20px;
   min-height: 75px;
   color: #aabdd9;
-}
-
-.helper {
-  display: inline-block;
-  height: 10%;
-  vertical-align: middle;
 }
 
 .tile {
@@ -163,6 +157,7 @@ body {
   background-color: #E2953D;
   color: white;
   z-index: 2;
+  cursor: move;
 }
 
 .tile .tooltiptext {

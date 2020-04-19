@@ -215,14 +215,14 @@
             <div id="driving_question1" style="font-size: 14px"></div>
             <div class="graphRegion">
                 <canvas id="canvas1"></canvas>
-                <button class="saveButton" id="save1" onclick="saveGraph(0, 1, false)">SAVE GRAPH 1</button>
+                <button class="saveButton" id="save1" draggable="true" ondragstart="drag(event, 1)">SAVE GRAPH 1</button>
             </div>
 
             <br><br>
             <div id="driving_question2" style="font-size: 14px"></div>
             <div class="graphRegion">
                 <canvas id="canvas2"></canvas>
-                <button class="saveButton" id="save2" onclick="saveGraph(0, 2, false)">SAVE GRAPH 2</button>
+                <button class="saveButton" id="save2" draggable="true" ondragstart="drag(event, 2)">SAVE GRAPH 2</button>
             </div>
         </div>
 
@@ -231,7 +231,7 @@
             <div class="pillar">
 
                 <div class="frame" id="frame1">
-                    <div class="tile" onclick="showToolTip(1)">
+                    <div class="tile" onclick="showToolTip(1)" ondrop="drop(event, 1)" ondragover="allowDrop(event)">
                         <div class="tooltiptext" id="tip1"></div>
                         <canvas id="saved1"></canvas>
                         <a id="exit1" onclick="deleteGraph(1)">x</a>
@@ -239,7 +239,7 @@
                 </div>
 
                 <div class="frame">
-                    <div class="tile" onclick="showToolTip(2)">
+                    <div class="tile" onclick="showToolTip(2)" ondrop="drop(event, 2)" ondragover="allowDrop(event)">
                         <span class="tooltiptext" id="tip2"></span>
                         <canvas id="saved2"></canvas>
                         <a id="exit2" onclick="deleteGraph(2)">x</a>
@@ -247,7 +247,7 @@
                 </div>
 
                 <div class="frame">
-                    <div class="tile" onclick="showToolTip(3)">
+                    <div class="tile" onclick="showToolTip(3)" ondrop="drop(event, 3)" ondragover="allowDrop(event)">
                         <span class="tooltiptext" id="tip3"></span>
                         <canvas id="saved3"></canvas>
                         <a id="exit3" onclick="deleteGraph(3)">x</a>
@@ -255,7 +255,7 @@
                 </div>
 
                 <div class="frame">
-                    <div class="tile" onclick="showToolTip(4)">
+                    <div class="tile" onclick="showToolTip(4)" ondrop="drop(event, 4)" ondragover="allowDrop(event)">
                         <span class="tooltiptext" id="tip4"></span>
                         <canvas id="saved4"></canvas>
                         <a id="exit4" onclick="deleteGraph(4)">x</a>
@@ -263,7 +263,7 @@
                 </div>
 
                 <div class="frame">
-                    <div class="tile" onclick="showToolTip(5)">
+                    <div class="tile" onclick="showToolTip(5)" ondrop="drop(event, 5)" ondragover="allowDrop(event)">
                         <span class="tooltiptext" id="tip5"></span>
                         <canvas id="saved5"></canvas>
                         <a id="exit5" onclick="deleteGraph(5)">x</a>
@@ -273,7 +273,7 @@
             <div class="pillar">
 
                 <div class="frame">
-                    <div class="tile" onclick="showToolTip(6)">
+                    <div class="tile" onclick="showToolTip(6)" ondrop="drop(event, 6)" ondragover="allowDrop(event)">
                         <span class="tooltiptext" id="tip6"></span>
                         <canvas id="saved6"></canvas>
                         <a id="exit6" onclick="deleteGraph(6)">x</a>
@@ -281,15 +281,15 @@
                 </div>
 
                 <div class="frame">
-                    <div class="tile" onclick="showToolTip(7)">
+                    <div class="tile" onclick="showToolTip(7)" ondrop="drop(event, 7)" ondragover="allowDrop(event)">
                         <span class="tooltiptext" id="tip7"></span>
-                        <canvas id="saved"></canvas>
+                        <canvas id="saved7"></canvas>
                         <a id="exit7" onclick="deleteGraph(7)">x</a>
                     </div>
                 </div>
 
                 <div class="frame">
-                    <div class="tile" onclick="showToolTip(8)">
+                    <div class="tile" onclick="showToolTip(8)" ondrop="drop(event, 8)" ondragover="allowDrop(event)">
                         <span class="tooltiptext" id="tip8"></span>
                         <canvas id="saved8"></canvas>
                         <a id="exit8" onclick="deleteGraph(8)">x</a>
@@ -297,7 +297,7 @@
                 </div>
 
                 <div class="frame">
-                    <div class="tile" onclick="showToolTip(9)">
+                    <div class="tile" onclick="showToolTip(9)" ondrop="drop(event, 9)" ondragover="allowDrop(event)">
                         <span class="tooltiptext" id="tip9"></span>
                         <canvas id="saved9"></canvas>
                         <a id="exit9" onclick="deleteGraph(9)">x</a>
@@ -305,7 +305,7 @@
                 </div>
 
                 <div class="frame">
-                    <div class="tile" onclick="showToolTip(10)">
+                    <div class="tile" onclick="showToolTip(10)" ondrop="drop(event, 10)" ondragover="allowDrop(event)">
                         <span class="tooltiptext" id="tip10"></span>
                         <canvas id="saved10"></canvas>
                         <a id="exit10" onclick="deleteGraph(10)">x</a>
