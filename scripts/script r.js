@@ -732,6 +732,86 @@ function swap(savedNum, graphNum) {
     });
 }
 
+//Relocates a saved graph to another spot
+function relocate(prevSave, nextSave) {
+    if (savedGraphs[nextSave - 1] == undefined || savedGraphs[nextSave - 1] == null) {
+        //simple relocate
+        var prevSavedGraph = savedGraphs[prevSave - 1];
+        var prevLabelsArr = prevSavedGraph.config.data.labels;
+        var prevDataArr = prevSavedGraph.config.data.datasets[0].data;
+        var prevHoverText = prevSavedGraph.description;
+        var prevDB = prevSavedGraph.DB;
+        var prevX = prevSavedGraph.X;
+        var prevY = prevSavedGraph.Y;
+        var prevLowDate = prevSavedGraph.lowDate;
+        var prevHighDate = prevSavedGraph.highDate;
+        var prevGraphType = prevSavedGraph.type;
+        var prevColor = prevSavedGraph.color;
+        var prevColorScheme = prevSavedGraph.colorScheme;
+
+        var tip = document.getElementById("tip" + prevSave);
+        tip.style.display = "none";
+        tip.style.backgroundColor = "transparent";
+        tip.innerHTML = "";
+
+        var canvas = document.getElementById("saved" + nextSave);
+        canvas = canvas.getContext("2d");
+        var g = new Chart(canvas, {
+            type: prevGraphType,
+            options: {
+                scales: {
+                    xAxes: [{display: false}],
+                    yAxes: [{display: false}],
+                },
+                legend: {display: false},
+                responsive: true,
+                maintainAspectRatio: false,
+                tooltips: false,
+                animation: {duration: 0}
+            },
+            data: {
+                labels: prevLabelsArr,
+                datasets: [{
+                    data: prevDataArr,
+                    backgroundColor: "rgba(255,255,255,1)",
+                    pointRadius: 0,
+                    pointHoverRadius: 0
+                }]
+            }
+        });
+        g.description = prevHoverText;
+        g.DB = prevDB;
+        g.X = prevX;
+        g.Y = prevY;
+        g.lowDate = prevLowDate;
+        g.highDate = prevHighDate;
+        g.type = prevGraphType;
+        g.color = prevColor;
+        g.colorScheme = prevColorScheme;
+        savedGraphs[nextSave - 1] = g;
+
+        tip = document.getElementById("tip" + nextSave);
+        tip.style.display = "block";
+        tip.style.backgroundColor = "#0000005c";
+        prevHoverText = prevHoverText.replace(/\n( *)/g, function (match, p1) {
+            return '<br>' + '&nbsp;'.repeat(p1.length);
+        });
+        tip.innerHTML = prevHoverText;
+        tip.style.visibility = "hidden";
+
+        var exit = document.getElementById("exit" + nextSave);
+        exit.style.visibility = "visible";
+
+        var swap = document.getElementById("swap" + nextSave);
+        swap.style.visibility = "visible";
+
+        deleteGraph(prevSave);
+    }
+    else {
+        //swap relocate, slightly more complicated
+    }
+}
+
 //Removes a graph from the saved section
 function deleteGraph(savedNum) {
     var g = savedGraphs[savedNum - 1];
@@ -815,7 +895,9 @@ function drop(ev, destination) {
             swap(saveNum, graphNum);
         }
         else if (destination.startsWith("saved")) {
-            //to be implemented later
+            var prevSave = data.substring(5);
+            var nextSave = destination.substring(5);
+            relocate(prevSave, nextSave);
         }
     }
 }
