@@ -37,9 +37,29 @@ $(document).ready( function() {
     console.log("Ready!");
     Chart.defaults.global.defaultFontColor = "#524636";
 
-    for (var i = 0; i < 12; i++) {
+    for (var i = 0; i < 10; i++) {
         savedGraphs.push(undefined);
     }
+
+    //initialize date range sliders
+    $("#range1").ionRangeSlider({//http://ionden.com/a/plugins/ion.rangeSlider/start.html
+        type: "double",
+        min: 0,
+        max: 0,
+        from: 0,
+        to: 0,
+        hide_min_max: true,
+        prettify_enabled: false,
+    });
+    $("#range2").ionRangeSlider({
+        type: "double",
+        min: 0,
+        max: 0,
+        from: 0,
+        to: 0,
+        hide_min_max: true,
+        prettify_enabled: false,
+    });
 
     switchToDefault();
 });
@@ -134,8 +154,8 @@ function submitDrivingQuestions(){
     })
 }*/
 
-//Graphs data for the first graph.
-function graphData(database, xaxis, yaxis, n, gtype) {
+//Graphs data for the nth graph.
+function graphData(database, xaxis, yaxis, n, lowDate, highDate, gtype, color, colorScheme) {
     if (n == 1 && graph1 !== undefined)
         graph1.destroy();
     else if (n == 2 && graph2 !== undefined)
@@ -147,8 +167,10 @@ function graphData(database, xaxis, yaxis, n, gtype) {
         var labelsArr = [];
         var dataArr = [];
         for (var i = 0; i < data.length; i++) {
-            labelsArr.push(data[i][xaxis]);
-            dataArr.push(data[i][yaxis]);
+            if (parseInt(data[i][xaxis], 10) >= lowDate && parseInt(data[i][xaxis], 10) <= highDate) {
+                labelsArr.push(data[i][xaxis]);
+                dataArr.push(data[i][yaxis]);
+            }
         }
 
         //add driving question
@@ -176,8 +198,6 @@ function graphData(database, xaxis, yaxis, n, gtype) {
                     datasets: [{
                         label: yaxis + " (" + gtype + ")",
                         data: dataArr,
-                        backgroundColor: "rgba(183, 82, 30, 1)",
-                        hoverBackgroundColor: "rgba(228, 176, 74, 1)",
                     }],
                     labels: labelsArr
                 },
@@ -194,6 +214,9 @@ function graphData(database, xaxis, yaxis, n, gtype) {
                                 mode: 'x',
                                 speed: 3000,
                             }
+                        },
+                        colorschemes: {
+                            scheme: colorScheme,
                         }
                     }
                 }
@@ -201,11 +224,24 @@ function graphData(database, xaxis, yaxis, n, gtype) {
 
             //create descriptions & properties for graphs
             //needed for tooltip hover in saved region
-            graph1.description = "DB: " + database + "<br>X axis: " + xaxis + "<br>Y axis: " + yaxis;
+            var description = { 
+                "Id": 1,
+                "DB": database,
+                "Yaxis": yaxis,
+                "Xaxis": xaxis,
+                "lowDate": lowDate,
+                "highDate": highDate,
+                "gtype": gtype
+            }
+            graph1.description = JSON.stringify(description, null, 2);
             graph1.DB = database;
             graph1.X = xaxis;
             graph1.Y = yaxis;
+            graph1.lowDate = lowDate;
+            graph1.highDate = highDate;
             graph1.type = gtype;
+            graph1.color = color;
+            graph1.colorScheme = colorScheme;
             document.getElementById("save" + n).style.display = "block";
         }
         else if (n == 2) {
@@ -215,8 +251,6 @@ function graphData(database, xaxis, yaxis, n, gtype) {
                     datasets: [{
                         label: yaxis + " (" + gtype + ")",
                         data: dataArr,
-                        backgroundColor: "rgba(228, 176, 74, 1)",
-                        hoverBackgroundColor: "rgba(183, 82, 30, 1)",
                     }],
                     labels: labelsArr
                 },
@@ -233,6 +267,9 @@ function graphData(database, xaxis, yaxis, n, gtype) {
                                 mode: 'x',
                                 speed: 3000,
                             }
+                        },
+                        colorschemes: {
+                            scheme: colorScheme,
                         }
                     }
                 }
@@ -240,11 +277,24 @@ function graphData(database, xaxis, yaxis, n, gtype) {
 
             //create descriptions & properties for graphs
             //needed for tooltip hover in saved region
-            graph2.description = "DB: " + database + "<br>X axis: " + xaxis + "<br>Y axis: " + yaxis;
+            var description = { 
+                "Id": 2,
+                "DB": database,
+                "Yaxis": yaxis,
+                "Xaxis": xaxis,
+                "lowDate": lowDate,
+                "highDate": highDate,
+                "gtype": gtype
+            }
+            graph2.description = JSON.stringify(description, null, 2);
             graph2.DB = database;
             graph2.X = xaxis;
             graph2.Y = yaxis;
+            graph2.lowDate = lowDate;
+            graph2.highDate = highDate;
             graph2.type = gtype;
+            graph2.color = color;
+            graph2.colorScheme = colorScheme;
             document.getElementById("save" + n).style.display = "block";
         }
     })
@@ -265,13 +315,22 @@ function submitGraphData(n) {
     el = document.getElementById("gtype" + n);
     var gtype = el.options[el.selectedIndex].value;
 
-    graphData(dbOption, xOption, yOption, n, gtype);
+    var lowDate = $("#range1").data("from");
+    var highDate = $("#range1").data("to");
+
+    el = document.getElementById("colorButton" + n);
+    var color = el.style.backgroundColor;
+    var colorScheme = el.description;
+
+    graphData(dbOption, xOption, yOption, n, lowDate, highDate, gtype, color, colorScheme);
 }
 
 //Runs when the user clicks the default button.
-//Switches all database, y-axis, graph type values to
-//default values, which are set at the top of this file.
-//Enables y-axis, graph type select menus
+//Switches databases to default
+//Switches y axes to default and enables the menu
+//Resets date ranges
+//Switches graph types to default and enables the menu
+//Resets & enables color button
 function switchToDefault() {
     //set database 1 to default
     var el = document.getElementById("database1");
@@ -282,22 +341,8 @@ function switchToDefault() {
         }
     }
 
-    //reset graph type menu
-    clearMenu("gtype1", false);
-    el = document.getElementById("gtype1");
-    var option = document.createElement("option");
-    option.appendChild(document.createTextNode("bar"));
-    option.value = "bar";
-    el.appendChild(option);
-    el.selectedIndex = 1;
-    option = document.createElement("option");
-    option.appendChild(document.createTextNode("line"));
-    option.value = "line";
-    el.appendChild(option);
-
-    //clear y-axis menu
+    //clear y-axis menu 1
     clearMenu("yaxis1", false);
-
     //read the csv file to get all keys
     d3.csv("/csv/" + defaultDatabase1 + ".csv")
     .then(function(data) {
@@ -318,17 +363,31 @@ function switchToDefault() {
             }
         }
 
+        //update date range slider values
+        var years = [];
+        for (var i = 0; i < data.length; i++) {
+            years.push(data[i]["Year"]);
+        }
+        updateSlider(1, years[0], years[years.length - 1]);
+
         //enable the submit button
         document.getElementById("submit1").disabled = false;
 
         //graph data
-        graphData(defaultDatabase1, defaultXAxis1, defaultYAxis1, 1, 'bar');
+        graphData(defaultDatabase1, defaultXAxis1, defaultYAxis1, 1, years[0], years[years.length - 1], 'bar', document.getElementById("colorButton1").style.backgroundColor, document.getElementById("colorButton1").description);
     })
     .catch(function(error) {
         if (error.message === "404 Not Found") {
             alert("File not found: " + database);
         }
     })
+
+    //reset graph type menu 1
+    document.getElementById("gtype1").selectedIndex = 2;
+
+    //reset color button 1
+    changeColorButton(1, "#f09415", "office.Basis6");
+    document.getElementById("colorButton1").disabled = false;
 
     //set database 2 to default
     el = document.getElementById("database2");
@@ -339,22 +398,8 @@ function switchToDefault() {
         }
     }
 
-    //reset graph type menu
-    clearMenu("gtype2", false);
-    el = document.getElementById("gtype2");
-    var option = document.createElement("option");
-    option.appendChild(document.createTextNode("bar"));
-    option.value = "bar";
-    el.appendChild(option);
-    el.selectedIndex = 1;
-    option = document.createElement("option");
-    option.appendChild(document.createTextNode("line"));
-    option.value = "line";
-    el.appendChild(option);
-
     //clear y-axis menu
     clearMenu("yaxis2", false);
-
     //read the csv file to get all keys
     d3.csv("/csv/" + defaultDatabase2 + ".csv")
     .then(function(data) {
@@ -375,17 +420,32 @@ function switchToDefault() {
             }
         }
 
+        //update date range slider values
+        var years = [];
+        for (var i = 0; i < data.length; i++) {
+            years.push(data[i]["Year"]);
+        }
+        updateSlider(2, years[0], years[years.length - 1]);
+
         //enable the submit button
         document.getElementById("submit2").disabled = false;
 
         //graph data
-        graphData(defaultDatabase2, defaultXAxis2, defaultYAxis2, 2, 'bar');
+        graphData(defaultDatabase2, defaultXAxis2, defaultYAxis2, 2, years[0], years[years.length - 1], 'bar', document.getElementById("colorButton2").style.backgroundColor, document.getElementById("colorButton2").description);
     })
     .catch(function(error) {
         if (error.message === "404 Not Found") {
             alert("File not found: " + database);
         }
     })
+
+    //reset graph type menu 2
+    el = document.getElementById("gtype2");
+    el.selectedIndex = 2;
+
+    //reset color button 2
+    changeColorButton(2, "#543005", "brewer.BrBG11");
+    document.getElementById("colorButton2").disabled = false;
 }
 
 //Runs when the user clicks the clear button.
@@ -395,51 +455,84 @@ function clearAllValues() {
     clearValues(2);
 }
 
-//Clears values for database and y-axis.
+//Clears database menu
+//Clears and disables y axis menu
+//Clears and disables date range slider
+//"Clears" and disables graph type menu
+//"Clears" and disables color button
+//Disables submit button
+//Clears graphs and driving question
+//Disables save button
 function clearValues(n) {
     var el = document.getElementById("database" + n);
     el.selectedIndex = 0;
+
     clearMenu("yaxis" + n, true);
-    clearMenu("gtype" + n, true);
+
+    clearSlider(n);
+
+    el = document.getElementById("gtype" + n);
+    el.selectedIndex = 0;
+    el.disabled = true;
+
+    resetColorButton(n);
+    document.getElementById("colorButton" + n).disabled = true;
+
     document.getElementById("submit" + n).disabled = true;
 
-    if (n == 1) {
+    if (n == 1)
         graph1.destroy();
-        document.getElementById("save" + n).style.display = "none";
-    }
-    else if (n == 2) {
+    else if (n == 2)
         graph2.destroy();
-        document.getElementById("save" + n).style.display = "none";
-    }
+    document.getElementById("save" + n).style.display = "none";
 
     // clear driving question
-    var dq1 = document.getElementById("driving_question1");
-    dq1.innerHTML = "";
-    var dq2 = document.getElementById("driving_question2");
-    dq2.innerHTML = "";
+    document.getElementById("driving_question" + n).innerHTML = "";
 }
 
 //Runs when the option for database changes.
-//If the empty option is selected, the y-axis, graph type menus
-//and submit button are disabled.
-//If a non-empty option is selected, the y-axis, graph type menus
-//are enabled, but the submit button will remain disabled
+//If the empty option is selected, clear and/or disable the y-axis menu,
+//date range slider, graph type menu, color button, and submit button.
+//If a non-empty option is selected, clear and/or enable the the
+//y-axis menu, date range slider, graph type menu, and color button,
+//but the submit button will remain disabled
 //until there are non-empty values for y-axis, graph type menus.
 function verifyDB(n) {
     var menu = document.getElementById("database" + n);
     var dbOption = menu.options[menu.selectedIndex].value;
     if (dbOption == "") {
-        //if no database selected, disable y-axis, graph type, submit button
+        //if no database selected...
+        //clear and disable y axis menu...
         clearMenu("yaxis" + n, true);
-        clearMenu("gtype" + n, true);
+
+        //clear and disable date range slider
+        clearSlider(n);
+        
+        //"clear" and disable graph type menu
+        var el = document.getElementById("gtype" + n);
+        el.selectedIndex = 0;
+        el.disabled = true;
+
+        //"clear" and disable color button
+        resetColorButton(n);
+        document.getElementById("colorButton" + n).disabled = true;
+
+        //disable submit button
         document.getElementById("submit" + n).disabled = true;
     }
     else {
-        //enable y-axis, graph type
-        //disable submit button because y-axis, graph type are empty
+        //save all previous data
+        var previousYAxisMenu = document.getElementById("yaxis" + n);
+        var previousYAxisValue = previousYAxisMenu.options[previousYAxisMenu.selectedIndex].value;
+        var previousLowDate = $("#range" + n).data("from");
+        var previousHighDate = $("#range" + n).data("to");
+        var previousGTypeMenu = document.getElementById("gtype" + n);
+        var previousGTypeValue = previousGTypeMenu.options[previousGTypeMenu.selectedIndex].value;
+        var previousColor = document.getElementById("colorButton" + n).style.backgroundColor;
+        var previousColorScheme = document.getElementById("colorButton" + n).description;
+        
+        //clear and enable y-axis menu
         clearMenu("yaxis" + n, false);
-        clearMenu("gtype" + n, false);
-        document.getElementById("submit" + n).disabled = true;
 
         //load keys into y-axis menu
         d3.csv("/csv/" + dbOption + ".csv")
@@ -457,25 +550,36 @@ function verifyDB(n) {
                 option.appendChild(document.createTextNode(keys[i]));
                 option.value = keys[i];
                 elY.appendChild(option);
+                if (keys[i] == previousYAxisValue)
+                    elY.selectedIndex = i + 1;
             }
+
+            //update date range slider values
+            var years = [];
+            for (var i = 0; i < data.length; i++) {
+                years.push(data[i]["Year"]);
+            }
+            if (years[0] > previousLowDate || years[years.length - 1] < previousHighDate)
+                updateSlider(n, years[0], years[years.length - 1]);
+            else
+                updateSliderOnlyRange(n, years[0], years[years.length - 1], previousLowDate, previousHighDate);
         })
         .catch(function(error) {
             if (error.message === "404 Not Found") {
                 alert("File not found: " + database);
             }
         })
-
-        //reset graph type menu
-        var el = document.getElementById("gtype" + n);
-        var option = document.createElement("option");
-        option.appendChild(document.createTextNode("bar"));
-        option.value = "bar";
-        el.appendChild(option);
-        el.selectedIndex = 0;
-        option = document.createElement("option");
-        option.appendChild(document.createTextNode("line"));
-        option.value = "line";
-        el.appendChild(option);
+        
+        //enable graph type menu
+        document.getElementById("gtype" + n).disabled = false;
+        if (previousGTypeValue == "bar")
+            el.selectedIndex = 1;
+        if (previousGTypeValue == "line")
+            el.selectedIndex = 2;
+        
+        //enable color button
+        changeColorButton(n, previousColor, previousColorScheme);
+        document.getElementById("colorButton" + n).disabled = false;
     }
 }
 
@@ -484,13 +588,52 @@ function verifyDB(n) {
 function clearMenu(name, disable) {
     var menu = document.getElementById(name);
     menu.selectedIndex = 0;
-    while (menu.options.length != 1) {
+    var length = 1;
+    while (menu.options.length != length) {
         menu.remove(menu.options.length - 1);
     }
     menu.disabled = disable;
 }
 
-//Runs when the option for x-axis or y-axis menu option changes.
+//Clears all values in slider
+//Also disables slider
+function clearSlider(n) {
+    $("#range" + n).data("ionRangeSlider").update({
+        min: 0,
+        max: 0,
+        from: 0,
+        to: 0,
+        disable: true,
+    });
+}
+
+//Updates min, max in slider
+//Sets from = min, to = max
+//Also enables slider
+function updateSlider(n, minimum, maximum) {
+    $("#range" + n).data("ionRangeSlider").update({
+        min: minimum,
+        max: maximum,
+        from: minimum,
+        to: maximum,
+        disable: false,
+    });
+}
+
+//Updates min, max in slider
+//Sets from = lowDate, to = highDate
+//Also enables slider
+function updateSliderOnlyRange(n, minimum, maximum, lowDate, highDate) {
+    $("#range" + n).data("ionRangeSlider").update({
+        min: minimum,
+        max: maximum,
+        from: lowDate,
+        to: highDate,
+        disable: false,
+    });
+}
+
+//Runs when the option for y-axis menu or graph type menu option changes.
 //If either are empty, the submit button is disabled.
 //Once both are non-empty, the submit button is enabled.
 function verifyOptions(n) {
@@ -509,15 +652,6 @@ function verifyOptions(n) {
     }
 }
 
-function nextAvailableSaveSpot() {
-    for (var i = 0; i < savedGraphs.length; i++) {
-        if (savedGraphs[i] == undefined) {
-            return i + 1;
-        }
-    }
-    return -1;
-}
-
 //Runs when the user clicks SAVE GRAPH
 function saveGraph(saveNum, graphNum, swap) {
     var labelsArr = undefined;
@@ -526,26 +660,21 @@ function saveGraph(saveNum, graphNum, swap) {
     var db = undefined;
     var x = undefined;
     var y = undefined;
+    var lowDate = undefined;
+    var highDate = undefined;
     var graph_type = undefined;
+    var color = undefined;
+    var colorScheme = undefined;
 
-    var destination = undefined;
-    if (saveNum == 0) {
-        destination = nextAvailableSaveSpot();
-        if (destination == -1) {
-            alert("No more space available to save graphs! Try deleting some");
-            return;
-        }
-    }
-    else {
-        destination = saveNum;
-        var g = savedGraphs[saveNum - 1];
+    var destination = saveNum;
+    var g = savedGraphs[saveNum - 1];
+    if (g != null)
         g.destroy();
-        savedGraphs[saveNum - 1] = undefined;
-        var tip = document.getElementById("tip" + saveNum);
-        tip.style.display = "none";
-        tip.style.backgroundColor = "transparent";
-        tip.innerHTML = "";
-    }
+    savedGraphs[saveNum - 1] = undefined;
+    var tip = document.getElementById("tip" + saveNum);
+    tip.style.display = "none";
+    tip.style.backgroundColor = "transparent";
+    tip.innerHTML = "";
 
     if (graphNum == 1) {
         labelsArr = graph1.config.data.labels;
@@ -554,7 +683,11 @@ function saveGraph(saveNum, graphNum, swap) {
         db = graph1.DB;
         x = graph1.X;
         y = graph1.Y;
+        lowDate = graph1.lowDate;
+        highDate = graph1.highDate;
         graph_type = graph1.type;
+        color = graph1.color;
+        colorScheme = graph1.colorScheme;
     }
     else if (graphNum == 2) {
         labelsArr = graph2.config.data.labels;
@@ -563,14 +696,18 @@ function saveGraph(saveNum, graphNum, swap) {
         db = graph2.DB;
         x = graph2.X;
         y = graph2.Y;
+        lowDate = graph2.lowDate;
+        highDate = graph2.highDate;
         graph_type = graph2.type;
+        color = graph2.color;
+        colorScheme = graph2.colorScheme;
     }
 
     //check if current graph is already saved
     for (var i = 0; i < savedGraphs.length; i++) {
         if (savedGraphs[i] != undefined && hoverText == savedGraphs[i].description) {
             if (!swap) {
-                alert("Graph " + graphNum + " is already saved at box #" + i + 1);
+                alert("Graph " + graphNum + " is already saved at box #" + (i + 1));
             }
             return;
         }
@@ -613,13 +750,27 @@ function saveGraph(saveNum, graphNum, swap) {
     g.DB = db;
     g.X = x;
     g.Y = y;
+    g.lowDate = lowDate;
+    g.highDate = highDate;
     g.type = graph_type;
+    g.color = color;
+    g.colorScheme = colorScheme;
     savedGraphs[destination - 1] = g;
 
     var tip = document.getElementById("tip" + destination);
     tip.style.display = "block";
     tip.style.backgroundColor = "#0000005c";
-    tip.innerHTML = "<span onclick='deleteGraph(" + destination + ")' style='cursor: pointer; background-color: black;'>X</span><br>" + hoverText + "<br><span onclick='swap(" + destination + ", 1)' style='cursor: pointer; background-color: black;'>Transfer to Graph 1</span><br><span onclick='swap(" + destination + ", 2)' style='cursor: pointer; background-color: black;'>Transfer to Graph 2</span>";
+    hoverText = hoverText.replace(/\n( *)/g, function (match, p1) {
+        return '<br>' + '&nbsp;'.repeat(p1.length);
+    });
+    tip.innerHTML = hoverText;
+    tip.style.visibility = "hidden";
+
+    var exit = document.getElementById("exit" + destination);
+    exit.style.visibility = "visible";
+
+    var swap = document.getElementById("swap" + destination);
+    swap.style.visibility = "visible";
 }
 
 //Transfers a saved graph to one of the main graphs,
@@ -629,10 +780,14 @@ function swap(savedNum, graphNum) {
     var savedDB = savedGraph.DB;
     var savedX = savedGraph.X;
     var savedY = savedGraph.Y;
+    var savedLowDate = savedGraph.lowDate;
+    var savedHighDate = savedGraph.highDate;
     var savedType = savedGraph.type;
+    var savedColor = savedGraph.color;
+    var savedColorScheme = savedGraph.colorScheme;
 
     saveGraph(savedNum, graphNum, true);
-    graphData(savedDB, savedX, savedY, graphNum, savedType);
+    graphData(savedDB, savedX, savedY, graphNum, savedLowDate, savedHighDate, savedType, savedColor, savedColorScheme);
 
     //updating the controls on the left side
     //set database 1 to savedDB
@@ -651,6 +806,8 @@ function swap(savedNum, graphNum) {
             break;
         }
     }
+
+    changeColorButton(graphNum, savedColor, savedColorScheme);
 
     clearMenu("yaxis" + graphNum, false);
 
@@ -676,20 +833,303 @@ function swap(savedNum, graphNum) {
     });
 }
 
+//Relocates a saved graph to another spot
+//Swaps if both saved spots have graphs
+function relocate(prevSave, nextSave) {
+    if (prevSave == nextSave) return;
+    if (savedGraphs[nextSave - 1] == undefined || savedGraphs[nextSave - 1] == null) {
+        var prevSavedGraph = savedGraphs[prevSave - 1];
+        var prevLabelsArr = prevSavedGraph.config.data.labels;
+        var prevDataArr = prevSavedGraph.config.data.datasets[0].data;
+        var prevHoverText = prevSavedGraph.description;
+        var prevDB = prevSavedGraph.DB;
+        var prevX = prevSavedGraph.X;
+        var prevY = prevSavedGraph.Y;
+        var prevLowDate = prevSavedGraph.lowDate;
+        var prevHighDate = prevSavedGraph.highDate;
+        var prevGraphType = prevSavedGraph.type;
+        var prevColor = prevSavedGraph.color;
+        var prevColorScheme = prevSavedGraph.colorScheme;
+
+        var tip = document.getElementById("tip" + prevSave);
+        tip.style.display = "none";
+        tip.style.backgroundColor = "transparent";
+        tip.innerHTML = "";
+
+        var canvas = document.getElementById("saved" + nextSave);
+        canvas = canvas.getContext("2d");
+        var g = new Chart(canvas, {
+            type: prevGraphType,
+            options: {
+                scales: {
+                    xAxes: [{display: false}],
+                    yAxes: [{display: false}],
+                },
+                legend: {display: false},
+                responsive: true,
+                maintainAspectRatio: false,
+                tooltips: false,
+                animation: {duration: 0}
+            },
+            data: {
+                labels: prevLabelsArr,
+                datasets: [{
+                    data: prevDataArr,
+                    backgroundColor: "rgba(255,255,255,1)",
+                    pointRadius: 0,
+                    pointHoverRadius: 0
+                }]
+            }
+        });
+        g.description = prevHoverText;
+        g.DB = prevDB;
+        g.X = prevX;
+        g.Y = prevY;
+        g.lowDate = prevLowDate;
+        g.highDate = prevHighDate;
+        g.type = prevGraphType;
+        g.color = prevColor;
+        g.colorScheme = prevColorScheme;
+        savedGraphs[nextSave - 1] = g;
+
+        tip = document.getElementById("tip" + nextSave);
+        tip.style.display = "block";
+        tip.style.backgroundColor = "#0000005c";
+        prevHoverText = prevHoverText.replace(/\n( *)/g, function (match, p1) {
+            return '<br>' + '&nbsp;'.repeat(p1.length);
+        });
+        tip.innerHTML = prevHoverText;
+        tip.style.visibility = "hidden";
+
+        var exit = document.getElementById("exit" + nextSave);
+        exit.style.visibility = "visible";
+
+        var swap = document.getElementById("swap" + nextSave);
+        swap.style.visibility = "visible";
+
+        deleteGraph(prevSave);
+    }
+    else {
+        var savedGraph1 = savedGraphs[prevSave - 1];
+        var labelsArr1 = savedGraph1.config.data.labels;
+        var dataArr1 = savedGraph1.config.data.datasets[0].data;
+        var hoverText1 = savedGraph1.description;
+        var db1 = savedGraph1.DB;
+        var x1 = savedGraph1.X;
+        var y1 = savedGraph1.Y;
+        var lowDate1 = savedGraph1.lowDate;
+        var highDate1 = savedGraph1.highDate;
+        var graphType1 = savedGraph1.type;
+        var color1 = savedGraph1.color;
+        var colorScheme1 = savedGraph1.colorScheme;
+
+        var savedGraph2 = savedGraphs[nextSave - 1];
+        var labelsArr2 = savedGraph2.config.data.labels;
+        var dataArr2 = savedGraph2.config.data.datasets[0].data;
+        var hoverText2 = savedGraph2.description;
+        var db2 = savedGraph2.DB;
+        var x2 = savedGraph2.X;
+        var y2 = savedGraph2.Y;
+        var lowDate2 = savedGraph2.lowDate;
+        var highDate2 = savedGraph2.highDate;
+        var graphType2 = savedGraph2.type;
+        var color2 = savedGraph2.color;
+        var colorScheme2 = savedGraph2.colorScheme;
+
+        deleteGraph(prevSave);
+        deleteGraph(nextSave);
+
+        var canvas = document.getElementById("saved" + prevSave);
+        canvas = canvas.getContext("2d");
+        var g = new Chart(canvas, {
+            type: graphType2,
+            options: {
+                scales: {
+                    xAxes: [{display: false}],
+                    yAxes: [{display: false}],
+                },
+                legend: {display: false},
+                responsive: true,
+                maintainAspectRatio: false,
+                tooltips: false,
+                animation: {duration: 0}
+            },
+            data: {
+                labels: labelsArr2,
+                datasets: [{
+                    data: dataArr2,
+                    backgroundColor: "rgba(255,255,255,1)",
+                    pointRadius: 0,
+                    pointHoverRadius: 0
+                }]
+            }
+        });
+        g.description = hoverText2;
+        g.DB = db2;
+        g.X = x2;
+        g.Y = y2;
+        g.lowDate = lowDate2;
+        g.highDate = highDate2;
+        g.type = graphType2;
+        g.color = color2;
+        g.colorScheme = colorScheme2;
+        savedGraphs[prevSave - 1] = g;
+
+        var tip = document.getElementById("tip" + prevSave);
+        hoverText2 = hoverText2.replace(/\n( *)/g, function (match, p1) {
+            return '<br>' + '&nbsp;'.repeat(p1.length);
+        });
+        tip.innerHTML = hoverText2;
+        tip.style.visibility = "hidden";
+
+        var exit = document.getElementById("exit" + prevSave);
+        exit.style.visibility = "visible";
+
+        var swap = document.getElementById("swap" + prevSave);
+        swap.style.visibility = "visible";
+
+        canvas = document.getElementById("saved" + nextSave);
+        canvas = canvas.getContext("2d");
+        g = new Chart(canvas, {
+            type: graphType1,
+            options: {
+                scales: {
+                    xAxes: [{display: false}],
+                    yAxes: [{display: false}],
+                },
+                legend: {display: false},
+                responsive: true,
+                maintainAspectRatio: false,
+                tooltips: false,
+                animation: {duration: 0}
+            },
+            data: {
+                labels: labelsArr1,
+                datasets: [{
+                    data: dataArr1,
+                    backgroundColor: "rgba(255,255,255,1)",
+                    pointRadius: 0,
+                    pointHoverRadius: 0
+                }]
+            }
+        });
+        g.description = hoverText1;
+        g.DB = db1;
+        g.X = x1;
+        g.Y = y1;
+        g.lowDate = lowDate1;
+        g.highDate = highDate1;
+        g.type = graphType1;
+        g.color = color1;
+        g.colorScheme = colorScheme1;
+        savedGraphs[nextSave - 1] = g;
+
+        tip = document.getElementById("tip" + nextSave);
+        hoverText1 = hoverText1.replace(/\n( *)/g, function (match, p1) {
+            return '<br>' + '&nbsp;'.repeat(p1.length);
+        });
+        tip.innerHTML = hoverText1;
+        tip.style.visibility = "hidden";
+
+        exit = document.getElementById("exit" + nextSave);
+        exit.style.visibility = "visible";
+
+        swap = document.getElementById("swap" + nextSave);
+        swap.style.visibility = "visible";
+    }
+}
+
+//Removes a graph from the saved section
 function deleteGraph(savedNum) {
     var g = savedGraphs[savedNum - 1];
     g.destroy();
     savedGraphs[savedNum - 1] = undefined;
+
     var tip = document.getElementById("tip" + savedNum);
     tip.style.display = "none";
     tip.style.backgroundColor = "transparent";
     tip.innerHTML = "";
+    tip.style.visibility = "hidden";
+
+    var exit = document.getElementById("exit" + savedNum);
+    exit.style.visibility = "hidden";
+
+    var swap = document.getElementById("swap" + savedNum);
+    swap.style.visibility = "hidden";
 }
 
+//Shows tooltip over saved graph
 function showToolTip(savedNum) {
     var tip = document.getElementById("tip" + savedNum);
     if (tip.style.visibility != "visible")
         tip.style.visibility = "visible";
     else
         tip.style.visibility = "hidden";
+}
+
+//Opens and closes color pallette
+function showColorWheel(num) {
+    var wheel = document.getElementById("colorWheel" + num);
+    if (wheel.style.visibility != "visible")
+        wheel.style.visibility = "visible";
+    else
+        wheel.style.visibility = "hidden";
+}
+
+//Changes color button
+function changeColorButton(num, color, description) {
+    var btn = document.getElementById("colorButton" + num);
+    btn.style.backgroundColor = color;
+    btn.description = description;
+    var wheel = document.getElementById("colorWheel" + num);
+    wheel.style.visibility = "hidden";
+}
+
+//Reset color button
+function resetColorButton(num) {
+    changeColorButton(num, "#ffffff", "brewer.Greys8");
+}
+
+//Runs when dragging to save a graph into a saved region
+function drag(ev, graph) {
+    ev.dataTransfer.setData("text", graph);
+}
+
+//Runs when dropping a graph over a saved region
+function drop(ev, destination) {
+    ev.preventDefault();
+    
+    var data = ev.dataTransfer.getData("text");
+    if (data.startsWith("graph")) {
+        if (destination.startsWith("graph")) {
+            //do nothing
+        }
+        else if (destination.startsWith("saved")) {
+            var graphNum = data.substring(5);
+            var saveNum = destination.substring(5);
+            if (savedGraphs[saveNum - 1] == undefined || savedGraphs[saveNum - 1] == null) {
+                saveGraph(saveNum, graphNum, false)
+            }
+            else {
+                swap(saveNum, graphNum);
+            }
+        }
+    }
+    else if (data.startsWith("saved")) {
+        if (destination.startsWith("graph")) {
+            var graphNum = destination.substring(5);
+            var saveNum = data.substring(5);
+            swap(saveNum, graphNum);
+        }
+        else if (destination.startsWith("saved")) {
+            var prevSave = data.substring(5);
+            var nextSave = destination.substring(5);
+            relocate(prevSave, nextSave);
+        }
+    }
+}
+
+//Allows drops to occur
+function allowDrop(ev) {
+    ev.preventDefault();
 }

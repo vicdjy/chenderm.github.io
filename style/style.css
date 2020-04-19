@@ -25,14 +25,13 @@ body {
   width: 30%;
   padding-right: 10px;
   padding-left: 10px;
-  color: white;
+  /*color: white;*/
 }
 
 .row {
-  font-size: 14px;
+  font-size: 12px;
   line-height: 1%;
-  padding-top: 1px;
-  padding-right: 5px;
+  padding-right: 10px;
   padding-bottom: 10px;
   padding-left: 5px;
   background-color:#aabdd9;
@@ -54,7 +53,7 @@ body {
   height: 100%;
   width: 30%;
   padding-right: 10px;
-  padding-bottom: 5px;
+  padding-bottom: 10px;
   padding-left: 20px;
   color: white;
   background-color:#aabdd9;
@@ -69,47 +68,134 @@ body {
 }
 
 .frame {
+  display: block;
   position: relative;
-  float: top;
   height: 15%;
   width: 100%;
+  margin-bottom: 20px;
   min-height: 75px;
   color: #aabdd9;
 }
 
-.helper {
-  display: inline-block;
-  height: 10%;
-  vertical-align: middle;
-}
-
 .tile {
   float: none;
-  display: block;
+  display: inline-block;
   width: 80%;
   height: 80%;
   margin: auto;
   border: 1px solid white;
 }
 
+.exit {
+  visibility: hidden;
+  position: absolute;
+  font-size: 13px;
+  top: 0px;
+  left: 80%;
+  margin-left: 4px;
+  text-decoration: none;
+  cursor: pointer;
+  color: white;
+  z-index: 5;
+}
+
+.swap {
+  visibility: hidden;
+  position: absolute;
+  font-size: 13px;
+  top: 60%;
+  left: 80%;
+  margin-left: 4px;
+  text-decoration: none;
+  cursor: move;
+  color: white;
+  z-index: 5;
+}
+
+.tile a {
+  text-decoration: none;
+}
+
+.exit .hoverTip {
+  font-size: 12px;
+  visibility: hidden;
+  right: 11px;
+  top: 1px;
+  background-color: #0000005c;
+  color: white;
+  padding: 3px 3px;
+  position: absolute;
+  z-index: 6;
+}
+
+.swap .hoverTip {
+  font-size: 12px;
+  visibility: hidden;
+  right: 17px;
+  bottom: 1px;
+  background-color: #0000005c;
+  color: white;
+  padding: 3px 3px;
+  position: absolute;
+  z-index: 6;
+}
+
+.exit:hover .hoverTip {
+  visibility: visible;
+}
+
+.swap:hover .hoverTip {
+  visibility: visible;
+}
+
+.colorButton {
+  height: 15px;
+}
+
+.colorwheelMenu {
+  visibility: hidden;
+  left: 62px;
+  padding-left: 4px;
+  position: absolute;
+  bottom: -30px;
+  z-index: 1;
+  width: 160px;
+  border: 2px solid black;
+}
+
+.colorwheelMenu item {
+  color: black;
+  height: 20px;
+  width: 20px;
+  margin-left: -4px;
+  display: inline-block;
+  cursor: pointer;
+}
+
 #submit1 {
   background-color: #f8d605;
   color: #015c92;
+  font-size: 14px;
+  height: 20px;
 }
 
 #submit2 {
   background-color: #f8d605;
   color: #015c92;
+  font-size: 14px;
+  height: 20px;
 }
 
 #default {
   background-color: #b7b7b7;
   color: black;
+  display: inline-block;
 }
 
 #clear {
   background-color: #990000;
   color: white;
+  display: inline-block;
 }
 
 .graphRegion {
@@ -120,17 +206,21 @@ body {
   background-color: #E2953D;
   color: white;
   z-index: 2;
+  cursor: move;
 }
 
 .tile .tooltiptext {
   visibility: hidden;
   width: 70%;
+  background-color: #555;
+  color: #fff;
   position: absolute;
-  font-size: 10;
+  font-size: 13;
   display: none;
   text-align: left;
   padding: 5px;
   z-index: 20;
+  line-height: normal;
 }
 
 .modal {
