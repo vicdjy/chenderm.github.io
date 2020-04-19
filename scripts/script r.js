@@ -551,16 +551,6 @@ function verifyOptions(n) {
     }
 }
 
-//Finds the next available spot to save a graph, returns this number
-function nextAvailableSaveSpot() {
-    for (var i = 0; i < savedGraphs.length; i++) {
-        if (savedGraphs[i] == undefined) {
-            return i + 1;
-        }
-    }
-    return -1;
-}
-
 //Runs when the user clicks SAVE GRAPH
 function saveGraph(saveNum, graphNum, swap) {
     var labelsArr = undefined;
@@ -672,11 +662,14 @@ function saveGraph(saveNum, graphNum, swap) {
     hoverText = hoverText.replace(/\n( *)/g, function (match, p1) {
         return '<br>' + '&nbsp;'.repeat(p1.length);
     });
-    tip.innerHTML = hoverText + "<br><span onclick='swap(" + destination + ", 1)' style='cursor: pointer; background-color: black;'>Transfer to Graph 1</span><br><span onclick='swap(" + destination + ", 2)' style='cursor: pointer; background-color: black;'>Transfer to Graph 2</span>";
+    tip.innerHTML = hoverText;
     tip.style.visibility = "hidden";
 
     var exit = document.getElementById("exit" + destination);
     exit.style.visibility = "visible";
+
+    var swap = document.getElementById("swap" + destination);
+    swap.style.visibility = "visible";
 }
 
 //Transfers a saved graph to one of the main graphs,
@@ -753,6 +746,9 @@ function deleteGraph(savedNum) {
 
     var exit = document.getElementById("exit" + savedNum);
     exit.style.visibility = "hidden";
+
+    var swap = document.getElementById("swap" + savedNum);
+    swap.style.visibility = "hidden";
 }
 
 //Shows tooltip over saved graph
@@ -787,19 +783,41 @@ function resetColorButton(num) {
     changeColorButton(num, "#ffffff", "brewer.Greys8");
 }
 
-//Runs when dragging to save a graph
-function drag(ev, graphNum) {
-    ev.dataTransfer.setData("text", graphNum);
+//Runs when dragging to save a graph into a saved region
+function drag(ev, graph) {
+    ev.dataTransfer.setData("text", graph);
 }
 
 //Runs when dropping a graph over a saved region
-function drop(ev, saveNum) {
+function drop(ev, destination) {
     ev.preventDefault();
-    var graphNum = ev.dataTransfer.getData("text");
-    if (savedGraphs[saveNum - 1] == undefined || savedGraphs[saveNum - 1] == null)
-        saveGraph(saveNum, graphNum, false);
-    else
-        swap(saveNum, graphNum);
+    
+    var data = ev.dataTransfer.getData("text");
+    if (data.startsWith("graph")) {
+        if (destination.startsWith("graph")) {
+            //do nothing
+        }
+        else if (destination.startsWith("saved")) {
+            var graphNum = data.substring(5);
+            var saveNum = destination.substring(5);
+            if (savedGraphs[saveNum - 1] == undefined || savedGraphs[saveNum - 1] == null) {
+                saveGraph(saveNum, graphNum, false)
+            }
+            else {
+                swap(saveNum, graphNum);
+            }
+        }
+    }
+    else if (data.startsWith("saved")) {
+        if (destination.startsWith("graph")) {
+            var graphNum = destination.substring(5);
+            var saveNum = data.substring(5);
+            swap(saveNum, graphNum);
+        }
+        else if (destination.startsWith("saved")) {
+            //to be implemented later
+        }
+    }
 }
 
 //Allows drops to occur

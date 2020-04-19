@@ -86,7 +86,7 @@ body {
   border: 1px solid white;
 }
 
-.tile a {
+.exit {
   visibility: hidden;
   position: absolute;
   font-size: 13px;
@@ -97,6 +97,55 @@ body {
   cursor: pointer;
   color: white;
   z-index: 5;
+}
+
+.swap {
+  visibility: hidden;
+  position: absolute;
+  font-size: 13px;
+  top: 60%;
+  left: 80%;
+  margin-left: 4px;
+  text-decoration: none;
+  cursor: move;
+  color: white;
+  z-index: 5;
+}
+
+.tile a {
+  text-decoration: none;
+}
+
+.exit .hoverTip {
+  font-size: 12px;
+  visibility: hidden;
+  right: 11px;
+  top: 1px;
+  background-color: #0000005c;
+  color: white;
+  padding: 3px 3px;
+  position: absolute;
+  z-index: 6;
+}
+
+.swap .hoverTip {
+  font-size: 12px;
+  visibility: hidden;
+  right: 17px;
+  bottom: 1px;
+  background-color: #0000005c;
+  color: white;
+  padding: 3px 3px;
+  position: absolute;
+  z-index: 6;
+}
+
+.exit:hover .hoverTip {
+  visibility: visible;
+}
+
+.swap:hover .hoverTip {
+  visibility: visible;
 }
 
 .colorButton {
