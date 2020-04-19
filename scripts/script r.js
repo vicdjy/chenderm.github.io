@@ -733,9 +733,10 @@ function swap(savedNum, graphNum) {
 }
 
 //Relocates a saved graph to another spot
+//Swaps if both saved spots have graphs
 function relocate(prevSave, nextSave) {
+    if (prevSave == nextSave) return;
     if (savedGraphs[nextSave - 1] == undefined || savedGraphs[nextSave - 1] == null) {
-        //simple relocate
         var prevSavedGraph = savedGraphs[prevSave - 1];
         var prevLabelsArr = prevSavedGraph.config.data.labels;
         var prevDataArr = prevSavedGraph.config.data.datasets[0].data;
@@ -808,7 +809,132 @@ function relocate(prevSave, nextSave) {
         deleteGraph(prevSave);
     }
     else {
-        //swap relocate, slightly more complicated
+        var savedGraph1 = savedGraphs[prevSave - 1];
+        var labelsArr1 = savedGraph1.config.data.labels;
+        var dataArr1 = savedGraph1.config.data.datasets[0].data;
+        var hoverText1 = savedGraph1.description;
+        var db1 = savedGraph1.DB;
+        var x1 = savedGraph1.X;
+        var y1 = savedGraph1.Y;
+        var lowDate1 = savedGraph1.lowDate;
+        var highDate1 = savedGraph1.highDate;
+        var graphType1 = savedGraph1.type;
+        var color1 = savedGraph1.color;
+        var colorScheme1 = savedGraph1.colorScheme;
+
+        var savedGraph2 = savedGraphs[nextSave - 1];
+        var labelsArr2 = savedGraph2.config.data.labels;
+        var dataArr2 = savedGraph2.config.data.datasets[0].data;
+        var hoverText2 = savedGraph2.description;
+        var db2 = savedGraph2.DB;
+        var x2 = savedGraph2.X;
+        var y2 = savedGraph2.Y;
+        var lowDate2 = savedGraph2.lowDate;
+        var highDate2 = savedGraph2.highDate;
+        var graphType2 = savedGraph2.type;
+        var color2 = savedGraph2.color;
+        var colorScheme2 = savedGraph2.colorScheme;
+
+        deleteGraph(prevSave);
+        deleteGraph(nextSave);
+
+        var canvas = document.getElementById("saved" + prevSave);
+        canvas = canvas.getContext("2d");
+        var g = new Chart(canvas, {
+            type: graphType2,
+            options: {
+                scales: {
+                    xAxes: [{display: false}],
+                    yAxes: [{display: false}],
+                },
+                legend: {display: false},
+                responsive: true,
+                maintainAspectRatio: false,
+                tooltips: false,
+                animation: {duration: 0}
+            },
+            data: {
+                labels: labelsArr2,
+                datasets: [{
+                    data: dataArr2,
+                    backgroundColor: "rgba(255,255,255,1)",
+                    pointRadius: 0,
+                    pointHoverRadius: 0
+                }]
+            }
+        });
+        g.description = hoverText2;
+        g.DB = db2;
+        g.X = x2;
+        g.Y = y2;
+        g.lowDate = lowDate2;
+        g.highDate = highDate2;
+        g.type = graphType2;
+        g.color = color2;
+        g.colorScheme = colorScheme2;
+        savedGraphs[prevSave - 1] = g;
+
+        var tip = document.getElementById("tip" + prevSave);
+        hoverText2 = hoverText2.replace(/\n( *)/g, function (match, p1) {
+            return '<br>' + '&nbsp;'.repeat(p1.length);
+        });
+        tip.innerHTML = hoverText2;
+        tip.style.visibility = "hidden";
+
+        var exit = document.getElementById("exit" + prevSave);
+        exit.style.visibility = "visible";
+
+        var swap = document.getElementById("swap" + prevSave);
+        swap.style.visibility = "visible";
+
+        canvas = document.getElementById("saved" + nextSave);
+        canvas = canvas.getContext("2d");
+        g = new Chart(canvas, {
+            type: graphType1,
+            options: {
+                scales: {
+                    xAxes: [{display: false}],
+                    yAxes: [{display: false}],
+                },
+                legend: {display: false},
+                responsive: true,
+                maintainAspectRatio: false,
+                tooltips: false,
+                animation: {duration: 0}
+            },
+            data: {
+                labels: labelsArr1,
+                datasets: [{
+                    data: dataArr1,
+                    backgroundColor: "rgba(255,255,255,1)",
+                    pointRadius: 0,
+                    pointHoverRadius: 0
+                }]
+            }
+        });
+        g.description = hoverText1;
+        g.DB = db1;
+        g.X = x1;
+        g.Y = y1;
+        g.lowDate = lowDate1;
+        g.highDate = highDate1;
+        g.type = graphType1;
+        g.color = color1;
+        g.colorScheme = colorScheme1;
+        savedGraphs[nextSave - 1] = g;
+
+        tip = document.getElementById("tip" + nextSave);
+        hoverText1 = hoverText1.replace(/\n( *)/g, function (match, p1) {
+            return '<br>' + '&nbsp;'.repeat(p1.length);
+        });
+        tip.innerHTML = hoverText1;
+        tip.style.visibility = "hidden";
+
+        exit = document.getElementById("exit" + nextSave);
+        exit.style.visibility = "visible";
+
+        swap = document.getElementById("swap" + nextSave);
+        swap.style.visibility = "visible";
     }
 }
 
