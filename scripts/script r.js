@@ -796,7 +796,10 @@ function drag(ev, graphNum) {
 function drop(ev, saveNum) {
     ev.preventDefault();
     var graphNum = ev.dataTransfer.getData("text");
-    saveGraph(saveNum, graphNum, false);
+    if (savedGraphs[saveNum - 1] == undefined || savedGraphs[saveNum - 1] == null)
+        saveGraph(saveNum, graphNum, false);
+    else
+        swap(saveNum, graphNum);
 }
 
 //Allows drops to occur

@@ -105,10 +105,10 @@ body {
 
 .colorwheelMenu {
   visibility: hidden;
-  left: 45px;
+  left: 62px;
   padding-left: 4px;
   position: absolute;
-  bottom: 15px;
+  bottom: -30px;
   z-index: 1;
   width: 160px;
   border: 2px solid black;
