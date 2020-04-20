@@ -16,18 +16,18 @@ Once you get the ngrok URL that looks something like [jumbledMess].ngrok.io, jus
 [jumbledMess].ngrok.io/index.html
 */
 
+var defaultDatabase0 = "Populations";
+var defaultXAxis0 = "Year";
+var defaultYAxis0 = "Rwanda";
+
 var defaultDatabase1 = "Populations";
 var defaultXAxis1 = "Year";
-var defaultYAxis1 = "Rwanda";
-
-var defaultDatabase2 = "Populations";
-var defaultXAxis2 = "Year";
-var defaultYAxis2 = "Algeria";
+var defaultYAxis1 = "Algeria";
 
 var defaultTextValue = {
     "Graphs": [
         {
-            "Id": 1,
+            "Id": 0,
             "DB": "Populations",
             "Yaxis": "Rwanda",
             "Xaxis": "Year",
@@ -38,7 +38,7 @@ var defaultTextValue = {
             "colorScheme": "office.Basis6"
         },
         {
-            "Id": 2,
+            "Id": 1,
             "DB": "Populations",
             "Yaxis": "Algeria",
             "Xaxis": "Year",
@@ -52,8 +52,8 @@ var defaultTextValue = {
 };
 var firstLoad = true;
 
+var graph0 = undefined;
 var graph1 = undefined;
-var graph2 = undefined;
 
 var savedGraphs = [];
 
@@ -69,7 +69,7 @@ $(document).ready(function () {
     }
 
     //initialize date range sliders
-    $("#range1").ionRangeSlider({//http://ionden.com/a/plugins/ion.rangeSlider/start.html
+    $("#range0").ionRangeSlider({//http://ionden.com/a/plugins/ion.rangeSlider/start.html
         type: "double",
         min: 0,
         max: 0,
@@ -78,7 +78,7 @@ $(document).ready(function () {
         hide_min_max: true,
         prettify_enabled: false,
     });
-    $("#range2").ionRangeSlider({
+    $("#range1").ionRangeSlider({
         type: "double",
         min: 0,
         max: 0,
@@ -89,7 +89,6 @@ $(document).ready(function () {
     });
 
     switchToDefault();
-    firstLoad = false;
 });
 
 let modal = document.querySelector(".modal")
@@ -135,9 +134,11 @@ function getAsText(fileToRead) {
     */
     var reader = new FileReader();
     // Read file into memory as UTF-8
+
     reader.readAsText(fileToRead);
     reader.onload = loadHandler;
     // Handle errors load
+
     reader.onerror = errorHandler;
 }
 
@@ -190,10 +191,10 @@ function submitText(id) {
 
 //Graphs data for the nth graph.
 function graphData(database, xaxis, yaxis, n, lowDate, highDate, gtype, color, colorScheme) {
-    if (n == 1 && graph1 !== undefined)
+    if (n == 0 && graph0 !== undefined)
+        graph0.destroy();
+    else if (n == 1 && graph1 !== undefined)
         graph1.destroy();
-    else if (n == 2 && graph2 !== undefined)
-        graph2.destroy();
 
     //add labels and data to respective arrays
     d3.csv("/csv/" + database + ".csv")
@@ -217,7 +218,51 @@ function graphData(database, xaxis, yaxis, n, lowDate, highDate, gtype, color, c
             //create graph
             var ctx = document.getElementById("canvas" + n);
             ctx = ctx.getContext("2d");
-            if (n == 1) {
+            if (n == 0) {
+                graph0 = new Chart(ctx, {
+                    type: gtype,
+                    data: {
+                        datasets: [{
+                            label: yaxis + " (" + gtype + ")",
+                            data: dataArr
+                        }],
+                        labels: labelsArr
+                    },
+                    options: {
+                        plugins: {
+                            zoom: {
+                                pan: {
+                                    enabled: true,
+                                    mode: 'x',
+                                    speed: 3000,
+                                },
+                                zoom: {
+                                    enabled: true,
+                                    mode: 'x',
+                                    speed: 3000,
+                                }
+                            },
+                            colorschemes: {
+                                scheme: colorScheme,
+                            }
+                        }
+                    }
+                });
+
+                //create descriptions & properties for graphs
+                //needed for tooltip hover in saved region
+                graph0.description = "DB: " + database + "<br>Y axis: " + yaxis + "<br>X axis: " + xaxis + " " + lowDate + "-" + highDate;
+                graph0.DB = database;
+                graph0.X = xaxis;
+                graph0.Y = yaxis;
+                graph0.lowDate = lowDate;
+                graph0.highDate = highDate;
+                graph0.type = gtype;
+                graph0.color = color;
+                graph0.colorScheme = colorScheme;
+                document.getElementById("save" + n).style.display = "block";
+            }
+            else if (n == 1) {
                 graph1 = new Chart(ctx, {
                     type: gtype,
                     data: {
@@ -261,56 +306,30 @@ function graphData(database, xaxis, yaxis, n, lowDate, highDate, gtype, color, c
                 graph1.colorScheme = colorScheme;
                 document.getElementById("save" + n).style.display = "block";
             }
-            else if (n == 2) {
-                graph2 = new Chart(ctx, {
-                    type: gtype,
-                    data: {
-                        datasets: [{
-                            label: yaxis + " (" + gtype + ")",
-                            data: dataArr
-                        }],
-                        labels: labelsArr
-                    },
-                    options: {
-                        plugins: {
-                            zoom: {
-                                pan: {
-                                    enabled: true,
-                                    mode: 'x',
-                                    speed: 3000,
-                                },
-                                zoom: {
-                                    enabled: true,
-                                    mode: 'x',
-                                    speed: 3000,
-                                }
-                            },
-                            colorschemes: {
-                                scheme: colorScheme,
-                            }
-                        }
-                    }
-                });
-
-                //create descriptions & properties for graphs
-                //needed for tooltip hover in saved region
-                graph2.description = "DB: " + database + "<br>Y axis: " + yaxis + "<br>X axis: " + xaxis + " " + lowDate + "-" + highDate;
-                graph2.DB = database;
-                graph2.X = xaxis;
-                graph2.Y = yaxis;
-                graph2.lowDate = lowDate;
-                graph2.highDate = highDate;
-                graph2.type = gtype;
-                graph2.color = color;
-                graph2.colorScheme = colorScheme;
-                document.getElementById("save" + n).style.display = "block";
-            }
         })
 }
 
+function updateScript(Id, DB, Xaxis, Yaxis, lowDate, highDate, gtype, color, colorScheme) {
+    var newTextValue = {
+        "Id": Id,
+        "DB": DB,
+        "Yaxis": Yaxis,
+        "Xaxis": Xaxis,
+        "lowDate": lowDate,
+        "highDate": highDate,
+        "gtype": gtype,
+        "color": color,
+        "colorScheme": colorScheme
+    };
+
+    textValue = JSON.stringify(newTextValue, null, 2);
+    // console.log(textValue)
+    document.getElementById("box" + Id).value = textValue;
+}
+
 //Runs when user clicks the submit button.
-//n = 1 when the button is for the first graph
-//n = 2 when the button is for the second graph
+//n = 0 when the button is for the first graph
+//n = 1 when the button is for the second graph
 function submitGraphData(n) {
     var el = document.getElementById("database" + n);
     var dbOption = el.options[el.selectedIndex].value;
@@ -323,14 +342,15 @@ function submitGraphData(n) {
     el = document.getElementById("gtype" + n);
     var gtype = el.options[el.selectedIndex].value;
 
-    var lowDate = $("#range1").data("from");
-    var highDate = $("#range1").data("to");
+    var lowDate = $("#range" + n).data("from");
+    var highDate = $("#range" + n).data("to");
 
     el = document.getElementById("colorButton" + n);
     var color = el.style.backgroundColor;
     var colorScheme = el.description;
 
     graphData(dbOption, xOption, yOption, n, lowDate, highDate, gtype, color, colorScheme);
+    updateScript(n, dbOption, xOption, yOption, lowDate, highDate, gtype, color, colorScheme);
 }
 
 /* setOption does the following two things:
@@ -405,7 +425,7 @@ function setOptions(databaseName, yaxis, xaxis, gtype, lowDate, highDate, n, col
             document.getElementById("submit" + n).disabled = false;
 
             //graph data
-            graphData(databaseName, xaxis, yaxis, n, lowDate, highDate, gtype, color, colorScheme);
+            graphData(databaseName, xaxis, yaxis, n, lowDate, highDate, gtype, color, colorScheme);        
         })
         .catch(function (error) {
             if (error.message === "404 Not Found") {
@@ -414,11 +434,11 @@ function setOptions(databaseName, yaxis, xaxis, gtype, lowDate, highDate, n, col
         })
 
     //reset color button;
-    if (n == 1) {
-        changeColorButton(1, "#f09415", "office.Basis6");
+    if (n == 0) {
+        changeColorButton(0, "#f09415", "office.Basis6");
     }
     else {
-        changeColorButton(2, "#543005", "brewer.BrBG11");
+        changeColorButton(1, "#543005", "brewer.BrBG11");
     }
     document.getElementById("colorButton" + n).disabled = false;
 
@@ -426,11 +446,10 @@ function setOptions(databaseName, yaxis, xaxis, gtype, lowDate, highDate, n, col
         for (i in defaultTextValue.Graphs) {
             g = defaultTextValue.Graphs[i];
             textValue = JSON.stringify(g, null, 2);
-            console.log(textValue);
+            // console.log(textValue);
             document.getElementById("box" + i).value = textValue;
         }
     }
-    
 }
 
 //Runs when the user clicks the default button.
@@ -440,17 +459,19 @@ function setOptions(databaseName, yaxis, xaxis, gtype, lowDate, highDate, n, col
 //Updates date range sliders to proper mins & maxes
 //Enables date range sliders
 function switchToDefault() {
-    setOptions(defaultDatabase1, defaultYAxis1, defaultXAxis1, 'bar', 0, 0, 1,
+    firstLoad = true;
+    setOptions(defaultDatabase0, defaultYAxis0, defaultXAxis0, 'bar', 0, 0, 0,
         '#f09415', 'office.Basis6');
-    setOptions(defaultDatabase2, defaultYAxis2, defaultXAxis2, 'bar', 0, 0, 2,
+    setOptions(defaultDatabase1, defaultYAxis1, defaultXAxis1, 'bar', 0, 0, 1,
         '#543005', 'brewer.BrBG11');
+    firstLoad = false;
 }
 
 //Runs when the user clicks the clear button.
 //Calls clearValues() for both graph 1 and 2.
 function clearAllValues() {
+    clearValues(0);
     clearValues(1);
-    clearValues(2);
 }
 
 //Clears values for database, y-axis, graph type menus.
@@ -468,16 +489,16 @@ function clearValues(n) {
     document.getElementById("colorButton" + n).disabled = true;
     document.getElementById("submit" + n).disabled = true;
 
-    if (n == 1)
+    if (n == 0)
+        graph0.destroy();
+    else if (n == 1)
         graph1.destroy();
-    else if (n == 2)
-        graph2.destroy();
 
     document.getElementById("save" + n).style.display = "none";
 
     // clear driving question
+    document.getElementById("driving_question0").innerHTML = "";
     document.getElementById("driving_question1").innerHTML = "";
-    document.getElementById("driving_question2").innerHTML = "";
 }
 
 //Runs when the option for database changes.
@@ -681,7 +702,20 @@ function saveGraph(saveNum, graphNum, swap) {
         tip.innerHTML = "";
     }
 
-    if (graphNum == 1) {
+    if (graphNum == 0) {
+        labelsArr = graph0.config.data.labels;
+        dataArr = graph0.config.data.datasets[0].data;
+        hoverText = graph0.description;
+        db = graph0.DB;
+        x = graph0.X;
+        y = graph0.Y;
+        lowDate = graph0.lowDate;
+        highDate = graph0.highDate;
+        graph_type = graph0.type;
+        color = graph0.color;
+        colorScheme = graph0.colorScheme;
+    }
+    else if (graphNum == 1) {
         labelsArr = graph1.config.data.labels;
         dataArr = graph1.config.data.datasets[0].data;
         hoverText = graph1.description;
@@ -693,19 +727,6 @@ function saveGraph(saveNum, graphNum, swap) {
         graph_type = graph1.type;
         color = graph1.color;
         colorScheme = graph1.colorScheme;
-    }
-    else if (graphNum == 2) {
-        labelsArr = graph2.config.data.labels;
-        dataArr = graph2.config.data.datasets[0].data;
-        hoverText = graph2.description;
-        db = graph2.DB;
-        x = graph2.X;
-        y = graph2.Y;
-        lowDate = graph2.lowDate;
-        highDate = graph2.highDate;
-        graph_type = graph2.type;
-        color = graph2.color;
-        colorScheme = graph2.colorScheme;
     }
 
     //check if current graph is already saved

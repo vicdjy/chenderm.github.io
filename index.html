@@ -50,6 +50,101 @@
                     <h3>Graph 1:</h3>
 
                     Database (DB):
+                    <select id="database0" onchange="verifyDB(0)">
+                        <option value=""></option>
+                        <optgroup label="Life, Death, Populations">
+                            <option value="Populations" selected>Populations</option>
+                            <option value="Population Female Percentage" selected>Population Female %</option>
+                            <option value="Population Female Percentage at Birth" selected>Population Female % at Birth</option>
+                            <option value="Life Expectancy - Continents">Life Expectancy - Continents</option>
+                            <option value="Median Age">Median Age</option>
+                            <option value="Births">Births</option>
+                            <option value="Births Per Woman">Births Per Woman</option>
+                            <option value="Births Per 1000 People">Births Per 1000 People</option>
+                            <option value="Child Deaths">Child Deaths</option>
+                            <option value="Child Mortality Rates">Child Mortality Rates</option>
+                            <option value="Survival Rate to Age 65 - Male">Survival Rate to Age 65 - Male</option>
+                            <option value="Survival Rate to Age 65 - Female">Survival Rate to Age 65 - Female</option>
+                        </optgroup>
+                        <optgroup label="Military">
+                            <option value="Military Personnel">Military Personnel</option>
+                            <option value="Military Personnel Percent of Population">Military Personnel % Population</option>
+                            <option value="Military Spending">Military Spending</option>
+                            <option value="Military Spending Percent of GDP">Military Spending % GDP</option>
+                        </optgroup>
+                        <optgroup label="Economies">
+                            <option value="GDP">GDP</option>
+                            <option value="GDP Per Capita">GDP Per Capita</option>
+                            <option value="Economic Freedom Scores">Economic Freedom Scores</option>
+                        </optgroup>
+                        <optgroup label="Environment">
+                            <option value="CO2 Emissions">CO2 Emissions</option>
+                            <option value="CO2 Emissions Per Capita">CO2 Emissions Per Capita</option>
+                            <option value="CO2 Emissions Percentages">CO2 Emissions %</option>
+                            <option value="CO2 Emissions Cumulative">CO2 Emissions Cumulative</option>
+                            <option value="CO2 Emissions Cumulative Percentages">CO2 Emissions Cumulative %</option>
+                        </optgroup>
+                    </select>
+                    <p></p>
+
+                    Y axis:
+                    <select id="yaxis0" onchange="verifyOptions(0)">
+                        <option value="" selected></option>
+                    </select>
+                    <p></p>
+
+                    Year Range:
+                    <div style="margin-left: 7px; width: 75%; display: inline-block;">
+                        <input type="text" class="js-range-slider" id="range0" value="" />
+                    </div>
+                    <p></p>
+
+                    Graph type:
+                    <select id="gtype0" onchange="verifyOptions(0)">
+                        <option value="" selected></option>
+                        <option value="line">line</option>
+                        <option value="bar">bar</option>
+                    </select>
+                    <div style="display: inline-block; position: relative;">
+                        <c style="margin-left: 10px;">Color:</c>
+                        <button class="colorButton" id="colorButton0" onclick="showColorWheel(0)"></button>
+                        <div class="colorwheelMenu" id="colorWheel0">
+                            <item style="background-color: #ffffff" onclick="changeColorButton(0,this.style.backgroundColor,'brewer.Greys8')"></item>
+                            <item style="background-color: #f2d908" onclick="changeColorButton(0,this.style.backgroundColor,'office.Orbit6')"></item>
+                            <item style="background-color: #f09415" onclick="changeColorButton(0,this.style.backgroundColor,'office.Basis6')"></item>
+                            <item style="background-color: #f81b02" onclick="changeColorButton(0,this.style.backgroundColor,'office.Atlas6')"></item>
+                            <item style="background-color: #ff388c" onclick="changeColorButton(0,this.style.backgroundColor,'office.Verve6')"></item>
+                            <item style="background-color: #762a83" onclick="changeColorButton(0,this.style.backgroundColor,'brewer.PRGn7')"></item>
+                            <item style="background-color: #1d86cd" onclick="changeColorButton(0,this.style.backgroundColor,'office.Story6')"></item>
+                            <item style="background-color: #76c5ef" onclick="changeColorButton(0,this.style.backgroundColor,'office.Kilter6')"></item>
+                            <item style="background-color: #7fd13b" onclick="changeColorButton(0,this.style.backgroundColor,'office.Metro6')"></item>
+                            <item style="background-color: #09622a" onclick="changeColorButton(0,this.style.backgroundColor,'tableau.ClassicGreenBlue11')"></item>
+                            <item style="background-color: #543005" onclick="changeColorButton(0,this.style.backgroundColor,'brewer.BrBG11')"></item>
+                            <item style="background-color: #8c510a" onclick="changeColorButton(0,this.style.backgroundColor,'brewer.BrBG7')"></item>
+                            <item style="background-color: #a6611a" onclick="changeColorButton(0,this.style.backgroundColor,'brewer.BrBG4')"></item>
+                            <item style="background-color: #d8b365" onclick="changeColorButton(0,this.style.backgroundColor,'brewer.BrBG3')"></item>
+                            <item style="background-color: #c3c3c3" onclick="changeColorButton(0,this.style.backgroundColor,'tableau.ClassicGray13')"></item>
+                            <item style="background-color: #6f6f6f" onclick="changeColorButton(0,this.style.backgroundColor,'office.Mesh6')"></item>
+                        </div>
+                    </div>
+
+                    <p></p>
+
+                    <button id="submit0" onclick="submitGraphData(0)">SUBMIT</button>
+                </div>
+                
+                <div style="height: 190px; width: 47%; float: right; margin-right: 5%; margin-top: 15px;">
+                    <textarea class="form-control" id="box0" onchange="submitText(0)" 
+                        style="height: 100%; width: 100%;" spellcheck="false"></textarea>
+                </div>
+            </div>
+            
+            <br>
+            <div class="row">
+                <div style="width: 47%; display: inline-block;">
+                    <h3>Graph 2:</h3>
+
+                    Database (DB):
                     <select id="database1" onchange="verifyDB(1)">
                         <option value=""></option>
                         <optgroup label="Life, Death, Populations">
@@ -127,103 +222,8 @@
                             <item style="background-color: #6f6f6f" onclick="changeColorButton(1,this.style.backgroundColor,'office.Mesh6')"></item>
                         </div>
                     </div>
-
                     <p></p>
-
                     <button id="submit1" onclick="submitGraphData(1)">SUBMIT</button>
-                </div>
-                
-                <div style="height: 190px; width: 47%; float: right; margin-right: 5%; margin-top: 15px;">
-                    <textarea class="form-control" id="box0" onchange="submitText(0)" 
-                        style="height: 100%; width: 100%;" spellcheck="false"></textarea>
-                </div>
-            </div>
-            
-            <br>
-            <div class="row">
-                <div style="width: 47%; display: inline-block;">
-                    <h3>Graph 2:</h3>
-
-                    Database (DB):
-                    <select id="database2" onchange="verifyDB(2)">
-                        <option value=""></option>
-                        <optgroup label="Life, Death, Populations">
-                            <option value="Populations" selected>Populations</option>
-                            <option value="Population Female Percentage" selected>Population Female %</option>
-                            <option value="Population Female Percentage at Birth" selected>Population Female % at Birth</option>
-                            <option value="Life Expectancy - Continents">Life Expectancy - Continents</option>
-                            <option value="Median Age">Median Age</option>
-                            <option value="Births">Births</option>
-                            <option value="Births Per Woman">Births Per Woman</option>
-                            <option value="Births Per 1000 People">Births Per 1000 People</option>
-                            <option value="Child Deaths">Child Deaths</option>
-                            <option value="Child Mortality Rates">Child Mortality Rates</option>
-                            <option value="Survival Rate to Age 65 - Male">Survival Rate to Age 65 - Male</option>
-                            <option value="Survival Rate to Age 65 - Female">Survival Rate to Age 65 - Female</option>
-                        </optgroup>
-                        <optgroup label="Military">
-                            <option value="Military Personnel">Military Personnel</option>
-                            <option value="Military Personnel Percent of Population">Military Personnel % Population</option>
-                            <option value="Military Spending">Military Spending</option>
-                            <option value="Military Spending Percent of GDP">Military Spending % GDP</option>
-                        </optgroup>
-                        <optgroup label="Economies">
-                            <option value="GDP">GDP</option>
-                            <option value="GDP Per Capita">GDP Per Capita</option>
-                            <option value="Economic Freedom Scores">Economic Freedom Scores</option>
-                        </optgroup>
-                        <optgroup label="Environment">
-                            <option value="CO2 Emissions">CO2 Emissions</option>
-                            <option value="CO2 Emissions Per Capita">CO2 Emissions Per Capita</option>
-                            <option value="CO2 Emissions Percentages">CO2 Emissions %</option>
-                            <option value="CO2 Emissions Cumulative">CO2 Emissions Cumulative</option>
-                            <option value="CO2 Emissions Cumulative Percentages">CO2 Emissions Cumulative %</option>
-                        </optgroup>
-                    </select>
-                    <p></p>
-
-                    Y axis:
-                    <select id="yaxis2" onchange="verifyOptions(2)">
-                        <option value="" selected></option>
-                    </select>
-                    <p></p>
-
-                    Year Range:
-                    <div style="margin-left: 7px; width: 75%; display: inline-block;">
-                        <input type="text" class="js-range-slider" id="range2" value="" />
-                    </div>
-                    <p></p>
-
-                    Graph type:
-                    <select id="gtype2" onchange="verifyOptions(2)">
-                        <option value="" selected></option>
-                        <option value="line">line</option>
-                        <option value="bar">bar</option>
-                    </select>
-                    <div style="display: inline-block; position: relative;">
-                        <c style="margin-left: 10px;">Color:</c>
-                        <button class="colorButton" id="colorButton2" onclick="showColorWheel(2)"></button>
-                        <div class="colorwheelMenu" id="colorWheel2">
-                            <item style="background-color: #ffffff" onclick="changeColorButton(2,this.style.backgroundColor,'brewer.Greys8')"></item>
-                            <item style="background-color: #f2d908" onclick="changeColorButton(2,this.style.backgroundColor,'office.Orbit6')"></item>
-                            <item style="background-color: #f09415" onclick="changeColorButton(2,this.style.backgroundColor,'office.Basis6')"></item>
-                            <item style="background-color: #f81b02" onclick="changeColorButton(2,this.style.backgroundColor,'office.Atlas6')"></item>
-                            <item style="background-color: #ff388c" onclick="changeColorButton(2,this.style.backgroundColor,'office.Verve6')"></item>
-                            <item style="background-color: #762a83" onclick="changeColorButton(2,this.style.backgroundColor,'brewer.PRGn7')"></item>
-                            <item style="background-color: #1d86cd" onclick="changeColorButton(2,this.style.backgroundColor,'office.Story6')"></item>
-                            <item style="background-color: #76c5ef" onclick="changeColorButton(2,this.style.backgroundColor,'office.Kilter6')"></item>
-                            <item style="background-color: #7fd13b" onclick="changeColorButton(2,this.style.backgroundColor,'office.Metro6')"></item>
-                            <item style="background-color: #09622a" onclick="changeColorButton(2,this.style.backgroundColor,'tableau.ClassicGreenBlue11')"></item>
-                            <item style="background-color: #543005" onclick="changeColorButton(2,this.style.backgroundColor,'brewer.BrBG11')"></item>
-                            <item style="background-color: #8c510a" onclick="changeColorButton(2,this.style.backgroundColor,'brewer.BrBG7')"></item>
-                            <item style="background-color: #a6611a" onclick="changeColorButton(2,this.style.backgroundColor,'brewer.BrBG4')"></item>
-                            <item style="background-color: #d8b365" onclick="changeColorButton(2,this.style.backgroundColor,'brewer.BrBG3')"></item>
-                            <item style="background-color: #c3c3c3" onclick="changeColorButton(2,this.style.backgroundColor,'tableau.ClassicGray13')"></item>
-                            <item style="background-color: #6f6f6f" onclick="changeColorButton(2,this.style.backgroundColor,'office.Mesh6')"></item>
-                        </div>
-                    </div>
-                    <p></p>
-                    <button id="submit2" onclick="submitGraphData(2)">SUBMIT</button>
                 </div>
                 
                 <div style="height: 190px; width: 47%; float: right; margin-right: 5%; margin-top: 15px;">
@@ -236,17 +236,17 @@
         <div class="col2">
             <h2>Graphs</h2>
 
-            <div id="driving_question1" style="font-size: 14px"></div>
+            <div id="driving_question0" style="font-size: 14px"></div>
             <div class="graphRegion">
-                <canvas id="canvas1"></canvas>
-                <button class="saveButton" id="save1" onclick="saveGraph(0, 1, false)">SAVE GRAPH 1</button>
+                <canvas id="canvas0"></canvas>
+                <button class="saveButton" id="save0" onclick="saveGraph(0, 0, false)">SAVE GRAPH 1</button>
             </div>
 
             <br><br>
-            <div id="driving_question2" style="font-size: 14px"></div>
+            <div id="driving_question1" style="font-size: 14px"></div>
             <div class="graphRegion">
-                <canvas id="canvas2"></canvas>
-                <button class="saveButton" id="save2" onclick="saveGraph(0, 2, false)">SAVE GRAPH 2</button>
+                <canvas id="canvas1"></canvas>
+                <button class="saveButton" id="save1" onclick="saveGraph(0, 1, false)">SAVE GRAPH 2</button>
             </div>
         </div>
     </div>

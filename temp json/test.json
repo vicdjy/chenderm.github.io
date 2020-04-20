@@ -1,7 +1,7 @@
 {
  "Graphs": [
   { 
-   "Id": 1,
+   "Id": 0,
    "DB": "Populations",
    "Yaxis": "Norway",
    "Xaxis": "Year",
@@ -12,7 +12,7 @@
    "colorScheme": "office.Orbit6"
   },
   { 
-   "Id": 2,
+   "Id": 1,
    "DB": "Populations",
    "Yaxis": "North Korea",
    "Xaxis": "Year",
