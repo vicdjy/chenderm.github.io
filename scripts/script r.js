@@ -62,7 +62,7 @@ $(document).ready( function() {
 });
 
 //Graphs data for the nth graph.
-function graphData(database, xaxis, yaxis, n, lowDate, highDate, gtype, color, colorScheme) {
+function graphData(database, xaxis, yaxis, n, lowDate, highDate, minDate, maxDate, gtype, color, colorScheme) {
     if (n == 1 && graph1 !== undefined)
         graph1.destroy();
     else if (n == 2 && graph2 !== undefined)
@@ -129,6 +129,8 @@ function graphData(database, xaxis, yaxis, n, lowDate, highDate, gtype, color, c
             graph1.Y = yaxis;
             graph1.lowDate = lowDate;
             graph1.highDate = highDate;
+            graph1.fromDate = minDate;
+            graph1.toDate = maxDate;
             graph1.type = gtype;
             graph1.color = color;
             graph1.colorScheme = colorScheme;
@@ -173,6 +175,8 @@ function graphData(database, xaxis, yaxis, n, lowDate, highDate, gtype, color, c
             graph2.Y = yaxis;
             graph2.lowDate = lowDate;
             graph2.highDate = highDate;
+            graph2.fromDate = minDate;
+            graph2.toDate = maxDate;
             graph2.type = gtype;
             graph2.color = color;
             graph2.colorScheme = colorScheme;
@@ -203,7 +207,7 @@ function submitGraphData(n) {
     var color = el.style.backgroundColor;
     var colorScheme = el.description;
 
-    graphData(dbOption, xOption, yOption, n, lowDate, highDate, gtype, color, colorScheme);
+    graphData(dbOption, xOption, yOption, n, lowDate, highDate, lowDate, highDate, gtype, color, colorScheme);
 }
 
 //Runs when the user clicks the default button.
@@ -255,7 +259,7 @@ function switchToDefault() {
         document.getElementById("submit1").disabled = false;
 
         //graph data
-        graphData(defaultDatabase1, defaultXAxis1, defaultYAxis1, 1, years[0], years[years.length - 1], 'bar', document.getElementById("colorButton1").style.backgroundColor, document.getElementById("colorButton1").description);
+        graphData(defaultDatabase1, defaultXAxis1, defaultYAxis1, 1, years[0], years[years.length - 1], years[0], years[years.length - 1], 'bar', document.getElementById("colorButton1").style.backgroundColor, document.getElementById("colorButton1").description);
     })
     .catch(function(error) {
         if (error.message === "404 Not Found") {
@@ -312,7 +316,7 @@ function switchToDefault() {
         document.getElementById("submit2").disabled = false;
 
         //graph data
-        graphData(defaultDatabase2, defaultXAxis2, defaultYAxis2, 2, years[0], years[years.length - 1], 'bar', document.getElementById("colorButton2").style.backgroundColor, document.getElementById("colorButton2").description);
+        graphData(defaultDatabase2, defaultXAxis2, defaultYAxis2, 2, years[0], years[years.length - 1], years[0], years[years.length - 1], 'bar', document.getElementById("colorButton2").style.backgroundColor, document.getElementById("colorButton2").description);
     })
     .catch(function(error) {
         if (error.message === "404 Not Found") {
@@ -553,6 +557,8 @@ function saveGraph(saveNum, graphNum, swap) {
     var y = undefined;
     var lowDate = undefined;
     var highDate = undefined;
+    var minDate = undefined;
+    var maxDate = undefined;
     var graph_type = undefined;
     var color = undefined;
     var colorScheme = undefined;
@@ -585,6 +591,8 @@ function saveGraph(saveNum, graphNum, swap) {
         y = graph1.Y;
         lowDate = graph1.lowDate;
         highDate = graph1.highDate;
+        minDate = graph1.minDate;
+        maxDate = graph1.maxDate;
         graph_type = graph1.type;
         color = graph1.color;
         colorScheme = graph1.colorScheme;
@@ -598,6 +606,8 @@ function saveGraph(saveNum, graphNum, swap) {
         y = graph2.Y;
         lowDate = graph2.lowDate;
         highDate = graph2.highDate;
+        minDate = graph2.minDate;
+        maxDate = graph2.maxDate;
         graph_type = graph2.type;
         color = graph2.color;
         colorScheme = graph2.colorScheme;
@@ -652,6 +662,8 @@ function saveGraph(saveNum, graphNum, swap) {
     g.Y = y;
     g.lowDate = lowDate;
     g.highDate = highDate;
+    g.minDate = minDate;
+    g.maxDate = maxDate;
     g.type = graph_type;
     g.color = color;
     g.colorScheme = colorScheme;
@@ -676,12 +688,14 @@ function swap(savedNum, graphNum) {
     var savedY = savedGraph.Y;
     var savedLowDate = savedGraph.lowDate;
     var savedHighDate = savedGraph.highDate;
+    var savedMinDate = savedGraph.minDate;
+    var savedMaxDate = savedGraph.maxDate;
     var savedType = savedGraph.type;
     var savedColor = savedGraph.color;
     var savedColorScheme = savedGraph.colorScheme;
 
     saveGraph(savedNum, graphNum, true);
-    graphData(savedDB, savedX, savedY, graphNum, savedLowDate, savedHighDate, savedType, savedColor, savedColorScheme);
+    graphData(savedDB, savedX, savedY, graphNum, savedLowDate, savedHighDate, savedMinDate, savedMaxDate, savedType, savedColor, savedColorScheme);
 
     //updating the controls on the left side
     //set database 1 to savedDB
@@ -700,6 +714,9 @@ function swap(savedNum, graphNum) {
             break;
         }
     }
+
+    //update slider range
+    updateSliderOnlyRange(graphNum, savedMinDate, savedMaxDate, savedLowDate, savedHighDate);
 
     changeColorButton(graphNum, savedColor, savedColorScheme);
 
