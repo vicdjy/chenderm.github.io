@@ -29,12 +29,15 @@ var graph2 = undefined;
 
 var savedGraphs = [];
 
+window.drivingQuestion = {};
+var line = "";
+
 //When the page first loads.
 $(document).ready( function() {
     console.log("Ready!");
     Chart.defaults.global.defaultFontColor = "#524636";
 
-    for (var i = 0; i < 12; i++) {
+    for (var i = 0; i < 10; i++) {
         savedGraphs.push(undefined);
     }
 
@@ -61,6 +64,96 @@ $(document).ready( function() {
     switchToDefault();
 });
 
+let modal = document.querySelector(".modal")
+
+function displayModal(){
+    let modal = document.querySelector(".modal")
+    modal.style.display = "block"
+}
+function closeModal(){
+    let modal = document.querySelector(".modal")
+    modal.style.display = "none" 
+}
+window.onclick = function(e){
+    let modal = document.querySelector(".modal")
+    if(e.target == modal){
+        modal.style.display = "none"
+    }
+}
+
+function handleFiles(files) {
+    // Check for the various File API support.
+    if (window.FileReader) {
+        // FileReader are supported.
+        getAsText(files[0]);
+    } else {
+        alert('FileReader are not supported in this browser.');
+    }
+}
+
+function getAsText(fileToRead) {
+    var reader = new FileReader();
+    // Read file into memory as UTF-8      
+    reader.readAsText(fileToRead);
+    // Handle errors load
+    reader.onload = loadHandler;
+    reader.onerror = errorHandler;
+}
+
+function loadHandler(event) {
+    var csv = event.target.result;
+    processData(csv);
+}
+
+function processData(csv) {
+    var allTextLines = csv.split(/\r\n|\n/);
+    for (var i=0; i<1; i++) {
+        var data = allTextLines[i].split(';');
+        var tarr = [];
+        for (var j=0; j<data.length; j++) {
+            tarr.push(data[j]);
+        }
+        line = tarr;
+        console.log(line);
+    }
+
+}
+
+function errorHandler(evt) {
+    if(evt.target.error.name == "NotReadableError") {
+        alert("Canno't read file !");
+    }
+}
+
+function submitDrivingQuestions(){
+    var checkboxes = document.getElementsByName("database_selection");  
+    var numberOfCheckedItems = 0;  
+    for(var i = 0; i < checkboxes.length; i++)  
+    {  
+        if(checkboxes[i].checked)
+        { 
+            numberOfCheckedItems++;
+            drivingQuestion[checkboxes[i].value] = line;
+        }
+    }
+    if (numberOfCheckedItems == 0)
+    {  
+        alert("You have to select a database");  
+        return false;  
+    }
+    alert("Submitted");
+}
+
+
+/*function displayQuestion(){
+    var dq = document.getElementById("driving_question1");
+    const selectedFile = document.getElementById('driving_question_input').files[0];
+    d3.csv(selectedFile).then(function(q_data){
+        question = q_data[0]['Populations'];
+        dq.innerHTML = question;
+    })
+}*/
+
 //Graphs data for the nth graph.
 function graphData(database, xaxis, yaxis, n, lowDate, highDate, minDate, maxDate, gtype, color, colorScheme) {
     if (n == 1 && graph1 !== undefined)
@@ -82,10 +175,18 @@ function graphData(database, xaxis, yaxis, n, lowDate, highDate, minDate, maxDat
 
         //add driving question
         var dq = document.getElementById("driving_question" + n);
-        d3.csv("/csv/driving-questions.csv").then(function(q_data){
-            question = q_data[0][database];
-            dq.innerHTML = question;
-        })
+        var question = "";
+        console.log(database);
+        console.log(drivingQuestion["Populations"]);
+        if (typeof drivingQuestion[database] === 'undefined') {
+            //alert("this database does not have a driving question");
+            question = "default driving question";
+        }
+        else {
+            question = drivingQuestion[database];
+        }
+          
+        dq.innerHTML = question;
 
         //create graph
         var ctx = document.getElementById("canvas" + n);
@@ -123,7 +224,16 @@ function graphData(database, xaxis, yaxis, n, lowDate, highDate, minDate, maxDat
 
             //create descriptions & properties for graphs
             //needed for tooltip hover in saved region
-            graph1.description = "DB: " + database + "<br>Y axis: " + yaxis + "<br>X axis: " + xaxis + " " + lowDate + "-" + highDate;
+            var description = { 
+                "Id": 1,
+                "DB": database,
+                "Yaxis": yaxis,
+                "Xaxis": xaxis,
+                "lowDate": lowDate,
+                "highDate": highDate,
+                "gtype": gtype
+            }
+            graph1.description = JSON.stringify(description, null, 2);
             graph1.DB = database;
             graph1.X = xaxis;
             graph1.Y = yaxis;
@@ -169,7 +279,16 @@ function graphData(database, xaxis, yaxis, n, lowDate, highDate, minDate, maxDat
 
             //create descriptions & properties for graphs
             //needed for tooltip hover in saved region
-            graph2.description = "DB: " + database + "<br>Y axis: " + yaxis + "<br>X axis: " + xaxis + " " + lowDate + "-" + highDate;
+            var description = { 
+                "Id": 2,
+                "DB": database,
+                "Yaxis": yaxis,
+                "Xaxis": xaxis,
+                "lowDate": lowDate,
+                "highDate": highDate,
+                "gtype": gtype
+            }
+            graph2.description = JSON.stringify(description, null, 2);
             graph2.DB = database;
             graph2.X = xaxis;
             graph2.Y = yaxis;
@@ -537,16 +656,6 @@ function verifyOptions(n) {
     }
 }
 
-//Finds the next available spot to save a graph, returns this number
-function nextAvailableSaveSpot() {
-    for (var i = 0; i < savedGraphs.length; i++) {
-        if (savedGraphs[i] == undefined) {
-            return i + 1;
-        }
-    }
-    return -1;
-}
-
 //Runs when the user clicks SAVE GRAPH
 function saveGraph(saveNum, graphNum, swap) {
     var labelsArr = undefined;
@@ -563,24 +672,15 @@ function saveGraph(saveNum, graphNum, swap) {
     var color = undefined;
     var colorScheme = undefined;
 
-    var destination = undefined;
-    if (saveNum == 0) {
-        destination = nextAvailableSaveSpot();
-        if (destination == -1) {
-            alert("No more space available to save graphs! Try deleting some");
-            return;
-        }
-    }
-    else {
-        destination = saveNum;
-        var g = savedGraphs[saveNum - 1];
+    var destination = saveNum;
+    var g = savedGraphs[saveNum - 1];
+    if (g != null)
         g.destroy();
-        savedGraphs[saveNum - 1] = undefined;
-        var tip = document.getElementById("tip" + saveNum);
-        tip.style.display = "none";
-        tip.style.backgroundColor = "transparent";
-        tip.innerHTML = "";
-    }
+    savedGraphs[saveNum - 1] = undefined;
+    var tip = document.getElementById("tip" + saveNum);
+    tip.style.display = "none";
+    tip.style.backgroundColor = "transparent";
+    tip.innerHTML = "";
 
     if (graphNum == 1) {
         labelsArr = graph1.config.data.labels;
@@ -617,7 +717,7 @@ function saveGraph(saveNum, graphNum, swap) {
     for (var i = 0; i < savedGraphs.length; i++) {
         if (savedGraphs[i] != undefined && hoverText == savedGraphs[i].description) {
             if (!swap) {
-                alert("Graph " + graphNum + " is already saved at box #" + i + 1);
+                alert("Graph " + graphNum + " is already saved at box #" + (i + 1));
             }
             return;
         }
@@ -672,11 +772,17 @@ function saveGraph(saveNum, graphNum, swap) {
     var tip = document.getElementById("tip" + destination);
     tip.style.display = "block";
     tip.style.backgroundColor = "#0000005c";
-    tip.innerHTML = hoverText + "<br><span onclick='swap(" + destination + ", 1)' style='cursor: pointer; background-color: black;'>Transfer to Graph 1</span><br><span onclick='swap(" + destination + ", 2)' style='cursor: pointer; background-color: black;'>Transfer to Graph 2</span>";
+    hoverText = hoverText.replace(/\n( *)/g, function (match, p1) {
+        return '<br>' + '&nbsp;'.repeat(p1.length);
+    });
+    tip.innerHTML = hoverText;
     tip.style.visibility = "hidden";
 
     var exit = document.getElementById("exit" + destination);
     exit.style.visibility = "visible";
+
+    var swap = document.getElementById("swap" + destination);
+    swap.style.visibility = "visible";
 }
 
 //Transfers a saved graph to one of the main graphs,
@@ -744,6 +850,212 @@ function swap(savedNum, graphNum) {
     });
 }
 
+//Relocates a saved graph to another spot
+//Swaps if both saved spots have graphs
+function relocate(prevSave, nextSave) {
+    if (prevSave == nextSave) return;
+    if (savedGraphs[nextSave - 1] == undefined || savedGraphs[nextSave - 1] == null) {
+        var prevSavedGraph = savedGraphs[prevSave - 1];
+        var prevLabelsArr = prevSavedGraph.config.data.labels;
+        var prevDataArr = prevSavedGraph.config.data.datasets[0].data;
+        var prevHoverText = prevSavedGraph.description;
+        var prevDB = prevSavedGraph.DB;
+        var prevX = prevSavedGraph.X;
+        var prevY = prevSavedGraph.Y;
+        var prevLowDate = prevSavedGraph.lowDate;
+        var prevHighDate = prevSavedGraph.highDate;
+        var prevGraphType = prevSavedGraph.type;
+        var prevColor = prevSavedGraph.color;
+        var prevColorScheme = prevSavedGraph.colorScheme;
+
+        var tip = document.getElementById("tip" + prevSave);
+        tip.style.display = "none";
+        tip.style.backgroundColor = "transparent";
+        tip.innerHTML = "";
+
+        var canvas = document.getElementById("saved" + nextSave);
+        canvas = canvas.getContext("2d");
+        var g = new Chart(canvas, {
+            type: prevGraphType,
+            options: {
+                scales: {
+                    xAxes: [{display: false}],
+                    yAxes: [{display: false}],
+                },
+                legend: {display: false},
+                responsive: true,
+                maintainAspectRatio: false,
+                tooltips: false,
+                animation: {duration: 0}
+            },
+            data: {
+                labels: prevLabelsArr,
+                datasets: [{
+                    data: prevDataArr,
+                    backgroundColor: "rgba(255,255,255,1)",
+                    pointRadius: 0,
+                    pointHoverRadius: 0
+                }]
+            }
+        });
+        g.description = prevHoverText;
+        g.DB = prevDB;
+        g.X = prevX;
+        g.Y = prevY;
+        g.lowDate = prevLowDate;
+        g.highDate = prevHighDate;
+        g.type = prevGraphType;
+        g.color = prevColor;
+        g.colorScheme = prevColorScheme;
+        savedGraphs[nextSave - 1] = g;
+
+        tip = document.getElementById("tip" + nextSave);
+        tip.style.display = "block";
+        tip.style.backgroundColor = "#0000005c";
+        prevHoverText = prevHoverText.replace(/\n( *)/g, function (match, p1) {
+            return '<br>' + '&nbsp;'.repeat(p1.length);
+        });
+        tip.innerHTML = prevHoverText;
+        tip.style.visibility = "hidden";
+
+        var exit = document.getElementById("exit" + nextSave);
+        exit.style.visibility = "visible";
+
+        var swap = document.getElementById("swap" + nextSave);
+        swap.style.visibility = "visible";
+
+        deleteGraph(prevSave);
+    }
+    else {
+        var savedGraph1 = savedGraphs[prevSave - 1];
+        var labelsArr1 = savedGraph1.config.data.labels;
+        var dataArr1 = savedGraph1.config.data.datasets[0].data;
+        var hoverText1 = savedGraph1.description;
+        var db1 = savedGraph1.DB;
+        var x1 = savedGraph1.X;
+        var y1 = savedGraph1.Y;
+        var lowDate1 = savedGraph1.lowDate;
+        var highDate1 = savedGraph1.highDate;
+        var graphType1 = savedGraph1.type;
+        var color1 = savedGraph1.color;
+        var colorScheme1 = savedGraph1.colorScheme;
+
+        var savedGraph2 = savedGraphs[nextSave - 1];
+        var labelsArr2 = savedGraph2.config.data.labels;
+        var dataArr2 = savedGraph2.config.data.datasets[0].data;
+        var hoverText2 = savedGraph2.description;
+        var db2 = savedGraph2.DB;
+        var x2 = savedGraph2.X;
+        var y2 = savedGraph2.Y;
+        var lowDate2 = savedGraph2.lowDate;
+        var highDate2 = savedGraph2.highDate;
+        var graphType2 = savedGraph2.type;
+        var color2 = savedGraph2.color;
+        var colorScheme2 = savedGraph2.colorScheme;
+
+        deleteGraph(prevSave);
+        deleteGraph(nextSave);
+
+        var canvas = document.getElementById("saved" + prevSave);
+        canvas = canvas.getContext("2d");
+        var g = new Chart(canvas, {
+            type: graphType2,
+            options: {
+                scales: {
+                    xAxes: [{display: false}],
+                    yAxes: [{display: false}],
+                },
+                legend: {display: false},
+                responsive: true,
+                maintainAspectRatio: false,
+                tooltips: false,
+                animation: {duration: 0}
+            },
+            data: {
+                labels: labelsArr2,
+                datasets: [{
+                    data: dataArr2,
+                    backgroundColor: "rgba(255,255,255,1)",
+                    pointRadius: 0,
+                    pointHoverRadius: 0
+                }]
+            }
+        });
+        g.description = hoverText2;
+        g.DB = db2;
+        g.X = x2;
+        g.Y = y2;
+        g.lowDate = lowDate2;
+        g.highDate = highDate2;
+        g.type = graphType2;
+        g.color = color2;
+        g.colorScheme = colorScheme2;
+        savedGraphs[prevSave - 1] = g;
+
+        var tip = document.getElementById("tip" + prevSave);
+        hoverText2 = hoverText2.replace(/\n( *)/g, function (match, p1) {
+            return '<br>' + '&nbsp;'.repeat(p1.length);
+        });
+        tip.innerHTML = hoverText2;
+        tip.style.visibility = "hidden";
+
+        var exit = document.getElementById("exit" + prevSave);
+        exit.style.visibility = "visible";
+
+        var swap = document.getElementById("swap" + prevSave);
+        swap.style.visibility = "visible";
+
+        canvas = document.getElementById("saved" + nextSave);
+        canvas = canvas.getContext("2d");
+        g = new Chart(canvas, {
+            type: graphType1,
+            options: {
+                scales: {
+                    xAxes: [{display: false}],
+                    yAxes: [{display: false}],
+                },
+                legend: {display: false},
+                responsive: true,
+                maintainAspectRatio: false,
+                tooltips: false,
+                animation: {duration: 0}
+            },
+            data: {
+                labels: labelsArr1,
+                datasets: [{
+                    data: dataArr1,
+                    backgroundColor: "rgba(255,255,255,1)",
+                    pointRadius: 0,
+                    pointHoverRadius: 0
+                }]
+            }
+        });
+        g.description = hoverText1;
+        g.DB = db1;
+        g.X = x1;
+        g.Y = y1;
+        g.lowDate = lowDate1;
+        g.highDate = highDate1;
+        g.type = graphType1;
+        g.color = color1;
+        g.colorScheme = colorScheme1;
+        savedGraphs[nextSave - 1] = g;
+
+        tip = document.getElementById("tip" + nextSave);
+        hoverText1 = hoverText1.replace(/\n( *)/g, function (match, p1) {
+            return '<br>' + '&nbsp;'.repeat(p1.length);
+        });
+        tip.innerHTML = hoverText1;
+        tip.style.visibility = "hidden";
+
+        exit = document.getElementById("exit" + nextSave);
+        exit.style.visibility = "visible";
+
+        swap = document.getElementById("swap" + nextSave);
+        swap.style.visibility = "visible";
+    }
+}
+
 //Removes a graph from the saved section
 function deleteGraph(savedNum) {
     var g = savedGraphs[savedNum - 1];
@@ -758,6 +1070,9 @@ function deleteGraph(savedNum) {
 
     var exit = document.getElementById("exit" + savedNum);
     exit.style.visibility = "hidden";
+
+    var swap = document.getElementById("swap" + savedNum);
+    swap.style.visibility = "hidden";
 }
 
 //Shows tooltip over saved graph
@@ -790,4 +1105,48 @@ function changeColorButton(num, color, description) {
 //Reset color button
 function resetColorButton(num) {
     changeColorButton(num, "#ffffff", "brewer.Greys8");
+}
+
+//Runs when dragging to save a graph into a saved region
+function drag(ev, graph) {
+    ev.dataTransfer.setData("text", graph);
+}
+
+//Runs when dropping a graph over a saved region
+function drop(ev, destination) {
+    ev.preventDefault();
+    
+    var data = ev.dataTransfer.getData("text");
+    if (data.startsWith("graph")) {
+        if (destination.startsWith("graph")) {
+            //do nothing
+        }
+        else if (destination.startsWith("saved")) {
+            var graphNum = data.substring(5);
+            var saveNum = destination.substring(5);
+            if (savedGraphs[saveNum - 1] == undefined || savedGraphs[saveNum - 1] == null) {
+                saveGraph(saveNum, graphNum, false)
+            }
+            else {
+                swap(saveNum, graphNum);
+            }
+        }
+    }
+    else if (data.startsWith("saved")) {
+        if (destination.startsWith("graph")) {
+            var graphNum = destination.substring(5);
+            var saveNum = data.substring(5);
+            swap(saveNum, graphNum);
+        }
+        else if (destination.startsWith("saved")) {
+            var prevSave = data.substring(5);
+            var nextSave = destination.substring(5);
+            relocate(prevSave, nextSave);
+        }
+    }
+}
+
+//Allows drops to occur
+function allowDrop(ev) {
+    ev.preventDefault();
 }

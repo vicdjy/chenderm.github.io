@@ -211,18 +211,82 @@
 
         <div class="col2">
             <h2>Graphs</h2>
+            
+            <button id="modal-btn" onclick="displayModal()"> Upload Questions</button>
+            <div class="modal">
+                <div class="modal-content">
+                    <span class="close-btn" onclick="closeModal()">&times;</span>
+                    <form onsubmit="submitDrivingQuestions();return false">
+                        <label for="question"><b>Driving Question</b></label>
+                        <input type="file" id="driving_question_input" onchange="handleFiles(this.files)" accept=".csv"> <br>
+                        <br>
+                        Select datasets this driving question applies to:
+                        <br>
+                        <fieldset>
+                            <legend>Life, Death, Populations</legend>
+                            <input type="checkbox" name="database_selection" value="Populations"> Populations <br>
+                            <input type="checkbox" name="database_selection" value="Population Female Percentage"> 
+                                Population Female % <br>
+                            <input type="checkbox" name=database_selection" value="Population Female Percentage at Birth">
+                                Population Female % at Birth<br>
+                            <input type="checkbox" name=database_selection" value="Life Expectancy - Continents">
+                                Life Expectancy - Continents<br>
+                            <input type="checkbox" name=database_selection" value="Median Age">Median Age<br>
+                            <input type="checkbox" name=database_selection" value="Births">Births<br>
+                            <input type="checkbox" name=database_selection" value="Births Per Woman">Births Per Woman<br>
+                            <input type="checkbox" name=database_selection" value="Births Per 1000 People">
+                                Births Per 1000 People<br>
+                            <input type="checkbox" name=database_selection" value="Child Deaths">Child Deaths<br>
+                            <input type="checkbox" name=database_selection" value="Child Mortality Rates">Child Mortality Rates<br>
+                            <input type="checkbox" name=database_selection" value="Survival Rate to Age 65 - Male">
+                                Survival Rate to Age 65 - Male<br>
+                            <input type="checkbox" name=database_selection" value="Survival Rate to Age 65 - Female">
+                                Survival Rate to Age 65 - Female<br>
+                        </fieldset>
+                        <fieldset>
+                            <legend>Military</legend>
+                            <input type="checkbox" name=database_selection" value="Military Personnel">Military Personnel<br>
+                            <input type="checkbox" name=database_selection" value="Military Personnel Percent of Population">
+                                Military Personnel % Population<br>
+                            <input type="checkbox" name=database_selection" value="Military Spending">Military Spending<br>
+                            <input type="checkbox" name=database_selection" value="Military Spending Percent of GDP">
+                                Military Spending % GDP<br>
+                        </fieldset>
+                        <fieldset>
+                            <legend>Economies</legend>
+                            <input type="checkbox" name=database_selection" value="GDP">GDP<br>
+                            <input type="checkbox" name=database_selection" value="GDP Per Capita">GDP Per Capita<br>
+                            <input type="checkbox" name=database_selection" value="Economic Freedom Scores">
+                                Economic Freedom Scores<br>
+                        </fieldset>
+                        <fieldset>
+                            <legend>Environment</legend>
+                            <input type="checkbox" name=database_selection" value="CO2 Emissions">CO2 Emissions<br>
+                            <input type="checkbox" name=database_selection" value="CO2 Emissions Per Capita">
+                                CO2 Emissions Per Capita<br>
+                            <input type="checkbox" name=database_selection" value="CO2 Emissions Percentages">
+                                CO2 Emissions %<br>
+                            <input type="checkbox" name=database_selection" value="CO2 Emissions Cumulative">
+                                CO2 Emissions Cumulative<br>
+                            <input type="checkbox" name=database_selection" value="CO2 Emissions Cumulative Percentages">
+                                CO2 Emissions Cumulative %<br>
+                        </fieldset>
+                        <input type="submit" value="Submit"><br>
+                    </form>
+                </div>
+            </div>
 
             <div id="driving_question1" style="font-size: 14px"></div>
-            <div class="graphRegion">
+            <div class="graphRegion" ondrop="drop(event, 'graph1')" ondragover="allowDrop(event)">
                 <canvas id="canvas1"></canvas>
-                <button class="saveButton" id="save1" onclick="saveGraph(0, 1, false)">SAVE GRAPH 1</button>
+                <button class="saveButton" id="save1" draggable="true" ondragstart="drag(event, 'graph1')">SAVE GRAPH 1 (drag & drop)</button>
             </div>
 
             <br><br>
             <div id="driving_question2" style="font-size: 14px"></div>
-            <div class="graphRegion">
+            <div class="graphRegion" ondrop="drop(event, 'graph2')" ondragover="allowDrop(event)">
                 <canvas id="canvas2"></canvas>
-                <button class="saveButton" id="save2" onclick="saveGraph(0, 2, false)">SAVE GRAPH 2</button>
+                <button class="saveButton" id="save2" draggable="true" ondragstart="drag(event, 'graph2')">SAVE GRAPH 2 (drag & drop)</button>
             </div>
         </div>
 
@@ -231,104 +295,136 @@
             <div class="pillar">
 
                 <div class="frame" id="frame1">
-                    <div class="tile" onclick="showToolTip(1)">
+                    <div class="tile" onclick="showToolTip(1)" ondrop="drop(event, 'saved1')" ondragover="allowDrop(event)">
                         <div class="tooltiptext" id="tip1"></div>
                         <canvas id="saved1"></canvas>
-                        <a id="exit1" onclick="deleteGraph(1)">x</a>
+                        <a id="exit1" class="exit" onclick="deleteGraph(1)">x
+                            <div class="hoverTip">delete</div>
+                        </a>
+                        <a id="swap1" class="swap" draggable="true" ondragstart="drag(event, 'saved1')">⇆
+                            <div class="hoverTip">transfer (drag & drop)</div>
+                        </a>
                     </div>
                 </div>
 
                 <div class="frame">
-                    <div class="tile" onclick="showToolTip(2)">
+                    <div class="tile" onclick="showToolTip(2)" ondrop="drop(event, 'saved2')" ondragover="allowDrop(event)">
                         <span class="tooltiptext" id="tip2"></span>
                         <canvas id="saved2"></canvas>
-                        <a id="exit2" onclick="deleteGraph(2)">x</a>
+                        <a id="exit2" class="exit" onclick="deleteGraph(2)">x
+                            <div class="hoverTip">delete</div>
+                        </a>
+                        <a id="swap2" class="swap" draggable="true" ondragstart="drag(event, 'saved2')">⇆
+                            <div class="hoverTip">transfer (drag & drop)</div>
+                        </a>
                     </div>
                 </div>
 
                 <div class="frame">
-                    <div class="tile" onclick="showToolTip(3)">
+                    <div class="tile" onclick="showToolTip(3)" ondrop="drop(event, 'saved3')" ondragover="allowDrop(event)">
                         <span class="tooltiptext" id="tip3"></span>
                         <canvas id="saved3"></canvas>
-                        <a id="exit3" onclick="deleteGraph(3)">x</a>
+                        <a id="exit3" class="exit" onclick="deleteGraph(3)">x
+                            <div class="hoverTip">delete</div>
+                        </a>
+                        <a id="swap3" class="swap" draggable="true" ondragstart="drag(event, 'saved3')">⇆
+                            <div class="hoverTip">transfer (drag & drop)</div>
+                        </a>
                     </div>
                 </div>
 
                 <div class="frame">
-                    <div class="tile" onclick="showToolTip(4)">
+                    <div class="tile" onclick="showToolTip(4)" ondrop="drop(event, 'saved4')" ondragover="allowDrop(event)">
                         <span class="tooltiptext" id="tip4"></span>
                         <canvas id="saved4"></canvas>
-                        <a id="exit4" onclick="deleteGraph(4)">x</a>
+                        <a id="exit4" class="exit" onclick="deleteGraph(4)">x
+                            <div class="hoverTip">delete</div>
+                        </a>
+                        <a id="swap4" class="swap" draggable="true" ondragstart="drag(event, 'saved4')">⇆
+                            <div class="hoverTip">transfer (drag & drop)</div>
+                        </a>
                     </div>
                 </div>
 
                 <div class="frame">
-                    <div class="tile" onclick="showToolTip(5)">
+                    <div class="tile" onclick="showToolTip(5)" ondrop="drop(event, 'saved5')" ondragover="allowDrop(event)">
                         <span class="tooltiptext" id="tip5"></span>
                         <canvas id="saved5"></canvas>
-                        <a id="exit5" onclick="deleteGraph(5)">x</a>
+                        <a id="exit5" class="exit" onclick="deleteGraph(5)">x
+                            <div class="hoverTip">delete</div>
+                        </a>
+                        <a id="swap5" class="swap" draggable="true" ondragstart="drag(event, 'saved5')">⇆
+                            <div class="hoverTip">transfer (drag & drop)</div>
+                        </a>
                     </div>
                 </div>
-
-                <div class="frame">
-                    <div class="tile" onclick="showToolTip(6)">
-                        <span class="tooltiptext" id="tip6"></span>
-                        <canvas id="saved6"></canvas>
-                        <a id="exit6" onclick="deleteGraph(6)">x</a>
-                    </div>
-                </div>
-
             </div>
             <div class="pillar">
 
                 <div class="frame">
-                    <div class="tile" onclick="showToolTip(7)">
+                    <div class="tile" onclick="showToolTip(6)" ondrop="drop(event, 'saved6')" ondragover="allowDrop(event)">
+                        <span class="tooltiptext" id="tip6"></span>
+                        <canvas id="saved6"></canvas>
+                        <a id="exit6" class="exit" onclick="deleteGraph(6)">x
+                            <div class="hoverTip">delete</div>
+                        </a>
+                        <a id="swap6" class="swap" draggable="true" ondragstart="drag(event, 'saved6')">⇆
+                            <div class="hoverTip">transfer (drag & drop)</div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="frame">
+                    <div class="tile" onclick="showToolTip(7)" ondrop="drop(event, 'saved7')" ondragover="allowDrop(event)">
                         <span class="tooltiptext" id="tip7"></span>
                         <canvas id="saved7"></canvas>
-                        <a id="exit7" onclick="deleteGraph(7)">x</a>
+                        <a id="exit7" class="exit" onclick="deleteGraph(7)">x
+                            <div class="hoverTip">delete</div>
+                        </a>
+                        <a id="swap7" class="swap" draggable="true" ondragstart="drag(event, 'saved7')">⇆
+                            <div class="hoverTip">transfer (drag & drop)</div>
+                        </a>
                     </div>
                 </div>
 
                 <div class="frame">
-                    <div class="tile" onclick="showToolTip(8)">
+                    <div class="tile" onclick="showToolTip(8)" ondrop="drop(event, 'saved8')" ondragover="allowDrop(event)">
                         <span class="tooltiptext" id="tip8"></span>
                         <canvas id="saved8"></canvas>
-                        <a id="exit8" onclick="deleteGraph(8)">x</a>
+                        <a id="exit8" class="exit" onclick="deleteGraph(8)">x
+                            <div class="hoverTip">delete</div>
+                        </a>
+                        <a id="swap8" class="swap" draggable="true" ondragstart="drag(event, 'saved8')">⇆
+                            <div class="hoverTip">transfer (drag & drop)</div>
+                        </a>
                     </div>
                 </div>
 
                 <div class="frame">
-                    <div class="tile" onclick="showToolTip(9)">
+                    <div class="tile" onclick="showToolTip(9)" ondrop="drop(event, 'saved9')" ondragover="allowDrop(event)">
                         <span class="tooltiptext" id="tip9"></span>
                         <canvas id="saved9"></canvas>
-                        <a id="exit9" onclick="deleteGraph(9)">x</a>
+                        <a id="exit9" class="exit" onclick="deleteGraph(9)">x
+                            <div class="hoverTip">delete</div>
+                        </a>
+                        <a id="swap9" class="swap" draggable="true" ondragstart="drag(event, 'saved9')">⇆
+                            <div class="hoverTip">transfer (drag & drop)</div>
+                        </a>
                     </div>
                 </div>
 
                 <div class="frame">
-                    <div class="tile" onclick="showToolTip(10)">
+                    <div class="tile" onclick="showToolTip(10)" ondrop="drop(event, 'saved10')" ondragover="allowDrop(event)">
                         <span class="tooltiptext" id="tip10"></span>
                         <canvas id="saved10"></canvas>
-                        <a id="exit10" onclick="deleteGraph(10)">x</a>
+                        <a id="exit10" class="exit" onclick="deleteGraph(10)">x
+                            <div class="hoverTip">delete</div>
+                        </a>
+                        <a id="swap10" class="swap" draggable="true" ondragstart="drag(event, 'saved10')">⇆
+                            <div class="hoverTip">transfer (drag & drop)</div>
+                        </a>
                     </div>
                 </div>
-
-                <div class="frame">
-                    <div class="tile" onclick="showToolTip(11)">
-                        <span class="tooltiptext" id="tip11"></span>
-                        <canvas id="saved11"></canvas>
-                        <a id="exit11" onclick="deleteGraph(11)">x</a>
-                    </div>
-                </div>
-
-                <div class="frame">
-                    <div class="tile" onclick="showToolTip(12)">
-                        <span class="tooltiptext" id="tip12"></span>
-                        <canvas id="saved12"></canvas>
-                        <a id="exit12" onclick="deleteGraph(12)">x</a>
-                    </div>
-                </div>
-
             </div>
         </div>
     </div>
