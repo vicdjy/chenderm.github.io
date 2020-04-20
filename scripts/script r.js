@@ -572,7 +572,8 @@ function verifyDB(n) {
         })
         
         //enable graph type menu
-        document.getElementById("gtype" + n).disabled = false;
+        var el = document.getElementById("gtype" + n);
+        el.disabled = false;
         if (previousGTypeValue == "bar")
             el.selectedIndex = 1;
         if (previousGTypeValue == "line")
