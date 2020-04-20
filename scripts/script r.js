@@ -114,7 +114,6 @@ function processData(csv) {
             tarr.push(data[j]);
         }
         line = tarr;
-        console.log(line);
     }
 
 }
@@ -176,8 +175,6 @@ function graphData(database, xaxis, yaxis, n, lowDate, highDate, minDate, maxDat
         //add driving question
         var dq = document.getElementById("driving_question" + n);
         var question = "";
-        console.log(database);
-        console.log(drivingQuestion["Populations"]);
         if (typeof drivingQuestion[database] === 'undefined') {
             //alert("this database does not have a driving question");
             question = "default driving question";
@@ -239,8 +236,8 @@ function graphData(database, xaxis, yaxis, n, lowDate, highDate, minDate, maxDat
             graph1.Y = yaxis;
             graph1.lowDate = lowDate;
             graph1.highDate = highDate;
-            graph1.fromDate = minDate;
-            graph1.toDate = maxDate;
+            graph1.minDate = minDate;
+            graph1.maxDate = maxDate;
             graph1.type = gtype;
             graph1.color = color;
             graph1.colorScheme = colorScheme;
@@ -294,8 +291,8 @@ function graphData(database, xaxis, yaxis, n, lowDate, highDate, minDate, maxDat
             graph2.Y = yaxis;
             graph2.lowDate = lowDate;
             graph2.highDate = highDate;
-            graph2.fromDate = minDate;
-            graph2.toDate = maxDate;
+            graph2.minDate = minDate;
+            graph2.maxDate = maxDate;
             graph2.type = gtype;
             graph2.color = color;
             graph2.colorScheme = colorScheme;
@@ -719,6 +716,10 @@ function saveGraph(saveNum, graphNum, swap) {
             if (!swap) {
                 alert("Graph " + graphNum + " is already saved at box #" + (i + 1));
             }
+            var exit = document.getElementById("exit" + saveNum);
+            exit.style.visibility = "hidden";
+            var swap = document.getElementById("swap" + saveNum);
+            swap.style.visibility = "hidden";
             return;
         }
     }
@@ -800,7 +801,7 @@ function swap(savedNum, graphNum) {
     var savedColor = savedGraph.color;
     var savedColorScheme = savedGraph.colorScheme;
 
-    saveGraph(savedNum, graphNum, true);
+    saveGraph(savedNum, graphNum, false);
     graphData(savedDB, savedX, savedY, graphNum, savedLowDate, savedHighDate, savedMinDate, savedMaxDate, savedType, savedColor, savedColorScheme);
 
     //updating the controls on the left side
@@ -864,6 +865,8 @@ function relocate(prevSave, nextSave) {
         var prevY = prevSavedGraph.Y;
         var prevLowDate = prevSavedGraph.lowDate;
         var prevHighDate = prevSavedGraph.highDate;
+        var prevMinDate = prevSavedGraph.minDate;
+        var prevMaxDate = prevSavedGraph.maxDate;
         var prevGraphType = prevSavedGraph.type;
         var prevColor = prevSavedGraph.color;
         var prevColorScheme = prevSavedGraph.colorScheme;
@@ -872,6 +875,8 @@ function relocate(prevSave, nextSave) {
         tip.style.display = "none";
         tip.style.backgroundColor = "transparent";
         tip.innerHTML = "";
+
+        deleteGraph(prevSave);
 
         var canvas = document.getElementById("saved" + nextSave);
         canvas = canvas.getContext("2d");
@@ -904,6 +909,8 @@ function relocate(prevSave, nextSave) {
         g.Y = prevY;
         g.lowDate = prevLowDate;
         g.highDate = prevHighDate;
+        g.minDate = prevMinDate;
+        g.maxDate = prevMaxDate;
         g.type = prevGraphType;
         g.color = prevColor;
         g.colorScheme = prevColorScheme;
@@ -923,8 +930,6 @@ function relocate(prevSave, nextSave) {
 
         var swap = document.getElementById("swap" + nextSave);
         swap.style.visibility = "visible";
-
-        deleteGraph(prevSave);
     }
     else {
         var savedGraph1 = savedGraphs[prevSave - 1];
@@ -936,9 +941,18 @@ function relocate(prevSave, nextSave) {
         var y1 = savedGraph1.Y;
         var lowDate1 = savedGraph1.lowDate;
         var highDate1 = savedGraph1.highDate;
+        var minDate1 = savedGraph1.minDate;
+        var maxDate1 = savedGraph1.maxDate;
         var graphType1 = savedGraph1.type;
         var color1 = savedGraph1.color;
         var colorScheme1 = savedGraph1.colorScheme;
+
+        var tip = document.getElementById("tip" + prevSave);
+        tip.style.display = "none";
+        tip.style.backgroundColor = "transparent";
+        tip.innerHTML = "";
+
+        deleteGraph(prevSave);
 
         var savedGraph2 = savedGraphs[nextSave - 1];
         var labelsArr2 = savedGraph2.config.data.labels;
@@ -949,65 +963,22 @@ function relocate(prevSave, nextSave) {
         var y2 = savedGraph2.Y;
         var lowDate2 = savedGraph2.lowDate;
         var highDate2 = savedGraph2.highDate;
+        var minDate2 = savedGraph2.minDate;
+        var maxDate2 = savedGraph2.maxDate;
         var graphType2 = savedGraph2.type;
         var color2 = savedGraph2.color;
         var colorScheme2 = savedGraph2.colorScheme;
 
-        deleteGraph(prevSave);
+        tip = document.getElementById("tip" + nextSave);
+        tip.style.display = "none";
+        tip.style.backgroundColor = "transparent";
+        tip.innerHTML = "";
+
         deleteGraph(nextSave);
 
-        var canvas = document.getElementById("saved" + prevSave);
-        canvas = canvas.getContext("2d");
-        var g = new Chart(canvas, {
-            type: graphType2,
-            options: {
-                scales: {
-                    xAxes: [{display: false}],
-                    yAxes: [{display: false}],
-                },
-                legend: {display: false},
-                responsive: true,
-                maintainAspectRatio: false,
-                tooltips: false,
-                animation: {duration: 0}
-            },
-            data: {
-                labels: labelsArr2,
-                datasets: [{
-                    data: dataArr2,
-                    backgroundColor: "rgba(255,255,255,1)",
-                    pointRadius: 0,
-                    pointHoverRadius: 0
-                }]
-            }
-        });
-        g.description = hoverText2;
-        g.DB = db2;
-        g.X = x2;
-        g.Y = y2;
-        g.lowDate = lowDate2;
-        g.highDate = highDate2;
-        g.type = graphType2;
-        g.color = color2;
-        g.colorScheme = colorScheme2;
-        savedGraphs[prevSave - 1] = g;
-
-        var tip = document.getElementById("tip" + prevSave);
-        hoverText2 = hoverText2.replace(/\n( *)/g, function (match, p1) {
-            return '<br>' + '&nbsp;'.repeat(p1.length);
-        });
-        tip.innerHTML = hoverText2;
-        tip.style.visibility = "hidden";
-
-        var exit = document.getElementById("exit" + prevSave);
-        exit.style.visibility = "visible";
-
-        var swap = document.getElementById("swap" + prevSave);
-        swap.style.visibility = "visible";
-
-        canvas = document.getElementById("saved" + nextSave);
-        canvas = canvas.getContext("2d");
-        g = new Chart(canvas, {
+        var canvas1 = document.getElementById("saved" + nextSave);
+        canvas1 = canvas1.getContext("2d");
+        var g1 = new Chart(canvas1, {
             type: graphType1,
             options: {
                 scales: {
@@ -1030,28 +1001,85 @@ function relocate(prevSave, nextSave) {
                 }]
             }
         });
-        g.description = hoverText1;
-        g.DB = db1;
-        g.X = x1;
-        g.Y = y1;
-        g.lowDate = lowDate1;
-        g.highDate = highDate1;
-        g.type = graphType1;
-        g.color = color1;
-        g.colorScheme = colorScheme1;
-        savedGraphs[nextSave - 1] = g;
+        g1.description = hoverText1;
+        g1.DB = db1;
+        g1.X = x1;
+        g1.Y = y1;
+        g1.lowDate = lowDate1;
+        g1.highDate = highDate1;
+        g1.minDate = minDate1;
+        g1.maxDate = maxDate1;
+        g1.type = graphType1;
+        g1.color = color1;
+        g1.colorScheme = colorScheme1;
+        savedGraphs[nextSave - 1] = g1;
 
         tip = document.getElementById("tip" + nextSave);
+        tip.style.display = "block";
+        tip.style.backgroundColor = "#0000005c";
         hoverText1 = hoverText1.replace(/\n( *)/g, function (match, p1) {
             return '<br>' + '&nbsp;'.repeat(p1.length);
         });
         tip.innerHTML = hoverText1;
         tip.style.visibility = "hidden";
 
-        exit = document.getElementById("exit" + nextSave);
+        var exit = document.getElementById("exit" + nextSave);
         exit.style.visibility = "visible";
 
-        swap = document.getElementById("swap" + nextSave);
+        var swap = document.getElementById("swap" + nextSave);
+        swap.style.visibility = "visible";
+
+        var canvas2 = document.getElementById("saved" + prevSave);
+        canvas2 = canvas2.getContext("2d");
+        var g2 = new Chart(canvas2, {
+            type: graphType2,
+            options: {
+                scales: {
+                    xAxes: [{display: false}],
+                    yAxes: [{display: false}],
+                },
+                legend: {display: false},
+                responsive: true,
+                maintainAspectRatio: false,
+                tooltips: false,
+                animation: {duration: 0}
+            },
+            data: {
+                labels: labelsArr2,
+                datasets: [{
+                    data: dataArr2,
+                    backgroundColor: "rgba(255,255,255,1)",
+                    pointRadius: 0,
+                    pointHoverRadius: 0
+                }]
+            }
+        });
+        g2.description = hoverText2;
+        g2.DB = db2;
+        g2.X = x2;
+        g2.Y = y2;
+        g2.lowDate = lowDate2;
+        g2.highDate = highDate2;
+        g2.minDate = minDate2;
+        g2.maxDate = maxDate2;
+        g2.type = graphType2;
+        g2.color = color2;
+        g2.colorScheme = colorScheme2;
+        savedGraphs[prevSave - 1] = g2;
+
+        tip = document.getElementById("tip" + prevSave);
+        tip.style.display = "block";
+        tip.style.backgroundColor = "#0000005c";
+        hoverText2 = hoverText2.replace(/\n( *)/g, function (match, p1) {
+            return '<br>' + '&nbsp;'.repeat(p1.length);
+        });
+        tip.innerHTML = hoverText2;
+        tip.style.visibility = "hidden";
+
+        exit = document.getElementById("exit" + prevSave);
+        exit.style.visibility = "visible";
+
+        swap = document.getElementById("swap" + prevSave);
         swap.style.visibility = "visible";
     }
 }
