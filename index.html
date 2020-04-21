@@ -24,22 +24,22 @@
 <body>
     <div class="container">
         <div class="col1">
-            <div style="width: 50%">
+            <div style="width: 70%">
                 <img class="logo" src="img/logo.png">
-
-                <button id="modal-btn" onclick="displayModal()"> Upload Script</button>
-                <div class="modal">
-                    <div class="modal-content">
-                        <span class="close-btn" onclick="closeModal()">&times;</span>
-                        <form>
-                            <label for="script"><b>Script File</b></label>
-                            <input type="file" id="script_input" onchange="handleFiles(this.files)" accept=".json"> <br>
-                        </form>
-                    </div>
-                </div>
 
                 <div>
                     <h2 style="color: white; display: inline-block; margin-right: 30%;">Data</h2>
+
+                    <button id="modal-btn" onclick="displayModal()">UPLOAD SCRIPT</button>
+                    <div class="modal">
+                        <div class="modal-content">
+                            <span class="close-btn" onclick="closeModal()">&times;</span>
+                            <form>
+                                <label for="script"><b>Script File</b></label>
+                                <input type="file" id="script_input" onchange="handleFiles(this.files)" accept=".json"> <br>
+                            </form>
+                        </div>
+                    </div>
                     <button id="default" onclick="switchToDefault()">DEFAULT</button>
                     <button id="clear" onclick="clearAllValues()">CLEAR</button>
                 </div>
@@ -109,22 +109,22 @@
                         <c style="margin-left: 10px;">Color:</c>
                         <button class="colorButton" id="colorButton0" onclick="showColorWheel(0)"></button>
                         <div class="colorwheelMenu" id="colorWheel0">
-                            <item style="background-color: #ffffff" onclick="changeColorButton(0,this.style.backgroundColor,'brewer.Greys8')"></item>
-                            <item style="background-color: #f2d908" onclick="changeColorButton(0,this.style.backgroundColor,'office.Orbit6')"></item>
-                            <item style="background-color: #f09415" onclick="changeColorButton(0,this.style.backgroundColor,'office.Basis6')"></item>
-                            <item style="background-color: #f81b02" onclick="changeColorButton(0,this.style.backgroundColor,'office.Atlas6')"></item>
-                            <item style="background-color: #ff388c" onclick="changeColorButton(0,this.style.backgroundColor,'office.Verve6')"></item>
-                            <item style="background-color: #762a83" onclick="changeColorButton(0,this.style.backgroundColor,'brewer.PRGn7')"></item>
-                            <item style="background-color: #1d86cd" onclick="changeColorButton(0,this.style.backgroundColor,'office.Story6')"></item>
-                            <item style="background-color: #76c5ef" onclick="changeColorButton(0,this.style.backgroundColor,'office.Kilter6')"></item>
-                            <item style="background-color: #7fd13b" onclick="changeColorButton(0,this.style.backgroundColor,'office.Metro6')"></item>
-                            <item style="background-color: #09622a" onclick="changeColorButton(0,this.style.backgroundColor,'tableau.ClassicGreenBlue11')"></item>
-                            <item style="background-color: #543005" onclick="changeColorButton(0,this.style.backgroundColor,'brewer.BrBG11')"></item>
-                            <item style="background-color: #8c510a" onclick="changeColorButton(0,this.style.backgroundColor,'brewer.BrBG7')"></item>
-                            <item style="background-color: #a6611a" onclick="changeColorButton(0,this.style.backgroundColor,'brewer.BrBG4')"></item>
-                            <item style="background-color: #d8b365" onclick="changeColorButton(0,this.style.backgroundColor,'brewer.BrBG3')"></item>
-                            <item style="background-color: #c3c3c3" onclick="changeColorButton(0,this.style.backgroundColor,'tableau.ClassicGray13')"></item>
-                            <item style="background-color: #6f6f6f" onclick="changeColorButton(0,this.style.backgroundColor,'office.Mesh6')"></item>
+                            <item style="background-color: #6f6f6f" value="gray" onclick="changeColorButton(0,'gray')"></item>
+                            <item style="background-color: #ffffff" value="white" onclick="changeColorButton(0,'white')"></item>
+                            <item style="background-color: #f81b02" value="red" onclick="changeColorButton(0,'red')"></item>
+                            <item style="background-color: #ff388c" value="pink" onclick="changeColorButton(0,'pink')"></item>
+                            <item style="background-color: #543005" value="darkBrown" onclick="changeColorButton(0,'darkBrown')"></item>
+                            <item style="background-color: #a6611a" value="brown" onclick="changeColorButton(0,'brown')"></item>
+                            <item style="background-color: #f09415" value="orange" onclick="changeColorButton(0,'orange')"></item>
+                            <item style="background-color: #f2d908" value="yellow" onclick="changeColorButton(0,'yellow')"></item>
+                            <item style="background-color: #86ce24" value="green" onclick="changeColorButton(0,'green')"></item>
+                            <item style="background-color: #4e9f50" value="darkGreen" onclick="changeColorButton(0,'darkGreen')"></item>
+                            <item style="background-color: #31b6fd" value="lightBlue" onclick="changeColorButton(0,'lightBlue')"></item>
+                            <item style="background-color: #0f6fc6" value="blue" onclick="changeColorButton(0,'blue')"></item>
+                            <item style="background-color: #294171" value="darkBlue" onclick="changeColorButton(0,'darkBlue')"></item>
+                            <item style="background-color: #663366" value="darkPurple" onclick="changeColorButton(0,'darkPurple')"></item>
+                            <item style="background-color: #ac3ec1" value="purple" onclick="changeColorButton(0,'purple')"></item>
+                            <item style="background-color: #af8dc3" value="lightPurple" onclick="changeColorButton(0,'lightPurple')"></item>
                         </div>
                     </div>
 
@@ -204,22 +204,22 @@
                         <c style="margin-left: 10px;">Color:</c>
                         <button class="colorButton" id="colorButton1" onclick="showColorWheel(1)"></button>
                         <div class="colorwheelMenu" id="colorWheel1">
-                            <item style="background-color: #ffffff" onclick="changeColorButton(1,this.style.backgroundColor,'brewer.Greys8')"></item>
-                            <item style="background-color: #f2d908" onclick="changeColorButton(1,this.style.backgroundColor,'office.Orbit6')"></item>
-                            <item style="background-color: #f09415" onclick="changeColorButton(1,this.style.backgroundColor,'office.Basis6')"></item>
-                            <item style="background-color: #f81b02" onclick="changeColorButton(1,this.style.backgroundColor,'office.Atlas6')"></item>
-                            <item style="background-color: #ff388c" onclick="changeColorButton(1,this.style.backgroundColor,'office.Verve6')"></item>
-                            <item style="background-color: #762a83" onclick="changeColorButton(1,this.style.backgroundColor,'brewer.PRGn7')"></item>
-                            <item style="background-color: #1d86cd" onclick="changeColorButton(1,this.style.backgroundColor,'office.Story6')"></item>
-                            <item style="background-color: #76c5ef" onclick="changeColorButton(1,this.style.backgroundColor,'office.Kilter6')"></item>
-                            <item style="background-color: #7fd13b" onclick="changeColorButton(1,this.style.backgroundColor,'office.Metro6')"></item>
-                            <item style="background-color: #09622a" onclick="changeColorButton(1,this.style.backgroundColor,'tableau.ClassicGreenBlue11')"></item>
-                            <item style="background-color: #543005" onclick="changeColorButton(1,this.style.backgroundColor,'brewer.BrBG11')"></item>
-                            <item style="background-color: #8c510a" onclick="changeColorButton(1,this.style.backgroundColor,'brewer.BrBG7')"></item>
-                            <item style="background-color: #a6611a" onclick="changeColorButton(1,this.style.backgroundColor,'brewer.BrBG4')"></item>
-                            <item style="background-color: #d8b365" onclick="changeColorButton(1,this.style.backgroundColor,'brewer.BrBG3')"></item>
-                            <item style="background-color: #c3c3c3" onclick="changeColorButton(1,this.style.backgroundColor,'tableau.ClassicGray13')"></item>
-                            <item style="background-color: #6f6f6f" onclick="changeColorButton(1,this.style.backgroundColor,'office.Mesh6')"></item>
+                            <item style="background-color: #6f6f6f" value="gray" onclick="changeColorButton(1,'gray')"></item>
+                            <item style="background-color: #ffffff" value="white" onclick="changeColorButton(1,'white')"></item>
+                            <item style="background-color: #f81b02" value="red" onclick="changeColorButton(1,'red')"></item>
+                            <item style="background-color: #ff388c" value="pink" onclick="changeColorButton(1,'pink')"></item>
+                            <item style="background-color: #543005" value="darkBrown" onclick="changeColorButton(1,'darkBrown')"></item>
+                            <item style="background-color: #a6611a" value="brown" onclick="changeColorButton(1,'brown')"></item>
+                            <item style="background-color: #f09415" value="orange" onclick="changeColorButton(1,'orange')"></item>
+                            <item style="background-color: #f2d908" value="yellow" onclick="changeColorButton(1,'yellow')"></item>
+                            <item style="background-color: #86ce24" value="green" onclick="changeColorButton(1,'green')"></item>
+                            <item style="background-color: #4e9f50" value="darkGreen" onclick="changeColorButton(1,'darkGreen')"></item>
+                            <item style="background-color: #31b6fd" value="lightBlue" onclick="changeColorButton(1,'lightBlue')"></item>
+                            <item style="background-color: #0f6fc6" value="blue" onclick="changeColorButton(1,'blue')"></item>
+                            <item style="background-color: #294171" value="darkBlue" onclick="changeColorButton(1,'darkBlue')"></item>
+                            <item style="background-color: #663366" value="darkPurple" onclick="changeColorButton(1,'darkPurple')"></item>
+                            <item style="background-color: #ac3ec1" value="purple" onclick="changeColorButton(1,'purple')"></item>
+                            <item style="background-color: #af8dc3" value="lightPurple" onclick="changeColorButton(1,'lightPurple')"></item>
                         </div>
                     </div>
                     <p></p>
@@ -239,14 +239,12 @@
             <div id="driving_question0" style="font-size: 14px"></div>
             <div class="graphRegion">
                 <canvas id="canvas0"></canvas>
-                <button class="saveButton" id="save0" onclick="saveGraph(0, 0, false)">SAVE GRAPH 1</button>
             </div>
 
             <br><br>
             <div id="driving_question1" style="font-size: 14px"></div>
             <div class="graphRegion">
                 <canvas id="canvas1"></canvas>
-                <button class="saveButton" id="save1" onclick="saveGraph(0, 1, false)">SAVE GRAPH 2</button>
             </div>
         </div>
     </div>
