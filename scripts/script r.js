@@ -257,11 +257,9 @@ function graphData(database, xaxis, yaxis, n, lowDate, highDate, minDate, maxDat
 
             //create descriptions & properties for graphs
             //needed for tooltip hover in saved region
-            var description = { 
-                "Id": 1,
+            var description = {
                 "DB": database,
                 "Yaxis": yaxis,
-                "Xaxis": xaxis,
                 "lowDate": lowDate,
                 "highDate": highDate,
                 "gtype": gtype
@@ -310,10 +308,8 @@ function graphData(database, xaxis, yaxis, n, lowDate, highDate, minDate, maxDat
             //create descriptions & properties for graphs
             //needed for tooltip hover in saved region
             var description = { 
-                "Id": 2,
                 "DB": database,
                 "Yaxis": yaxis,
-                "Xaxis": xaxis,
                 "lowDate": lowDate,
                 "highDate": highDate,
                 "gtype": gtype
