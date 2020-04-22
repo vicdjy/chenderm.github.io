@@ -396,16 +396,16 @@ function setOptions(databaseName, yaxis, xaxis, gtype, lowDate, highDate, n, col
             }
 
             //update date range slider values
+            var years = [];
+            for (var i = 0; i < data.length; i++) {
+                years.push(data[i]["Year"]);
+            }
             if (highDate === 0) {
-                var years = [];
-                for (var i = 0; i < data.length; i++) {
-                    years.push(data[i]["Year"]);
-                }
                 lowDate = years[0];
                 highDate = years[years.length - 1];
             }
 
-            updateSlider(n, lowDate, highDate);
+            updateSliderOnlyRange(n, years[0], years[years.length - 1], lowDate, highDate);
 
             //enable the submit button
             document.getElementById("submit" + n).disabled = false;
