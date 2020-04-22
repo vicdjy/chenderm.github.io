@@ -574,9 +574,9 @@ function verifyDB(n) {
         //enable graph type menu
         var el = document.getElementById("gtype" + n);
         el.disabled = false;
-        if (previousGTypeValue == "bar")
-            el.selectedIndex = 1;
         if (previousGTypeValue == "line")
+            el.selectedIndex = 1;
+        if (previousGTypeValue == "bar")
             el.selectedIndex = 2;
         
         //enable color button
