@@ -241,6 +241,7 @@ body {
   color: white;
   z-index: 2;
   cursor: move;
+  display: inline-block;
 }
 
 .modal-content {
