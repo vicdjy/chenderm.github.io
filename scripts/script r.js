@@ -165,11 +165,15 @@ function errorHandler(evt) {
 function submitDrivingQuestions(){
     var checkboxes = document.getElementsByName("database_selection");  
     var numberOfCheckedItems = 0;  
+    var dbSelected = [];
+    console.log(checkboxes.length);
     for(var i = 0; i < checkboxes.length; i++)  
-    {  
+    {   
         if(checkboxes[i].checked)
         { 
             numberOfCheckedItems++;
+            dbSelected.push(checkboxes[i].value);
+            console.log(checkboxes[i].value);
             drivingQuestion[checkboxes[i].value] = line;
         }
     }
@@ -178,7 +182,25 @@ function submitDrivingQuestions(){
         alert("You have to select a database");  
         return false;  
     }
+    selectDatabases(dbSelected);
     alert("Submitted");
+}
+
+function selectDatabases(dbSelected){
+    select = document.getElementById("database1");
+    for (const db of dbSelected) {
+        var option = document.createElement("option");
+        option.val = db;
+        option.text = db.charAt(0).toUpperCase() + db.slice(1);
+        select.appendChild(option);
+    }
+    select = document.getElementById("database2");
+    for (const db of dbSelected) {
+        var option = document.createElement("option");
+        option.val = db;
+        option.text = db.charAt(0).toUpperCase() + db.slice(1);
+        select.appendChild(option);
+    }
 }
 
 
@@ -210,18 +232,20 @@ function graphData(database, xaxis, yaxis, n, lowDate, highDate, minDate, maxDat
             }
         }
 
-        //add driving question
-        var dq = document.getElementById("driving_question" + n);
-        var question = "";
-        if (typeof drivingQuestion[database] === 'undefined') {
-            //alert("this database does not have a driving question");
-            question = "default driving question";
-        }
-        else {
-            question = drivingQuestion[database];
-        }
-          
-        dq.innerHTML = question;
+        //add driving question (only use the first graph)
+        if (n==1) {
+            var dq = document.getElementById("driving_question");
+            var question = "";
+            if (typeof drivingQuestion[database] === 'undefined') {
+                //alert("this database does not have a driving question");
+                question = "default driving question";
+            }
+            else {
+                question = drivingQuestion[database];
+            }
+            
+            dq.innerHTML = question;
+        }   
 
         //create graph
         var ctx = document.getElementById("canvas" + n);
