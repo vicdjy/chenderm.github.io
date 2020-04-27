@@ -24,7 +24,7 @@
 <body>
     <div class="container">
         <div class="col1">
-            <div style="width: 70%">
+            <div style="width: 100%">
                 <img class="logo" src="img/logo.png">
 
                 <div>
@@ -42,6 +42,13 @@
                     </div>
                     <button id="default" onclick="switchToDefault()">DEFAULT</button>
                     <button id="clear" onclick="clearAllValues()">CLEAR</button>
+                    <button id="modal-help" onclick="displayHelp()">HELP</button>
+                    <div class="help">
+                        <div class="modal-content">
+                            <span class="close-btn" onclick="closeHelp()">&times;</span>
+                            
+                        </div>
+                    </div>
                 </div>
             </div>
 
