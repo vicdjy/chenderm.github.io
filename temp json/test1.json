@@ -3,7 +3,7 @@
   { 
    "Id": 0,
    "DB": "Populations",
-   "Yaxis": "Norway",
+   "Yaxis": "Russia",
    "Xaxis": "Year",
    "lowDate": 1800,
    "highDate": 2000,
@@ -13,7 +13,7 @@
   { 
    "Id": 1,
    "DB": "Populations",
-   "Yaxis": "North Korea",
+   "Yaxis": "United States",
    "Xaxis": "Year",
    "lowDate": 1830,
    "highDate": 1900,
