@@ -24,13 +24,15 @@
 <body>
     <div class="container">
         <div class="col1">
-            <div style="width: 70%">
+            <div style="width: 100%">
                 <img class="logo" src="img/logo.png">
 
                 <div>
-                    <h2 style="color: white; display: inline-block; margin-right: 30%;">Data</h2>
+                    <h2 style="color: white; display: inline-block;">Data</h2>
 
-                    <button id="modal-btn" onclick="displayModal()">UPLOAD SCRIPT</button>
+                    <button id="clear" onclick="clearAllValues()" style="float: right; margin-left: 5px; margin-top: 30px;">CLEAR</button>
+                    <button id="default" onclick="switchToDefault()" style="float: right; margin-left: 5px; margin-top: 30px;">DEFAULT</button>
+                    <button id="modal-btn" onclick="displayModal()" style="float: right; margin-left: 5px; margin-top: 30px;">UPLOAD SCRIPT</button>
                     <div class="modal">
                         <div class="modal-content">
                             <span class="close-btn" onclick="closeModal()">&times;</span>
@@ -40,8 +42,6 @@
                             </form>
                         </div>
                     </div>
-                    <button id="default" onclick="switchToDefault()">DEFAULT</button>
-                    <button id="clear" onclick="clearAllValues()">CLEAR</button>
                 </div>
             </div>
 
