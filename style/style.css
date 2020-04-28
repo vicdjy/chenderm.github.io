@@ -105,7 +105,7 @@ body {
   background-color: rgb(0, 0, 0);
   background-color: rgba(0, 0, 0, 0.5);
   height:100%;
-  overflow: scroll;
+  overflow: auto;
 }
 
 .modal-content {

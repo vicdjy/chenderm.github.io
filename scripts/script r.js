@@ -25,16 +25,26 @@ var defaultXAxis1 = "Year";
 var defaultYAxis1 = "Algeria";
 
 var colorValues = {
-    "gray": "#6f6f6f",
+    "gray": "#797b7e",
+    "lightGray": "#a9a57c",
     "white": "#ffffff",
+    "darkRed": "#990000",
     "red": "#f81b02",
+    "lightRed": "ef8a62",
     "pink": "#ff388c",
+    "lightPink": "#e9a3c9",
     "darkBrown": "#543005",
     "brown": "#a6611a",
+    "lightBrown": "#d8b365",
+    "darkOrange": "#e66101",
     "orange": "#f09415",
+    "lightOrange": "#ffc685",
+    "darkYellow": "#f0ad00",
     "yellow": "#f2d908",
-    "green": "#86ce24",
-    "darkGreen": "#4e9f50",
+    "lightYellow": "#ffeda0",
+    "lightGreen": "#9acd4c",
+    "green": "#549e39",
+    "darkGreen": "#24693d",
     "lightBlue": "#31b6fd",
     "blue": "#0f6fc6",
     "darkBlue": "#294171",
@@ -44,16 +54,26 @@ var colorValues = {
 };
 
 var colorSchemeValues = {
-    "gray": "office.Mesh6",
+    "gray": "office.Angles6",
+    "lightGray": "office.Adjacency6",
     "white": "brewer.Greys8",
+    "darkRed": "office.Codex6",
     "red": "office.Atlas6",
+    "lightRed": "brewer.RdBu3",
     "pink": "office.Verve6",
+    "lightPink": "brewer.PiYG3",
     "darkBrown": "brewer.BrBG11",
     "brown": "brewer.BrBG4",
+    "lightBrown": "brewer.BrBG3",
+    "darkOrange": "brewer.PuOr5",
     "orange": "office.Basis6",
+    "lightOrange": "tableau.Orange20",
+    "darkYellow": "office.Module6",
     "yellow": "office.Orbit6",
-    "green": "office.UrbanPop6",
-    "darkGreen": "tableau.GreenOrangeTeal12",
+    "lightYellow": "brewer.YlOrRd3",
+    "lightGreen": "office.Circuit6",
+    "green": "office.Green6",
+    "darkGreen": "tableau.GreenBlue7",
     "lightBlue": "office.Waveform6",
     "blue": "office.Blue6",
     "darkBlue": "office.Folio6",
@@ -65,20 +85,16 @@ var colorSchemeValues = {
 var defaultTextValue = {
     "Graphs": [
         {
-            "Id": 0,
             "DB": "Populations",
             "Yaxis": "Rwanda",
-            "Xaxis": "Year",
             "lowDate": 1800,
             "highDate": 2019,
             "gtype": "bar",
             "color": "orange"
         },
         {
-            "Id": 1,
             "DB": "Populations",
             "Yaxis": "Algeria",
-            "Xaxis": "Year",
             "lowDate": 1800,
             "highDate": 2019,
             "gtype": "bar",
@@ -207,16 +223,15 @@ function submitText(id) {
 
     g = JSON.parse(textFromFileLoaded);
     database = g.DB;
-    xaxis = g.Xaxis;
+    xaxis = "Year";
     yaxis = g.Yaxis;
-    n = g.Id;
+    n = id;
     lowDate = g.lowDate;
     highDate = g.highDate;
     gtype = g.gtype;
     color = g.color;
-    colorScheme = g.colorScheme
 
-    setOptions(database, yaxis, xaxis, gtype, lowDate, highDate, n, color, colorScheme);
+    setOptions(database, yaxis, xaxis, gtype, lowDate, highDate, n, color);
 }
 
 function displayHelp() {
@@ -358,12 +373,10 @@ function graphData(database, xaxis, yaxis, n, lowDate, highDate, gtype, color) {
         })
 }
 
-function updateScript(Id, DB, Xaxis, Yaxis, lowDate, highDate, gtype, color) {
+function updateScript(Id, DB, Yaxis, lowDate, highDate, gtype, color) {
     var newTextValue = {
-        "Id": Id,
         "DB": DB,
         "Yaxis": Yaxis,
-        "Xaxis": Xaxis,
         "lowDate": lowDate,
         "highDate": highDate,
         "gtype": gtype,
@@ -396,7 +409,7 @@ function submitGraphData(n) {
     var color = document.getElementById("colorButton" + n).value;
 
     graphData(dbOption, xOption, yOption, n, lowDate, highDate, gtype, color);
-    updateScript(n, dbOption, xOption, yOption, lowDate, highDate, gtype, color);
+    updateScript(n, dbOption, yOption, lowDate, highDate, gtype, color);
 }
 
 /* setOption does the following two things:
@@ -469,12 +482,7 @@ function setOptions(databaseName, yaxis, xaxis, gtype, lowDate, highDate, n, col
         })
 
     //reset color button;
-    if (n == 0) {
-        changeColorButton(0, "orange");
-    }
-    else {
-        changeColorButton(1, "darkBrown");
-    }
+    changeColorButton(n, color);
     document.getElementById("colorButton" + n).disabled = false;
 
     if (firstLoad) {
