@@ -274,6 +274,20 @@ function graphData(database, xaxis, yaxis, n, lowDate, highDate, gtype, color) {
                         labels: labelsArr
                     },
                     options: {
+                        scales: {
+                            xAxes: [{
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: 'Year'
+                                }
+                            }],
+                            yAxes: [{
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: database
+                                }
+                            }]
+                        },
                         plugins: {
                             zoom: {
                                 pan: {
@@ -303,6 +317,20 @@ function graphData(database, xaxis, yaxis, n, lowDate, highDate, gtype, color) {
                         labels: labelsArr
                     },
                     options: {
+                        scales: {
+                            xAxes: [{
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: 'Year'
+                                }
+                            }],
+                            yAxes: [{
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: database
+                                }
+                            }]
+                        },
                         plugins: {
                             zoom: {
                                 pan: {
@@ -680,4 +708,11 @@ function changeColorButton(num, colorStr) {
 //Reset color button
 function resetColorButton(num) {
     changeColorButton(num, "gray");
+}
+
+//Download graph as jpg
+function downloadGraph(n) {
+    var url_base64jp = document.getElementById("canvas" + n).toDataURL("image/jpg");
+    var a = document.getElementById("download" + n);
+    a.href = url_base64jp;
 }
