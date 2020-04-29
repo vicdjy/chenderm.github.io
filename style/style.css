@@ -1,5 +1,5 @@
 body {
-  background-color:#015c92ff;
+  background-color:#c2edce;
 }
 
 * {
@@ -7,6 +7,7 @@ body {
 }
 
 .logo {
+  margin-top: 10px;
   margin-left: -5px;
   height: 81px;
   width: 322px;
@@ -33,7 +34,7 @@ body {
   padding-right: 10px;
   padding-bottom: 10px;
   padding-left: 5px;
-  background-color:#aabdd9;
+  background-color:#6fb3b8;
 }
 
 .col2 {
@@ -44,19 +45,11 @@ body {
   padding-bottom: 5px;
   padding-left: 20px;
   color: #524636;
-  background-color:#EFE0B9;
+  background-color:#f6f6f2;
 }
 
-#submit0 {
+.submit {
   background-color: #f8d605;
-  color: #015c92;
-  font-size: 14px;
-  height: 20px;
-}
-
-#submit1 {
-  background-color: #f8d605;
-  color: #015c92;
   font-size: 14px;
   height: 20px;
 }
