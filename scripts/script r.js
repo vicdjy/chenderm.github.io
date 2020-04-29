@@ -234,6 +234,27 @@ function submitText(id) {
     setOptions(database, yaxis, xaxis, gtype, lowDate, highDate, n, color);
 }
 
+function displayHelp() {
+    /*
+    This function display the fileUpload Modal.
+    Opens up a new window from the browser to allow users
+    to upload a script file from their local computer.
+    */
+    let help = document.querySelector(".help")
+    help.style.display = "block"
+}
+function closeHelp() {
+    //Close the fileupload window
+    let help = document.querySelector(".help")
+    help.style.display = "none"
+}
+window.onclick = function (e) {
+    let help = document.querySelector(".help")
+    if (e.target == help) {
+        help.style.display = "none"
+    }
+}
+
 //Graphs data for the nth graph.
 function graphData(database, xaxis, yaxis, n, lowDate, highDate, gtype, color) {
     if (n == 0 && graph0 !== undefined)
