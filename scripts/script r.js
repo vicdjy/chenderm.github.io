@@ -33,8 +33,8 @@ var colorValues = {
     "brown": "#a6611a",
     "orange": "#f09415",
     "yellow": "#f2d908",
-    "green": "#86ce24",
-    "darkGreen": "#4e9f50",
+    "lightGreen": "#9acd4c",
+    "green": "#549e39",
     "lightBlue": "#31b6fd",
     "blue": "#0f6fc6",
     "darkBlue": "#294171",
@@ -53,8 +53,8 @@ var colorSchemeValues = {
     "orange": "office.Basis6",
     "yellow": "office.Orbit6",
     "green": "office.UrbanPop6",
-    "darkGreen": "tableau.GreenOrangeTeal12",
-    "lightBlue": "office.Waveform6",
+    "lightGreen": "office.Circuit6",
+    "green": "office.Green6",
     "blue": "office.Blue6",
     "darkBlue": "office.Folio6",
     "darkPurple": "office.Advantage6",
@@ -798,7 +798,7 @@ function saveGraph(saveNum, graphNum, swap) {
             labels: labelsArr,
             datasets: [{
                 data: dataArr,
-                backgroundColor: "rgba(255,255,255,1)",
+                backgroundColor: "#015c92",
                 pointRadius: 0,
                 pointHoverRadius: 0
             }]
