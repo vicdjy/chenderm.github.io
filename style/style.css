@@ -240,7 +240,6 @@ body {
   background-color: #E2953D;
   color: white;
   z-index: 2;
-  cursor: move;
   display: inline-block;
 }
 
