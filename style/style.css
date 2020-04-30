@@ -1,5 +1,5 @@
 body {
-  background-color:#015c92ff;
+  background-color:#c2edce;
 }
 
 * {
@@ -7,6 +7,7 @@ body {
 }
 
 .logo {
+  margin-top: 10px;
   margin-left: -5px;
   height: 81px;
   width: 322px;
@@ -34,7 +35,12 @@ body {
   padding-right: 10px;
   padding-bottom: 10px;
   padding-left: 5px;
-  background-color:#aabdd9;
+  background-color:#92bbbd;
+}
+
+.database {
+  background-color: red;
+  color: white;
 }
 
 .col2 {
@@ -45,7 +51,7 @@ body {
   padding-bottom: 5px;
   padding-left: 20px;
   color: #524636;
-  background-color:#EFE0B9;
+  background-color:#f6f6f2;
 }
 
 .col3 {
@@ -55,8 +61,8 @@ body {
   padding-right: 10px;
   padding-bottom: 10px;
   padding-left: 20px;
-  color: white;
-  background-color:#aabdd9;
+  color: #015c92;
+  background-color:#66aedb;
 }
 
 .pillar {
@@ -74,7 +80,6 @@ body {
   width: 100%;
   margin-bottom: 20px;
   min-height: 75px;
-  color: #aabdd9;
 }
 
 .tile {
@@ -83,7 +88,7 @@ body {
   width: 80%;
   height: 80%;
   margin: auto;
-  border: 1px solid white;
+  border: 1px solid #015c92;
 }
 
 .exit {
@@ -95,7 +100,7 @@ body {
   margin-left: 4px;
   text-decoration: none;
   cursor: pointer;
-  color: white;
+  color: #015c92;
   z-index: 5;
 }
 
@@ -108,7 +113,7 @@ body {
   margin-left: 4px;
   text-decoration: none;
   cursor: move;
-  color: white;
+  color: #015c92;
   z-index: 5;
 }
 
@@ -172,16 +177,8 @@ body {
   cursor: pointer;
 }
 
-#submit1 {
+.submit {
   background-color: #f8d605;
-  color: #015c92;
-  font-size: 14px;
-  height: 20px;
-}
-
-#submit2 {
-  background-color: #f8d605;
-  color: #015c92;
   font-size: 14px;
   height: 20px;
 }
