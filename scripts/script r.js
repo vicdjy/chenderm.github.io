@@ -194,14 +194,12 @@ function submitDrivingQuestions(){
     var checkboxes = document.getElementsByName("database_selection");  
     var numberOfCheckedItems = 0;  
     var dbSelected = [];
-    console.log(checkboxes.length);
     for(var i = 0; i < checkboxes.length; i++)  
     {   
         if(checkboxes[i].checked)
         { 
             numberOfCheckedItems++;
             dbSelected.push(checkboxes[i].value);
-            console.log(checkboxes[i].value);
             drivingQuestion[checkboxes[i].value] = line;
         }
     }
@@ -211,12 +209,16 @@ function submitDrivingQuestions(){
         return false;  
     }
     selectDatabases(dbSelected);
+    verifyDB(1);
+    verifyDB(2);
     alert("Submitted");
 }
 
 function selectDatabases(dbSelected){
     select = document.getElementById("database1");
     select.innerHTML = '';
+    var empty_option = document.createElement("option");
+    select.appendChild(empty_option);
     for (const db of dbSelected) {
         var option = document.createElement("option");
         option.val = db;
@@ -225,6 +227,8 @@ function selectDatabases(dbSelected){
     }
     select = document.getElementById("database2");
     select.innerHTML = '';
+    var empty_option = document.createElement("option");
+    select.appendChild(empty_option);
     for (const db of dbSelected) {
         var option = document.createElement("option");
         option.val = db;
@@ -527,7 +531,6 @@ function switchToDefaultDatabases(n) {
     el.appendChild(empty_option);
     for(var key in database_dict) {
         var value = database_dict[key];
-        console.log(value);
         var optgroup = document.createElement("optgroup");
         optgroup.label = key;
         for (index=0; index < value.length; index++) {
