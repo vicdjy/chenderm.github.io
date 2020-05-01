@@ -16,11 +16,9 @@ Once you get the ngrok URL that looks something like [jumbledMess].ngrok.io, jus
 [jumbledMess].ngrok.io/index.html
 */
 
-var defaultDatabase1 = "Populations";
+var defaultDatabase = "Populations";
 var defaultXAxis1 = "Year";
 var defaultYAxis1 = "Rwanda";
-
-var defaultDatabase2 = "Populations";
 var defaultXAxis2 = "Year";
 var defaultYAxis2 = "Algeria";
 
@@ -61,6 +59,36 @@ var colorSchemeValues = {
     "purple": "office.Celestial6",
     "lightPurple": "brewer.PRGn3",
 }
+
+var database_dict = {"Life, Death, Populations": [
+                        "Populations", 
+                        "Population Female Percentage", 
+                        "Population Female Percentage at Birth",
+                        "Life Expectancy - Continents",
+                        "Median Age",
+                        "Births",
+                        "Births Per Woman",
+                        "Births Per 1000 People",
+                        "Child Deaths",
+                        "Child Mortality Rates",
+                        "Survival Rate to Age 65 - Male",
+                        "Survival Rate to Age 65 - Female"],
+                     "Military": [
+                        "Military Personnel",
+                        "Military Personnel Percent of Population",
+                        "Military Spending",
+                        "Military Spending Percent of GDP"],
+                     "Economies": [
+                        "GDP",
+                        "GDP Per Capita",
+                        "Economic Freedom Scores"],
+                     "Environment": [
+                        "CO2 Emissions",
+                        "CO2 Emissions Per Capita",
+                        "CO2 Emissions Percentages",
+                        "CO2 Emissions Cumulative",
+                        "CO2 Emissions Cumulative Percentages"]
+                    }
 
 var graph1 = undefined;
 var graph2 = undefined;
@@ -168,14 +196,12 @@ function submitDrivingQuestions(){
     var checkboxes = document.getElementsByName("database_selection");  
     var numberOfCheckedItems = 0;  
     var dbSelected = [];
-    console.log(checkboxes.length);
     for(var i = 0; i < checkboxes.length; i++)  
     {   
         if(checkboxes[i].checked)
         { 
             numberOfCheckedItems++;
             dbSelected.push(checkboxes[i].value);
-            console.log(checkboxes[i].value);
             drivingQuestion[checkboxes[i].value] = line;
         }
     }
@@ -185,11 +211,16 @@ function submitDrivingQuestions(){
         return false;  
     }
     selectDatabases(dbSelected);
+    verifyDB(1);
+    verifyDB(2);
     alert("Submitted");
 }
 
 function selectDatabases(dbSelected){
     select = document.getElementById("database1");
+    select.innerHTML = '';
+    var empty_option = document.createElement("option");
+    select.appendChild(empty_option);
     for (const db of dbSelected) {
         var option = document.createElement("option");
         option.val = db;
@@ -197,6 +228,9 @@ function selectDatabases(dbSelected){
         select.appendChild(option);
     }
     select = document.getElementById("database2");
+    select.innerHTML = '';
+    var empty_option = document.createElement("option");
+    select.appendChild(empty_option);
     for (const db of dbSelected) {
         var option = document.createElement("option");
         option.val = db;
@@ -386,18 +420,12 @@ function submitGraphData(n) {
 //Resets & enables color button
 function switchToDefault() {
     //set database 1 to default
-    var el = document.getElementById("database1");
-    for (var i = 0; i < el.options.length; i++) {
-        if (el.options[i].text === defaultDatabase1) {
-            el.selectedIndex = i;
-            break;
-        }
-    }
+    switchToDefaultDatabases(1);
 
     //clear y-axis menu 1
     clearMenu("yaxis1", false);
     //read the csv file to get all keys
-    d3.csv("/csv/" + defaultDatabase1 + ".csv")
+    d3.csv("/csv/" + defaultDatabase + ".csv")
     .then(function(data) {
         var keys = Object.keys(data[0]);
         keys.sort();
@@ -427,7 +455,7 @@ function switchToDefault() {
         document.getElementById("submit1").disabled = false;
 
         //graph data
-        graphData(defaultDatabase1, defaultXAxis1, defaultYAxis1, 1, years[0], years[years.length - 1], years[0], years[years.length - 1], 'bar', "orange");
+        graphData(defaultDatabase, defaultXAxis1, defaultYAxis1, 1, years[0], years[years.length - 1], years[0], years[years.length - 1], 'bar', "orange");
     })
     .catch(function(error) {
         if (error.message === "404 Not Found") {
@@ -443,18 +471,12 @@ function switchToDefault() {
     document.getElementById("colorButton1").disabled = false;
 
     //set database 2 to default
-    el = document.getElementById("database2");
-    for (var i = 0; i < el.options.length; i++) {
-        if (el.options[i].text === defaultDatabase2) {
-            el.selectedIndex = i;
-            break;
-        }
-    }
+    switchToDefaultDatabases(2);
 
     //clear y-axis menu
     clearMenu("yaxis2", false);
     //read the csv file to get all keys
-    d3.csv("/csv/" + defaultDatabase2 + ".csv")
+    d3.csv("/csv/" + defaultDatabase + ".csv")
     .then(function(data) {
         var keys = Object.keys(data[0]);
         keys.sort();
@@ -484,7 +506,7 @@ function switchToDefault() {
         document.getElementById("submit2").disabled = false;
 
         //graph data
-        graphData(defaultDatabase2, defaultXAxis2, defaultYAxis2, 2, years[0], years[years.length - 1], years[0], years[years.length - 1], 'bar', "darkBrown");
+        graphData(defaultDatabase, defaultXAxis2, defaultYAxis2, 2, years[0], years[years.length - 1], years[0], years[years.length - 1], 'bar', "darkBrown");
     })
     .catch(function(error) {
         if (error.message === "404 Not Found") {
@@ -499,6 +521,35 @@ function switchToDefault() {
     //reset color button 2
     changeColorButton(2, "darkBrown");
     document.getElementById("colorButton2").disabled = false;
+}
+
+// Runs when user clicks the default button
+// Show all avaliable databases in the drop down menu
+// Select the default database
+function switchToDefaultDatabases(n) {
+    var el = document.getElementById("database" + n);
+    el.innerHTML = '';
+    var empty_option = document.createElement("option");
+    el.appendChild(empty_option);
+    for(var key in database_dict) {
+        var value = database_dict[key];
+        var optgroup = document.createElement("optgroup");
+        optgroup.label = key;
+        for (index=0; index < value.length; index++) {
+            var option = document.createElement("option");
+            option.val = value[index];
+            option.text = value[index];
+            optgroup.appendChild(option);
+        }
+        el.appendChild(optgroup);
+    }
+    
+    for (var i = 0; i < el.options.length; i++) {
+        if (el.options[i].text === defaultDatabase) {
+            el.selectedIndex = i;
+            break;
+        }
+    }
 }
 
 //Runs when the user clicks the clear button.
