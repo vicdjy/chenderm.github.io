@@ -1331,6 +1331,15 @@ function changeColorTheme(element) {
         for (var y = 0; y < x.length; y++) {
             x[y].style.color = "white";
         }
+
+        x = document.getElementsByClassName("modal-content")[0];
+        x.style.backgroundColor = "#555555";
+        x.style.color = "white";
+
+        x = document.getElementsByTagName("legend");
+        for (var y = 0; y < x.length; y++) {
+            x[y].style.color = "white";
+        }
     }
     else {  //light
         Chart.defaults.global.defaultFontColor = "#524636";
@@ -1384,6 +1393,15 @@ function changeColorTheme(element) {
         x = document.getElementsByClassName("swap");
         for (var y = 0; y < x.length; y++) {
             x[y].style.color = "#524636";
+        }
+
+        x = document.getElementsByClassName("modal-content")[0];
+        x.style.backgroundColor = "white";
+        x.style.color = "black";
+
+        x = document.getElementsByTagName("legend");
+        for (var y = 0; y < x.length; y++) {
+            x[y].style.color = "black";
         }
     }
 }
