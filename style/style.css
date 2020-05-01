@@ -26,7 +26,7 @@ body {
   width: 30%;
   padding-right: 10px;
   padding-left: 10px;
-  /*color: white;*/
+  color: #524636;
 }
 
 .row {
@@ -38,9 +38,9 @@ body {
   background-color:#92bbbd;
 }
 
-.database {
-  background-color: red;
-  color: white;
+.select {
+  background-color: white;
+  color: black;
 }
 
 .col2 {
@@ -61,7 +61,7 @@ body {
   padding-right: 10px;
   padding-bottom: 10px;
   padding-left: 20px;
-  color: #015c92;
+  color: #524636;
   background-color:#66aedb;
 }
 
@@ -88,7 +88,7 @@ body {
   width: 80%;
   height: 80%;
   margin: auto;
-  border: 1px solid #015c92;
+  border: 1px solid #524636;
 }
 
 .exit {
@@ -100,7 +100,7 @@ body {
   margin-left: 4px;
   text-decoration: none;
   cursor: pointer;
-  color: #015c92;
+  color: #524636;
   z-index: 5;
 }
 
@@ -113,7 +113,7 @@ body {
   margin-left: 4px;
   text-decoration: none;
   cursor: move;
-  color: #015c92;
+  color: #524636;
   z-index: 5;
 }
 
@@ -179,6 +179,7 @@ body {
 
 .submit {
   background-color: #f8d605;
+  color: black;
   font-size: 14px;
   height: 20px;
 }

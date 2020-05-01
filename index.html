@@ -13,9 +13,11 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@0.7.4"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/js/ion.rangeSlider.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-colorschemes"></script>
+    <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
 
     <!-- CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/css/ion.rangeSlider.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="style/style.css">
 </head>
@@ -96,15 +98,15 @@
             </div>
 
             <div class="row">
-                <h3>Graph 1:</h3>
+                <h3 style="margin-top: 10px;">Graph 1:</h3>
 
                 Database (DB):
-                <select class="database" id="database1" onchange="verifyDB(1)">
+                <select class="select" id="database1" onchange="verifyDB(1)">
                 </select>
                 <p></p>
 
                 Y axis:
-                <select id="yaxis1" onchange="verifyOptions(1)">
+                <select class="select" id="yaxis1" onchange="verifyOptions(1)">
                     <option value="" selected></option>
                 </select>
                 <p></p>
@@ -117,7 +119,7 @@
                 
                 <div style="display: inline-block; position: relative;">
                     Graph type:
-                    <select id="gtype1" onchange="verifyOptions(1)">
+                    <select class="select" id="gtype1" onchange="verifyOptions(1)">
                         <option value="" selected></option>
                         <option value="line">line</option>
                         <option value="bar">bar</option>
@@ -149,17 +151,17 @@
 
                 <button class="submit" id="submit1" onclick="submitGraphData(1)">SUBMIT</button>
             </div>
-            <br>
+            <p></p>
             <div class="row">
-                <h3>Graph 2:</h3>
+                <h3 style="margin-top: 10px;">Graph 2:</h3>
 
                 Database (DB):
-                <select class="database" id="database2" onchange="verifyDB(2)">
+                <select class="select" id="database2" onchange="verifyDB(2)">
                 </select>
                 <p></p>
 
                 Y axis:
-                <select id="yaxis2" onchange="verifyOptions(2)">
+                <select class="select" id="yaxis2" onchange="verifyOptions(2)">
                     <option value="" selected></option>
                 </select>
                 <p></p>
@@ -172,7 +174,7 @@
                 
                 <div style="display: inline-block; position: relative;">
                     Graph type:
-                    <select id="gtype2" onchange="verifyOptions(2)">
+                    <select class="select" id="gtype2" onchange="verifyOptions(2)">
                         <option value="" selected></option>
                         <option value="line">line</option>
                         <option value="bar">bar</option>
@@ -203,6 +205,11 @@
                 <p></p>
               
                 <button class="submit" id="submit2" onclick="submitGraphData(2)">SUBMIT</button>
+            </div>
+            <div id="themeToggle" style="margin-top: 5px;">
+                <c style="font-size: 12px;">Light</c>
+                <input type="checkbox" unchecked data-toggle="toggle" data-onstyle="primary" data-on=" " data-offstyle="info" data-off=" " data-size="sm" onchange="changeColorTheme(this)">
+                <c style="font-size: 12px;">Dark</c>
             </div>
         </div>
 
