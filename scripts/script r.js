@@ -137,24 +137,22 @@ $(document).ready(function () {
     switchToDefault();
 });
 
-let modal = document.querySelector(".modal")
-
 function displayModal() {
     /*
     This function display the fileUpload Modal.
     Opens up a new window from the browser to allow users
     to upload a script file from their local computer.
     */
-    let modal = document.querySelector(".modal")
+    let modal = document.querySelector("#modal")
     modal.style.display = "block"
 }
 function closeModal() {
     //Close the fileupload window
-    let modal = document.querySelector(".modal")
+    let modal = document.querySelector("#modal")
     modal.style.display = "none"
 }
 window.onclick = function (e) {
-    let modal = document.querySelector(".modal")
+    let modal = document.querySelector("#modal")
     if (e.target == modal) {
         modal.style.display = "none"
     }
@@ -234,18 +232,17 @@ function submitText(id) {
     setOptions(database, yaxis, xaxis, gtype, lowDate, highDate, n, color);
 }
 
-let help = document.querySelector(".help");
 function displayHelp() {
-    let help = document.querySelector(".help")
+    let help = document.querySelector("#help")
     help.style.display = "block"
 }
 function closeHelp() {
     //Close the fileupload window
-    let help = document.querySelector(".help")
+    let help = document.querySelector("#help")
     help.style.display = "none"
 }
 window.onclick = function (e) {
-    let help = document.querySelector(".help")
+    let help = document.querySelector("#help")
     if (e.target == help) {
         help.style.display = "none"
     }

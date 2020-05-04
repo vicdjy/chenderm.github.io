@@ -31,7 +31,7 @@
                     <h2 style="display: inline-block;">Data</h2>
 
                     <button id="modal-help" style="float: right; margin-left: 5px; margin-top: 30px;" onclick="displayHelp()">HELP</button>
-                    <div class="help">
+                    <div class="modal" id="help">
                         <div class="modal-content">
                             <span class="close-btn" onclick="closeHelp()">&times;</span>
                             <input type="text" id="help_input" onkeyup="searchHelp()" placeholder="Search for keywords...">
@@ -49,7 +49,7 @@
                     <button id="default" onclick="switchToDefault()" style="float: right; margin-left: 5px; margin-top: 30px;">DEFAULT</button>
 
                     <button id="modal-btn" onclick="displayModal()" style="float: right; margin-left: 5px; margin-top: 30px;">UPLOAD SCRIPT</button>
-                    <div class="modal">
+                    <div class="modal" id="modal">
                         <div class="modal-content">
                             <span class="close-btn" onclick="closeModal()">&times;</span>
                             <form>

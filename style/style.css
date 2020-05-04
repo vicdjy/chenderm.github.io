@@ -88,7 +88,7 @@ body {
   line-height: normal;
 }
 
-.modal {
+#modal {
   display: none;
   position: fixed; 
   padding-top: 30px;
@@ -140,7 +140,7 @@ body {
     display: inline-block;
 }
 
-.help {
+#help {
     display: none;
     position: fixed;
     padding-top: 30px;
