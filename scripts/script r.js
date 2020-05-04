@@ -234,12 +234,8 @@ function submitText(id) {
     setOptions(database, yaxis, xaxis, gtype, lowDate, highDate, n, color);
 }
 
+let help = document.querySelector(".help");
 function displayHelp() {
-    /*
-    This function display the fileUpload Modal.
-    Opens up a new window from the browser to allow users
-    to upload a script file from their local computer.
-    */
     let help = document.querySelector(".help")
     help.style.display = "block"
 }
@@ -252,6 +248,23 @@ window.onclick = function (e) {
     let help = document.querySelector(".help")
     if (e.target == help) {
         help.style.display = "none"
+    }
+}
+
+function searchHelp() {
+    var input, filter, ul, li, a, i, txtValue;
+    input = document.getElementById("help_input");
+    filter = input.value.toUpperCase();
+    ul = document.getElementById("ul");
+    li = ul.getElementsByTagName("li");
+    for (i = 0; i < li.length; i++) {
+        a = li[i].getElementsByTagName("a")[0];
+        txtValue = a.textContent || a.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            li[i].style.display = "";
+        } else {
+            li[i].style.display = "none";
+        }
     }
 }
 
