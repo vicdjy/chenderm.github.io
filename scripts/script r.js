@@ -266,7 +266,7 @@ function searchHelp() {
 }
 
 //Graphs data for the nth graph.
-function graphData(database, xaxis, yaxis, n, lowDate, highDate, gtype, color) {
+function graphData(database, xaxis, yaxis, n, lowDate, highDate, minDate, maxDate, gtype, color) {
     if (n == 0 && graph0 !== undefined)
         graph0.destroy();
     else if (n == 1 && graph1 !== undefined)
@@ -336,6 +336,15 @@ function graphData(database, xaxis, yaxis, n, lowDate, highDate, gtype, color) {
                         }
                     }
                 });
+                graph0.DB = database;
+                graph0.X = xaxis;
+                graph0.Y = yaxis;
+                graph0.lowDate = lowDate;
+                graph0.highDate = highDate;
+                graph0.minDate = minDate;
+                graph0.maxDate = maxDate;
+                graph0.type = gtype;
+                graph0.color = color;
             }
             else if (n == 1) {
                 graph1 = new Chart(ctx, {
@@ -379,6 +388,15 @@ function graphData(database, xaxis, yaxis, n, lowDate, highDate, gtype, color) {
                         }
                     }
                 });
+                graph1.DB = database;
+                graph1.X = xaxis;
+                graph1.Y = yaxis;
+                graph1.lowDate = lowDate;
+                graph1.highDate = highDate;
+                graph1.minDate = minDate;
+                graph1.maxDate = maxDate;
+                graph1.type = gtype;
+                graph1.color = color;
             }
         })
 }
@@ -415,10 +433,12 @@ function submitGraphData(n) {
 
     var lowDate = $("#range" + n).data("from");
     var highDate = $("#range" + n).data("to");
+    var minDate = $("#range" + n).data("min");
+    var maxDate = $("#range" + n).data("max");
 
     var color = document.getElementById("colorButton" + n).value;
 
-    graphData(dbOption, xOption, yOption, n, lowDate, highDate, gtype, color);
+    graphData(dbOption, xOption, yOption, n, lowDate, highDate, minDate, maxDate, gtype, color);
     updateScript(n, dbOption, yOption, lowDate, highDate, gtype, color);
 }
 
@@ -483,7 +503,7 @@ function setOptions(databaseName, yaxis, xaxis, gtype, lowDate, highDate, n, col
             document.getElementById("submit" + n).disabled = false;
 
             //graph data
-            graphData(databaseName, xaxis, yaxis, n, lowDate, highDate, gtype, color);        
+            graphData(databaseName, xaxis, yaxis, n, lowDate, highDate, years[0], years[years.length - 1], gtype, color);        
         })
         .catch(function (error) {
             if (error.message === "404 Not Found") {
@@ -547,10 +567,14 @@ function clearValues(n) {
 
     document.getElementById("submit" + n).disabled = true;
 
-    if (n == 0)
+    if (n == 0) {
         graph0.destroy();
-    else if (n == 1)
+        graph0 = undefined;
+    }
+    else if (n == 1) {
         graph1.destroy();
+        graph1 = undefined;
+    }
 
     // clear driving question
     document.getElementById("driving_question" + n).innerHTML = "";
@@ -746,4 +770,142 @@ function downloadGraph(n) {
     var url_base64jp = document.getElementById("canvas" + n).toDataURL("image/jpg");
     var a = document.getElementById("download" + n);
     a.href = url_base64jp;
+}
+
+//Changes site color theme
+function changeColorTheme(element) {
+    if (element.checked) {  //dark
+        Chart.defaults.global.defaultFontColor = "white";
+        //redraw graphs 0 and 1
+        regraph(0);
+        regraph(1);
+
+        var x = document.getElementsByClassName("logo")[0];
+        x.src = "img/HistoryInDatalogodark.png";
+
+        x = document.getElementsByTagName("BODY")[0];
+        x.style.backgroundColor = "#413f3d";
+
+        x = document.getElementsByClassName("col1")[0];
+        x.style.color = "white";
+
+        x = document.getElementsByClassName("row")[0];
+        x.style.backgroundColor = "#263859";
+        x = document.getElementsByClassName("row")[1];
+        x.style.backgroundColor = "#263859";
+
+        x = document.getElementsByClassName("form-control")[0];
+        x.style.backgroundColor = "black";
+        x.style.color = "white";
+        x = document.getElementsByClassName("form-control")[1];
+        x.style.backgroundColor = "black";
+        x.style.color = "white";
+
+        x = document.getElementsByClassName("select");
+        for (var y = 0; y < x.length; y++) {
+            x[y].style.backgroundColor = "black";
+            x[y].style.color = "white";
+        }
+
+        x = document.getElementsByClassName("col2")[0];
+        x.style.backgroundColor = "#525252";
+        x.style.color = "white";
+
+        x = document.getElementsByClassName("modal-content")[0];
+        x.style.backgroundColor = "#555555";
+        x.style.color = "white";
+
+        x = document.getElementsByTagName("legend");
+        for (var y = 0; y < x.length; y++) {
+            x[y].style.color = "white";
+        }
+    }
+    else {  //light
+        Chart.defaults.global.defaultFontColor = "#524636";
+        //redraw graphs 0 and 1
+        regraph(0);
+        regraph(1);
+
+        var x = document.getElementsByClassName("logo")[0];
+        x.src = "img/HistoryInDatalogolight.png";
+
+        x = document.getElementsByTagName("BODY")[0];
+        x.style.backgroundColor = "#c2edce";
+
+        x = document.getElementsByClassName("col1")[0];
+        x.style.color = "#524636";
+
+        x = document.getElementsByClassName("select");
+        for (var y = 0; y < x.length; y++) {
+            x[y].style.backgroundColor = "white";
+            x[y].style.color = "black";
+        }
+
+        x = document.getElementsByClassName("row")[0];
+        x.style.backgroundColor = "#92bbbd";
+        x = document.getElementsByClassName("row")[1];
+        x.style.backgroundColor = "#92bbbd";
+
+        x = document.getElementsByClassName("form-control")[0];
+        x.style.backgroundColor = "white";
+        x.style.color = "black";
+        x = document.getElementsByClassName("form-control")[1];
+        x.style.backgroundColor = "white";
+        x.style.color = "black";
+
+        x = document.getElementsByClassName("col2")[0];
+        x.style.backgroundColor = "#f6f6f2";
+        x.style.color = "#524636";
+
+        x = document.getElementsByClassName("modal-content")[0];
+        x.style.backgroundColor = "white";
+        x.style.color = "black";
+
+        x = document.getElementsByTagName("legend");
+        for (var y = 0; y < x.length; y++) {
+            x[y].style.color = "black";
+        }
+    }
+}
+
+//redraws a graph in the second column
+function regraph(n) {
+    var db = undefined;
+    var x = undefined;
+    var y = undefined;
+    var lowDate = undefined;
+    var highDate = undefined;
+    var minDate = undefined;
+    var maxDate = undefined;
+    var graphType = undefined;
+    var color = undefined;
+
+    if (n == 0) {
+        if (graph0 == undefined)
+            return;
+        db = graph0.DB;
+        x = graph0.X;
+        y = graph0.Y;
+        lowDate = graph0.lowDate;
+        highDate = graph0.highDate;
+        minDate = graph0.minDate;
+        maxDate = graph0.maxDate;
+        graphType = graph0.type;
+        color = graph0.color;
+    }
+    else {
+        if (graph1 == undefined)
+            return;
+        db = graph1.DB;
+        x = graph1.X;
+        y = graph1.Y;
+        lowDate = graph1.lowDate;
+        highDate = graph1.highDate;
+        minDate = graph1.minDate;
+        maxDate = graph1.maxDate;
+        graphType = graph1.type;
+        color = graph1.color;
+    }
+
+    graphData(db, x, y, n, lowDate, highDate, minDate, maxDate, graphType, color);
 }
