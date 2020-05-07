@@ -41,6 +41,7 @@ body {
 .select {
   background-color: white;
   color: black;
+  border: none;
 }
 
 .col2 {
