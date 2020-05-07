@@ -20,10 +20,6 @@ body {
   min-height: 600px;
 }
 
-.div {
-    display: block;
-}
-
 .col1 {
   float: left;
   height: 100%;
