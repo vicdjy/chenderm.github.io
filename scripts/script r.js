@@ -285,7 +285,7 @@ function graphData(database, xaxis, yaxis, n, lowDate, highDate, minDate, maxDat
             }
 
             //add driving question
-            var dq = document.getElementById("driving_question" + n);
+            var dq = document.getElementById("driving_question");
             d3.csv("/csv/driving-questions.csv").then(function (q_data) {
                 question = q_data[0][database];
                 dq.innerHTML = question;
@@ -577,7 +577,7 @@ function clearValues(n) {
     }
 
     // clear driving question
-    document.getElementById("driving_question" + n).innerHTML = "";
+    document.getElementById("driving_question").innerHTML = "";
 }
 
 //Runs when the option for database changes.
