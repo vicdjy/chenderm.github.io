@@ -9,8 +9,8 @@ body {
 .logo {
   margin-top: 10px;
   margin-left: -5px;
-  height: 90px;
-  width: 400px;
+  height: 81px;
+  width: 322px;
 }
 
 .container {
@@ -20,12 +20,17 @@ body {
   min-height: 600px;
 }
 
+.div {
+    display: block;
+}
+
 .col1 {
   float: left;
   height: 100%;
   width: 60%;
   padding-right: 10px;
   padding-left: 10px;
+  color: #524636;
 }
 
 .row {
@@ -35,6 +40,12 @@ body {
   padding-bottom: 10px;
   padding-left: 5px;
   background-color:#92bbbd;
+}
+
+.select {
+  background-color: white;
+  color: black;
+  border: none;
 }
 
 .col2 {
@@ -50,6 +61,7 @@ body {
 
 .submit {
   background-color: #f8d605;
+  color: black;
   font-size: 14px;
   height: 20px;
 }
@@ -74,18 +86,6 @@ body {
 
 .graphRegion {
   height: 33%;
-}
-
-.tile .tooltiptext {
-  visibility: hidden;
-  width: 70%;
-  position: absolute;
-  font-size: 10;
-  display: none;
-  text-align: left;
-  padding: 5px;
-  z-index: 20;
-  line-height: normal;
 }
 
 #modal {
@@ -171,20 +171,20 @@ body {
     margin: 0;
 }
 
-    #ul li a {
-        border: 1px solid #ddd;
-        margin-top: -1px;
-        background-color: #f6f6f6;
-        padding: 12px;
-        text-decoration: none;
-        font-size: 18px;
-        color: black;
-        display: block
-    }
+#ul li a {
+  border: 1px solid #ddd;
+  margin-top: -1px;
+  background-color: #f6f6f6;
+  padding: 12px;
+  text-decoration: none;
+  font-size: 18px;
+  color: black;
+  display: block
+}
 
-        #ul li a:hover:not(.header) {
-            background-color: #eee;
-        }
+#ul li a:hover:not(.header) {
+  background-color: #eee;
+}
 
 .colorButton {
     /*margin-left: 10px;*/
@@ -215,5 +215,5 @@ body {
     margin-left: 5px;
     height: 30px;
     width: 30px;
-    margin-bottom: 30px;
+    margin-bottom: 15px;
 }

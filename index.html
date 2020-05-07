@@ -13,9 +13,11 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@0.7.4"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/js/ion.rangeSlider.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-colorschemes"></script>
+    <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
 
     <!-- CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/css/ion.rangeSlider.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="style/style.css">
 </head>
@@ -63,10 +65,10 @@
 
             <div class="row">
                 <div style="width: 47%; display: inline-block;">
-                    <h3>Graph 1:</h3>
+                    <h3 style="margin-top: 10px;">Graph 1:</h3>
 
                     Database (DB):
-                    <select id="database0" onchange="verifyDB(0)">
+                    <select class="select" id="database0" onchange="verifyDB(0)">
                         <option value=""></option>
                         <optgroup label="Life, Death, Populations">
                             <option value="Populations" selected>Populations</option>
@@ -104,7 +106,7 @@
                     <p></p>
 
                     Y axis:
-                    <select id="yaxis0" onchange="verifyOptions(0)">
+                    <select class="select" id="yaxis0" onchange="verifyOptions(0)">
                         <option value="" selected></option>
                     </select>
                     <p></p>
@@ -116,7 +118,7 @@
                     <p></p>
 
                     Graph type:
-                    <select id="gtype0" onchange="verifyOptions(0)">
+                    <select class="select" id="gtype0" onchange="verifyOptions(0)">
                         <option value="" selected></option>
                         <option value="line">line</option>
                         <option value="bar">bar</option>
@@ -125,22 +127,22 @@
                         <c style="margin-left: 10px;">Color:</c>
                         <button class="colorButton" id="colorButton0" onclick="showColorWheel(0)"></button>
                         <div class="colorwheelMenu" id="colorWheel0">
-                            <item style="background-color: #6f6f6f" value="gray" onclick="changeColorButton(0,'gray')"></item>
-                            <item style="background-color: #ffffff" value="white" onclick="changeColorButton(0,'white')"></item>
-                            <item style="background-color: #f81b02" value="red" onclick="changeColorButton(0,'red')"></item>
-                            <item style="background-color: #ff388c" value="pink" onclick="changeColorButton(0,'pink')"></item>
-                            <item style="background-color: #543005" value="darkBrown" onclick="changeColorButton(0,'darkBrown')"></item>
-                            <item style="background-color: #a6611a" value="brown" onclick="changeColorButton(0,'brown')"></item>
-                            <item style="background-color: #f09415" value="orange" onclick="changeColorButton(0,'orange')"></item>
-                            <item style="background-color: #f2d908" value="yellow" onclick="changeColorButton(0,'yellow')"></item>
-                            <item style="background-color: #9acd4c" value="lightGreen" onclick="changeColorButton(0,'lightGreen')"></item>
-                            <item style="background-color: #549e39" value="green" onclick="changeColorButton(0,'green')"></item>
-                            <item style="background-color: #31b6fd" value="lightBlue" onclick="changeColorButton(0,'lightBlue')"></item>
-                            <item style="background-color: #0f6fc6" value="blue" onclick="changeColorButton(0,'blue')"></item>
-                            <item style="background-color: #294171" value="darkBlue" onclick="changeColorButton(0,'darkBlue')"></item>
-                            <item style="background-color: #663366" value="darkPurple" onclick="changeColorButton(0,'darkPurple')"></item>
-                            <item style="background-color: #ac3ec1" value="purple" onclick="changeColorButton(0,'purple')"></item>
-                            <item style="background-color: #af8dc3" value="lightPurple" onclick="changeColorButton(0,'lightPurple')"></item>
+                            <item style="background-color: #6f6f6f" onclick="changeColorButton(0,'gray')"></item>
+                            <item style="background-color: #ffffff" onclick="changeColorButton(0,'white')"></item>
+                            <item style="background-color: #f81b02" onclick="changeColorButton(0,'red')"></item>
+                            <item style="background-color: #ff388c" onclick="changeColorButton(0,'pink')"></item>
+                            <item style="background-color: #543005" onclick="changeColorButton(0,'darkBrown')"></item>
+                            <item style="background-color: #a6611a" onclick="changeColorButton(0,'brown')"></item>
+                            <item style="background-color: #f09415" onclick="changeColorButton(0,'orange')"></item>
+                            <item style="background-color: #f2d908" onclick="changeColorButton(0,'yellow')"></item>
+                            <item style="background-color: #9acd4c" onclick="changeColorButton(0,'lightGreen')"></item>
+                            <item style="background-color: #549e39" onclick="changeColorButton(0,'green')"></item>
+                            <item style="background-color: #31b6fd" onclick="changeColorButton(0,'lightBlue')"></item>
+                            <item style="background-color: #0f6fc6" onclick="changeColorButton(0,'blue')"></item>
+                            <item style="background-color: #294171" onclick="changeColorButton(0,'darkBlue')"></item>
+                            <item style="background-color: #663366" onclick="changeColorButton(0,'darkPurple')"></item>
+                            <item style="background-color: #ac3ec1" onclick="changeColorButton(0,'purple')"></item>
+                            <item style="background-color: #af8dc3" onclick="changeColorButton(0,'lightPurple')"></item>
                         </div>
                     </div>
 
@@ -148,20 +150,20 @@
 
                     <button class="submit" id="submit0" onclick="submitGraphData(0)">SUBMIT</button>
                 </div>
-
-                <div style="height: 190px; width: 47%; float: right; margin-right: 5%; margin-top: 15px;">
-                    <textarea class="form-control" id="box0" onchange="submitText(0)"
-                              style="height: 100%; width: 100%;" spellcheck="false"></textarea>
+                
+                <div style="height: 180px; width: 47%; float: right; margin-right: 5%; margin-top: 15px;">
+                    <textarea class="form-control" id="box0" onchange="submitText(0)" 
+                        style="height: 100%; width: 100%; border: none" spellcheck="false"></textarea>
                 </div>
             </div>
+            <p></p>
 
-            <br>
             <div class="row">
                 <div style="width: 47%; display: inline-block;">
-                    <h3>Graph 2:</h3>
+                    <h3 style="margin-top: 10px;">Graph 2:</h3>
 
                     Database (DB):
-                    <select id="database1" onchange="verifyDB(1)">
+                    <select class="select" id="database1" onchange="verifyDB(1)">
                         <option value=""></option>
                         <optgroup label="Life, Death, Populations">
                             <option value="Populations" selected>Populations</option>
@@ -199,7 +201,7 @@
                     <p></p>
 
                     Y axis:
-                    <select id="yaxis1" onchange="verifyOptions(1)">
+                    <select class="select" id="yaxis1" onchange="verifyOptions(1)">
                         <option value="" selected></option>
                     </select>
                     <p></p>
@@ -211,7 +213,7 @@
                     <p></p>
 
                     Graph type:
-                    <select id="gtype1" onchange="verifyOptions(1)">
+                    <select class="select" id="gtype1" onchange="verifyOptions(1)">
                         <option value="" selected></option>
                         <option value="line">line</option>
                         <option value="bar">bar</option>
@@ -220,32 +222,37 @@
                         <c style="margin-left: 10px;">Color:</c>
                         <button class="colorButton" id="colorButton1" onclick="showColorWheel(1)"></button>
                         <div class="colorwheelMenu" id="colorWheel1">
-                            <item style="background-color: #6f6f6f" value="gray" onclick="changeColorButton(1,'gray')"></item>
-                            <item style="background-color: #ffffff" value="white" onclick="changeColorButton(1,'white')"></item>
-                            <item style="background-color: #f81b02" value="red" onclick="changeColorButton(1,'red')"></item>
-                            <item style="background-color: #ff388c" value="pink" onclick="changeColorButton(1,'pink')"></item>
-                            <item style="background-color: #543005" value="darkBrown" onclick="changeColorButton(1,'darkBrown')"></item>
-                            <item style="background-color: #a6611a" value="brown" onclick="changeColorButton(1,'brown')"></item>
-                            <item style="background-color: #f09415" value="orange" onclick="changeColorButton(1,'orange')"></item>
-                            <item style="background-color: #f2d908" value="yellow" onclick="changeColorButton(1,'yellow')"></item>
-                            <item style="background-color: #9acd4c" value="lightGreen" onclick="changeColorButton(1,'lightGreen')"></item>
-                            <item style="background-color: #549e39" value="green" onclick="changeColorButton(1,'green')"></item>
-                            <item style="background-color: #31b6fd" value="lightBlue" onclick="changeColorButton(1,'lightBlue')"></item>
-                            <item style="background-color: #0f6fc6" value="blue" onclick="changeColorButton(1,'blue')"></item>
-                            <item style="background-color: #294171" value="darkBlue" onclick="changeColorButton(1,'darkBlue')"></item>
-                            <item style="background-color: #663366" value="darkPurple" onclick="changeColorButton(1,'darkPurple')"></item>
-                            <item style="background-color: #ac3ec1" value="purple" onclick="changeColorButton(1,'purple')"></item>
-                            <item style="background-color: #af8dc3" value="lightPurple" onclick="changeColorButton(1,'lightPurple')"></item>
+                            <item style="background-color: #6f6f6f" onclick="changeColorButton(1,'gray')"></item>
+                            <item style="background-color: #ffffff" onclick="changeColorButton(1,'white')"></item>
+                            <item style="background-color: #f81b02" onclick="changeColorButton(1,'red')"></item>
+                            <item style="background-color: #ff388c" onclick="changeColorButton(1,'pink')"></item>
+                            <item style="background-color: #543005" onclick="changeColorButton(1,'darkBrown')"></item>
+                            <item style="background-color: #a6611a" onclick="changeColorButton(1,'brown')"></item>
+                            <item style="background-color: #f09415" onclick="changeColorButton(1,'orange')"></item>
+                            <item style="background-color: #f2d908" onclick="changeColorButton(1,'yellow')"></item>
+                            <item style="background-color: #9acd4c" onclick="changeColorButton(1,'lightGreen')"></item>
+                            <item style="background-color: #549e39" onclick="changeColorButton(1,'green')"></item>
+                            <item style="background-color: #31b6fd" onclick="changeColorButton(1,'lightBlue')"></item>
+                            <item style="background-color: #0f6fc6" onclick="changeColorButton(1,'blue')"></item>
+                            <item style="background-color: #294171" onclick="changeColorButton(1,'darkBlue')"></item>
+                            <item style="background-color: #663366" onclick="changeColorButton(1,'darkPurple')"></item>
+                            <item style="background-color: #ac3ec1" onclick="changeColorButton(1,'purple')"></item>
+                            <item style="background-color: #af8dc3" onclick="changeColorButton(1,'lightPurple')"></item>
                         </div>
                     </div>
                     <p></p>
                     <button class="submit" id="submit1" onclick="submitGraphData(1)">SUBMIT</button>
                 </div>
-
-                <div style="height: 190px; width: 47%; float: right; margin-right: 5%; margin-top: 15px;">
-                    <textarea class="form-control" id="box1" onchange="submitText(1)"
-                              style="height: 100%; width: 100%;" spellcheck="false"></textarea>
+                
+                <div style="height: 180px; width: 47%; float: right; margin-right: 5%; margin-top: 15px;">
+                    <textarea class="form-control" id="box1" onchange="submitText(1)" 
+                            style="height: 100%; width: 100%; border: none" spellcheck="false"></textarea>
                 </div>
+            </div>
+            <div id="themeToggle" style="margin-top: 5px;">
+                <c style="font-size: 12px;">Light</c>
+                <input type="checkbox" unchecked data-toggle="toggle" data-onstyle="primary" data-on=" " data-offstyle="info" data-off=" " data-size="sm" onchange="changeColorTheme(this)">
+                <c style="font-size: 12px;">Dark</c>
             </div>
         </div>
 
@@ -253,7 +260,7 @@
             <h2>Graphs</h2>
 
             <div id="driving_question0" style="font-size: 14px"></div>
-            <div class="graphRegion">
+            <div class="graphRegion" style="display:block;">
                 <canvas id="canvas0"></canvas>
                 <a id="download0"
                    download="graph0.jpg"
@@ -263,10 +270,7 @@
                 </a>
             </div>
 
-            <br><br>
-
-            <div id="driving_question1" style="font-size: 14px"></div>
-            <div class="graphRegion">
+            <div class="graphRegion" style="display:block; margin-top: 80px;">
                 <canvas id="canvas1"></canvas>
                 <a id="download1"
                    download="graph1.jpg"
