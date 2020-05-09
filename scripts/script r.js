@@ -806,6 +806,11 @@ function verifyOptions(n) {
 
 //Runs when the user clicks SAVE GRAPH
 function saveGraph(saveNum, graphNum, swap) {
+    if (graphNum == 1 && graph1 == undefined)
+        return;
+    else if (graphNum == 2 && graph2 == undefined)
+        return;
+
     var labelsArr = undefined;
     var dataArr = undefined;
     var hoverText = undefined;
@@ -1306,6 +1311,8 @@ function drop(ev, destination) {
             var graphNum = destination.substring(5);
             var saveNum = data.substring(5);
             swap(saveNum, graphNum);
+            if ((graphNum == 1 && graph1 == undefined) || (graphNum == 2 && graph2 == undefined))
+                deleteGraph(saveNum);
         }
         else if (destination.startsWith("saved")) {
             var prevSave = data.substring(5);
