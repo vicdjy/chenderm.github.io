@@ -17,9 +17,9 @@ And open <localhost:4200/index.html> in a browser. You can replace `4200` with a
 
 ## Features
 * ### Customization
-  * [User upload driving question](#User-upload-driving-question-[source])
-  * [User select database](#User-select-database-[source])
-  * [User specify database from URL](#User-specify-database-from-URL-[source])
+  * [User upload driving question](#User-upload-driving-question-source)
+  * [User select database](#User-select-database-source)
+  * [User specify database from URL](#User-specify-database-from-URL-source)
 
 ## Customization [[source]](https://github.com/chenderm/chenderm.github.io/blob/84232cd8d70a5fc8a30dda57f145d87008c2a4d7/scripts/script%20r.js#L139)
 The user can click on the `Custom` button, which opens a pop-up window with customization choices.
