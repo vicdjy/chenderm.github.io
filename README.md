@@ -28,9 +28,9 @@ The user can click on the `Custom` button, which opens a pop-up window with cust
 * At the top of the window, where it says `Driving Question`, the user can upload a file with `.csv` file with their own driving question.
 * This driving question will apply to all databases the user selects.
 
-### User select database  [[source]](https://github.com/chenderm/chenderm.github.io/blob/84232cd8d70a5fc8a30dda57f145d87008c2a4d7/scripts/script%20r.js#L197)
+### User select database [[source]](https://github.com/chenderm/chenderm.github.io/blob/84232cd8d70a5fc8a30dda57f145d87008c2a4d7/scripts/script%20r.js#L197)
 * In the `Custom` window, the user will be provided a clickable list of all avaliable databases. The user can choose all databases to be included in this session of DV4L. 
 
-### User specify database from URL  [[source]](https://github.com/chenderm/chenderm.github.io/blob/84232cd8d70a5fc8a30dda57f145d87008c2a4d7/scripts/script%20r.js#L201)
+### User specify database from URL [[source]](https://github.com/chenderm/chenderm.github.io/blob/84232cd8d70a5fc8a30dda57f145d87008c2a4d7/scripts/script%20r.js#L201)
 * The second field of the `Custom` window says 'Database URL'. The user can paste in a URL to a `.csv` file they found on the internet. The DV4L tool will read from that file and incorporate this database into the current session. The user can find this URL under the dropdown menu `Database (DB)`. 
 
