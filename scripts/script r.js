@@ -60,6 +60,7 @@ var colorSchemeValues = {
     "lightPurple": "brewer.PRGn3",
 }
 
+// Dictionary with key value pairs {category: list of databases}
 var database_dict = {"Life, Death, Populations": [
                         "Populations", 
                         "Population Female Percentage", 
@@ -90,6 +91,7 @@ var database_dict = {"Life, Death, Populations": [
                         "CO2 Emissions Cumulative Percentages"]
                     }
 
+// This dictionary store key value pairs {"database name" : "location of database"}
 var dataloc_dict = {}
 
 var graph1 = undefined;
@@ -134,16 +136,23 @@ $(document).ready( function() {
     switchToDefault();
 });
 
+// Construct a modal element.
+// This is the pop-up window when user selects 'Custom' button.
 let modal = document.querySelector(".modal")
 
+// Display Modal when user clicks 'Custom'
 function displayModal(){
     let modal = document.querySelector(".modal")
     modal.style.display = "block"
 }
+
+// When the user clicks on (x), close the modal
 function closeModal(){
     let modal = document.querySelector(".modal")
     modal.style.display = "none" 
 }
+
+// Close modal when user clicks anywhere outside of it.
 window.onclick = function(e){
     let modal = document.querySelector(".modal")
     if(e.target == modal){
@@ -151,6 +160,7 @@ window.onclick = function(e){
     }
 }
 
+// Use browser's FileReader to read in uploaded file
 function handleFiles(files) {
     // Check for the various File API support.
     if (window.FileReader) {
@@ -175,6 +185,7 @@ function loadHandler(event) {
     processData(csv);
 }
 
+// process each line from csv file
 function processData(csv) {
     var allTextLines = csv.split(/\r\n|\n/);
     for (var i=0; i<1; i++) {
@@ -194,14 +205,18 @@ function errorHandler(evt) {
     }
 }
 
+// This function is called when user clicks on the 'Submit' button
 function submitDrivingQuestions(){
     var checkboxes = document.getElementsByName("database_selection");  
     var numberOfCheckedItems = 0;  
     var dbSelected = [];
+    // Reads the database URL user provided
     var database_url = document.getElementById("data_url");
+    // Updates location of the database to URL location
     dataloc_dict[database_url.value] = database_url.value;
     dbSelected.push(database_url.value);
     drivingQuestion[database_url.value] = line;
+
     for(var i = 0; i < checkboxes.length; i++)  
     {   
         if(checkboxes[i].checked)
@@ -209,7 +224,9 @@ function submitDrivingQuestions(){
             numberOfCheckedItems++;
             database_name = checkboxes[i].value
             dbSelected.push(database_name);
+            // update driving question associated with the database
             drivingQuestion[database_name] = line;
+            // update location of the database to server's file directory
             dataloc_dict[database_name] = "/csv/" + database_name + ".csv"
         }
     }
@@ -224,6 +241,8 @@ function submitDrivingQuestions(){
     alert("Submitted");
 }
 
+// Dynamically render the drop down meun 'Database (DB)'
+// to include only selected databases
 function selectDatabases(dbSelected){
     select = document.getElementById("database1");
     select.innerHTML = '';
@@ -246,47 +265,6 @@ function selectDatabases(dbSelected){
         select.appendChild(option);
     }
 }
-
-/*
-var request = new XMLHttpRequest();
-request.open("GET","data.csv");
-request.addEventListener('load', function(event) {
-   if (request.status >= 200 && request.status < 300) {
-      console.log(request.responseText);
-   } else {
-      console.warn(request.statusText, request.responseText);
-   }
-});
-request.send();
-*/
-function getText(){
-    // read text from URL location
-    var request = new XMLHttpRequest();
-    request.open('GET', 'https://github.com/chenderm/chenderm.github.io/blob/master/csv/Malaria%20Deaths.csv', true);
-    request.send(null);
-    request.onreadystatechange = function () {
-        if (request.readyState === 4 && request.status === 200) {
-            console.log(request.responseText);
-        }
-    }
-   /*
-   d3.csv("https://github.com/chenderm/chenderm.github.io/blob/master/csv/Malaria%20Deaths.csv")
-    .then(function(data) {
-        for (var i = 0; i < data.length; i++) {
-            console.log(data[i]);
-        }
-    })
-    */
-}
-
-/*function displayQuestion(){
-    var dq = document.getElementById("driving_question1");
-    const selectedFile = document.getElementById('driving_question_input').files[0];
-    d3.csv(selectedFile).then(function(q_data){
-        question = q_data[0]['Populations'];
-        dq.innerHTML = question;
-    })
-}*/
 
 //Graphs data for the nth graph.
 function graphData(database, xaxis, yaxis, n, lowDate, highDate, minDate, maxDate, gtype, color) {
