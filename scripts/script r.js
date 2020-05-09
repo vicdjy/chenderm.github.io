@@ -90,6 +90,8 @@ var database_dict = {"Life, Death, Populations": [
                         "CO2 Emissions Cumulative Percentages"]
                     }
 
+var dataloc_dict = {}
+
 var graph1 = undefined;
 var graph2 = undefined;
 
@@ -196,13 +198,19 @@ function submitDrivingQuestions(){
     var checkboxes = document.getElementsByName("database_selection");  
     var numberOfCheckedItems = 0;  
     var dbSelected = [];
+    var database_url = document.getElementById("data_url");
+    dataloc_dict[database_url.value] = database_url.value;
+    dbSelected.push(database_url.value);
+    drivingQuestion[database_url.value] = line;
     for(var i = 0; i < checkboxes.length; i++)  
     {   
         if(checkboxes[i].checked)
         { 
             numberOfCheckedItems++;
-            dbSelected.push(checkboxes[i].value);
-            drivingQuestion[checkboxes[i].value] = line;
+            database_name = checkboxes[i].value
+            dbSelected.push(database_name);
+            drivingQuestion[database_name] = line;
+            dataloc_dict[database_name] = "/csv/" + database_name + ".csv"
         }
     }
     if (numberOfCheckedItems == 0)
@@ -224,7 +232,7 @@ function selectDatabases(dbSelected){
     for (const db of dbSelected) {
         var option = document.createElement("option");
         option.val = db;
-        option.text = db.charAt(0).toUpperCase() + db.slice(1);
+        option.text = db;
         select.appendChild(option);
     }
     select = document.getElementById("database2");
@@ -234,11 +242,42 @@ function selectDatabases(dbSelected){
     for (const db of dbSelected) {
         var option = document.createElement("option");
         option.val = db;
-        option.text = db.charAt(0).toUpperCase() + db.slice(1);
+        option.text = db;
         select.appendChild(option);
     }
 }
 
+/*
+var request = new XMLHttpRequest();
+request.open("GET","data.csv");
+request.addEventListener('load', function(event) {
+   if (request.status >= 200 && request.status < 300) {
+      console.log(request.responseText);
+   } else {
+      console.warn(request.statusText, request.responseText);
+   }
+});
+request.send();
+*/
+function getText(){
+    // read text from URL location
+    var request = new XMLHttpRequest();
+    request.open('GET', 'https://github.com/chenderm/chenderm.github.io/blob/master/csv/Malaria%20Deaths.csv', true);
+    request.send(null);
+    request.onreadystatechange = function () {
+        if (request.readyState === 4 && request.status === 200) {
+            console.log(request.responseText);
+        }
+    }
+   /*
+   d3.csv("https://github.com/chenderm/chenderm.github.io/blob/master/csv/Malaria%20Deaths.csv")
+    .then(function(data) {
+        for (var i = 0; i < data.length; i++) {
+            console.log(data[i]);
+        }
+    })
+    */
+}
 
 /*function displayQuestion(){
     var dq = document.getElementById("driving_question1");
@@ -257,7 +296,7 @@ function graphData(database, xaxis, yaxis, n, lowDate, highDate, minDate, maxDat
         graph2.destroy();
 
     //add labels and data to respective arrays
-    d3.csv("/csv/" + database + ".csv")
+    d3.csv(dataloc_dict[database])
     .then(function(data) {
         var labelsArr = [];
         var dataArr = [];
@@ -425,7 +464,7 @@ function switchToDefault() {
     //clear y-axis menu 1
     clearMenu("yaxis1", false);
     //read the csv file to get all keys
-    d3.csv("/csv/" + defaultDatabase + ".csv")
+    d3.csv(dataloc_dict[defaultDatabase])
     .then(function(data) {
         var keys = Object.keys(data[0]);
         keys.sort();
@@ -476,7 +515,7 @@ function switchToDefault() {
     //clear y-axis menu
     clearMenu("yaxis2", false);
     //read the csv file to get all keys
-    d3.csv("/csv/" + defaultDatabase + ".csv")
+    d3.csv(dataloc_dict[defaultDatabase])
     .then(function(data) {
         var keys = Object.keys(data[0]);
         keys.sort();
@@ -539,6 +578,7 @@ function switchToDefaultDatabases(n) {
             var option = document.createElement("option");
             option.val = value[index];
             option.text = value[index];
+            dataloc_dict[value[index]] = "/csv/" + value[index] + ".csv"
             optgroup.appendChild(option);
         }
         el.appendChild(optgroup);
@@ -642,7 +682,7 @@ function verifyDB(n) {
         clearMenu("yaxis" + n, false);
 
         //load keys into y-axis menu
-        d3.csv("/csv/" + dbOption + ".csv")
+        d3.csv(dataloc_dict[dbOption])
         .then(function(data) {
             var keys = Object.keys(data[0]);
             keys.sort();
@@ -666,10 +706,14 @@ function verifyDB(n) {
             for (var i = 0; i < data.length; i++) {
                 years.push(data[i]["Year"]);
             }
-            if (years[0] > previousLowDate || years[years.length - 1] < previousHighDate)
-                updateSlider(n, years[0], years[years.length - 1]);
+            console.log(years.length);
+            console.log(years[0], years[years.length - 1])
+            var min = Math.min(...years);
+            var max = Math.max(...years);
+            if (min > previousLowDate || max < previousHighDate)
+                updateSlider(n, min, max);
             else
-                updateSliderOnlyRange(n, years[0], years[years.length - 1], previousLowDate, previousHighDate);
+                updateSliderOnlyRange(n, min, max, previousLowDate, previousHighDate);
         })
         .catch(function(error) {
             if (error.message === "404 Not Found") {
@@ -931,7 +975,7 @@ function swap(savedNum, graphNum) {
 
     clearMenu("yaxis" + graphNum, false);
 
-    d3.csv("/csv/" + savedDB + ".csv")
+    d3.csv(dataloc_dict[savedDB])
     .then(function(data) {
         var keys = Object.keys(data[0]);
         keys.sort();
