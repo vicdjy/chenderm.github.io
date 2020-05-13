@@ -507,7 +507,7 @@ function setOptions(databaseName, yaxis, xaxis, gtype, lowDate, highDate, n, col
         })
         .catch(function (error) {
             if (error.message === "404 Not Found") {
-                alert("File not found: " + databaseName);
+                alert("Database not found: " + databaseName);
             }
         })
 
@@ -655,7 +655,7 @@ function verifyDB(n) {
         })
         .catch(function(error) {
             if (error.message === "404 Not Found") {
-                alert("File not found: " + database);
+                alert("Database not found: " + database);
             }
         })
         
