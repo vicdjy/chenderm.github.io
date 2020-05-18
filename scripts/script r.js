@@ -352,6 +352,7 @@ function graphData(database, xaxis, yaxis, n, lowDate, highDate, minDate, maxDat
             graph1.type = gtype;
             graph1.color = color;
             document.getElementById("save" + n).style.display = "block";
+            document.getElementById("export" + n).style.display = "block";
         }
         else if (n == 2) {
             graph2 = new Chart(ctx, {
@@ -402,6 +403,7 @@ function graphData(database, xaxis, yaxis, n, lowDate, highDate, minDate, maxDat
             graph2.type = gtype;
             graph2.color = color;
             document.getElementById("save" + n).style.display = "block";
+            document.getElementById("export" + n).style.display = "block";
         }
     })
 }
@@ -611,6 +613,7 @@ function clearValues(n) {
         graph2 = undefined;
     }
     document.getElementById("save" + n).style.display = "none";
+    document.getElementById("export" + n).style.display = "none";
 
     // clear driving question
     document.getElementById("driving_question").innerHTML = "";

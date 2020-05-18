@@ -15,7 +15,7 @@ $(document).ready( function() {
 
     var ctx = document.getElementById("graphRegion");
     ctx = ctx.getContext("2d");
-    var graph1 = new Chart(ctx, {
+    var graph = new Chart(ctx, {
         type: gtype,
         data: {
             datasets: [{
