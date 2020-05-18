@@ -541,7 +541,7 @@ function switchToDefault() {
 }
 
 // Runs when user clicks the default button
-// Show all avaliable databases in the drop down menu
+// Show all available databases in the drop down menu
 // Select the default database
 function switchToDefaultDatabases(n) {
     var el = document.getElementById("database" + n);
@@ -1563,4 +1563,59 @@ function resave(saveNum) {
 
     var swap = document.getElementById("swap" + saveNum);
     swap.style.visibility = "visible";
+}
+
+function exportGraph(n) {
+    var labelsArr = undefined;
+    var dataArr = undefined;
+    var db = undefined;
+    var x = undefined;
+    var y = undefined;
+    var lowDate = undefined;
+    var highDate = undefined;
+    var minDate = undefined;
+    var maxDate = undefined;
+    var graph_type = undefined;
+    var color = undefined;
+
+    if (n == 1) {
+        labelsArr = graph1.config.data.labels;
+        dataArr = graph1.config.data.datasets[0].data;
+        db = graph1.DB;
+        x = graph1.X;
+        y = graph1.Y;
+        lowDate = graph1.lowDate;
+        highDate = graph1.highDate;
+        minDate = graph1.minDate;
+        maxDate = graph1.maxDate;
+        graph_type = graph1.type;
+        color = graph1.color;
+    }
+    else if (n == 2) {
+        labelsArr = graph2.config.data.labels;
+        dataArr = graph2.config.data.datasets[0].data;
+        db = graph2.DB;
+        x = graph2.X;
+        y = graph2.Y;
+        lowDate = graph2.lowDate;
+        highDate = graph2.highDate;
+        minDate = graph2.minDate;
+        maxDate = graph2.maxDate;
+        graph_type = graph2.type;
+        color = graph2.color;
+    }
+
+    sessionStorage.setItem("labelsArr", labelsArr);
+    sessionStorage.setItem("dataArr", dataArr);
+    sessionStorage.setItem("db", db);
+    sessionStorage.setItem("x", x);
+    sessionStorage.setItem("y", y);
+    sessionStorage.setItem("lowDate", lowDate);
+    sessionStorage.setItem("highDate", highDate);
+    sessionStorage.setItem("minDate", minDate);
+    sessionStorage.setItem("maxDate", maxDate);
+    sessionStorage.setItem("graph_type", graph_type);
+    sessionStorage.setItem("color", colorSchemeValues[color]);
+
+    window.open("/export.html", "_blank");
 }

@@ -220,12 +220,14 @@
             <div class="graphRegion" ondrop="drop(event, 'graph1')" ondragover="allowDrop(event)">
                 <canvas id="canvas1"></canvas>
                 <button class="saveButton" id="save1" draggable="true" ondragstart="drag(event, 'graph1')">SAVE GRAPH 1 (drag & drop)</button>
+                <button class="export" id="export1" onclick="exportGraph(1);">EXPORT</button>
             </div>
 
             <br><br>
             <div class="graphRegion" ondrop="drop(event, 'graph2')" ondragover="allowDrop(event)">
                 <canvas id="canvas2"></canvas>
                 <button class="saveButton" id="save2" draggable="true" ondragstart="drag(event, 'graph2')">SAVE GRAPH 2 (drag & drop)</button>
+                <button class="export" id="export2" onclick="exportGraph(2);">EXPORT</button>
             </div>
         </div>
 

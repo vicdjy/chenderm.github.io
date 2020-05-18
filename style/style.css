@@ -202,10 +202,21 @@ body {
 }
 
 .saveButton {
+  display: block;
+  float: left;
   background-color: #E2953D;
   color: white;
   z-index: 2;
   cursor: move;
+}
+
+.export {
+  display: block;
+  float: left;
+  margin-left: 5px;
+  background-color: #097000;
+  color: white;
+  z-index: 2;
 }
 
 .tile .tooltiptext {
