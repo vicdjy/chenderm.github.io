@@ -171,6 +171,64 @@ function handleFiles(files) {
     }
 }
 
+function handleDataURL() {
+    // read text from URL location
+    var url = document.getElementById("data_url").value;
+    
+    //make request to read file
+    var request = new XMLHttpRequest();
+    request.open('GET', 'https://chenderm.github.io/csv/GDP.csv', true);
+    request.send(null);
+    request.onreadystatechange = function () {
+        if (request.readyState == 4 && request.status === 200) {
+            var type = request.getResponseHeader('Content-Type');
+            if (type.indexOf("text") !== 1) {
+                //most of code above is syntax
+                //below: sets up each data set into dictionaries
+                //and stores them in the session
+                //the key to retrieve them is the url
+                var dataSetTemp = [];
+                
+                var allRows = request.responseText.split("\n");
+                for (var i = 0; i < allRows.length; i++) {
+                    var rowText = allRows[i].split(",");
+
+                    for (var j = 0; j < rowText.length; j++) {
+                        if (dataSetTemp[j] == undefined)
+                            dataSetTemp[j] = [];
+                        dataSetTemp[j].push(rowText[j]);
+                    }
+                }
+                console.log(dataSetTemp[0]);
+
+                var dataSetReal = {};
+                for (var i = 0; i < dataSetTemp.length; i++) {
+                    dataSetReal[dataSetTemp[i][0]] = dataSetTemp[i].slice(1);
+                }
+                
+                var externalDataSets = sessionStorage.getItem("externalDataSets");
+                if (externalDataSets == null)
+                    externalDataSets = {};
+                externalDataSets[url] = dataSetReal;
+                sessionStorage.setItem("externalDataSets", externalDataSets);
+            }
+        }
+    }
+
+    /*$.ajax({
+        url: 'write.php',
+        method: 'POST',
+        data: { functionToCall: "func", data: "hello" },
+        success: function(data) {
+            alert("Success");
+        },
+        error: function(data) {
+            alert("error");
+        }
+    });*/
+
+}
+
 function getAsText(fileToRead) {
     var reader = new FileReader();
     // Read file into memory as UTF-8      
@@ -188,20 +246,16 @@ function loadHandler(event) {
 // process each line from csv file
 function processData(csv) {
     var allTextLines = csv.split(/\r\n|\n/);
-    for (var i=0; i<1; i++) {
+    for (var i = 0; i < allTextLines.length; i++) {
         var data = allTextLines[i].split(';');
-        var tarr = [];
-        for (var j=0; j<data.length; j++) {
-            tarr.push(data[j]);
-        }
-        line = tarr;
+        console.log(data);
     }
 
 }
 
 function errorHandler(evt) {
     if(evt.target.error.name == "NotReadableError") {
-        alert("Canno't read file !");
+        alert("Cannot read file !");
     }
 }
 
@@ -230,10 +284,9 @@ function submitDrivingQuestions(){
             dataloc_dict[database_name] = "/csv/" + database_name + ".csv"
         }
     }
-    if (numberOfCheckedItems == 0)
-    {  
+    if (numberOfCheckedItems == 0) {
         alert("You have to select a database");  
-        return false;  
+        return false;
     }
     selectDatabases(dbSelected);
     verifyDB(1);

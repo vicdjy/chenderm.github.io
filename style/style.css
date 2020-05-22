@@ -274,6 +274,7 @@ body {
 
 .close-btn:hover {
   color: darkgray;
+  cursor: pointer;
 }
 
 @-webkit-keyframes animatetop {

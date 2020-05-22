@@ -36,10 +36,11 @@
                 <div class="modal">
                     <div class="modal-content">
                         <span class="close-btn" onclick="closeModal()">&times;</span>
+                        <b>Database URL</b><input type="text" id="data_url"><button onclick="handleDataURL()">SUBMIT</button>
+                        <br>
                         <form onsubmit="submitDrivingQuestions();return false">
-                            <b>Database URL</b><input type="text" id="data_url"><br>
                             <label for="question"><b>Driving Question</b></label>
-                            <input type="file" id="driving_question_input" onchange="handleFiles(this.files)" accept=".csv"> <br>
+                            <input type="file" id="driving_question_input" onchange="handleFiles(this.files)" accept=".csv">
                             <br>
                             Select datasets this driving question applies to:
                             <br>
