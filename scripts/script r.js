@@ -182,8 +182,7 @@ function handleDataURL() {
     
     //make request to read file
     var request = new XMLHttpRequest();
-    url = "https://chenderm.github.io/csv/Life Expectancy - Continents.csv";
-    //request.open('GET', 'https://chenderm.github.io/csv/GDP.csv', true);
+    //url = "https://chenderm.github.io/csv/Life Expectancy - Continents.csv";
     request.open('GET', url, true);
     request.send(null);
     request.onreadystatechange = function () {
@@ -648,13 +647,11 @@ function submitGraphData(n) {
     var highDate = $("#range" + n).data("to");
     var minDate = $(".js-range-slider").data("ionRangeSlider").options.min;
     var maxDate = $(".js-range-slider").data("ionRangeSlider").options.max;
-    console.log(minDate, maxDate);
 
     var color = document.getElementById("colorButton" + n).value;
 
-    if (dbOption.startsWith("external")) {
+    if (dbOption.startsWith("external"))
         graphExternalData(dbOption, xOption, yOption, n, lowDate, highDate, minDate, maxDate, gtype, color);
-    }
     else
         graphData(dbOption, xOption, yOption, n, lowDate, highDate, minDate, maxDate, gtype, color);
 }
