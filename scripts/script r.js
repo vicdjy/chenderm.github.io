@@ -218,7 +218,6 @@ function handleDataURL() {
                     bigString += "\n";
                 }
                 bigString = bigString.substr(0, bigString.length - 1);
-                console.log(bigString);
                 
                 sessionStorage.setItem("external:" + url, bigString);
                 alert(url + " uploaded.");
@@ -511,7 +510,6 @@ function graphExternalData(database, xaxis, yaxis, n, lowDate, highDate, minDate
         temp = temp.split(",");
         dataSet[temp[0]] = temp.slice(1);
     }
-    console.log(dataSet);
     var tempLabels = dataSet[xaxis];
     var tempData = dataSet[yaxis];
     var labelsArr = [];
@@ -559,7 +557,7 @@ function graphExternalData(database, xaxis, yaxis, n, lowDate, highDate, minDate
         //create descriptions & properties for graphs
         //needed for tooltip hover in saved region
         var description = {
-            "DB": database,
+            "DB": "external:" + database.substr(database.lastIndexOf("/") + 1),
             "Yaxis": yaxis,
             "lowDate": lowDate,
             "highDate": highDate,
@@ -648,8 +646,9 @@ function submitGraphData(n) {
 
     var lowDate = $("#range" + n).data("from");
     var highDate = $("#range" + n).data("to");
-    var minDate = $("#range" + n).data("min");
-    var maxDate = $("#range" + n).data("max");
+    var minDate = $(".js-range-slider").data("ionRangeSlider").options.min;
+    var maxDate = $(".js-range-slider").data("ionRangeSlider").options.max;
+    console.log(minDate, maxDate);
 
     var color = document.getElementById("colorButton" + n).value;
 
@@ -779,7 +778,7 @@ function switchToDefaultDatabases(n) {
     el.innerHTML = '';
     var empty_option = document.createElement("option");
     el.appendChild(empty_option);
-    for(var key in database_dict) {
+    for (var key in database_dict) {
         var value = database_dict[key];
         var optgroup = document.createElement("optgroup");
         optgroup.label = key;
@@ -914,6 +913,8 @@ function verifyDB(n) {
             if (keys[i] == previousYAxisValue)
                 elY.selectedIndex = i + 1;
         }
+        if (document.getElementById("yaxis" + n).selectedIndex == 0)
+            document.getElementById("submit" + n).disabled = true;
 
         //update date range slider values
         var years = allData[0].split(",");
@@ -969,14 +970,14 @@ function verifyDB(n) {
                 if (keys[i] == previousYAxisValue)
                     elY.selectedIndex = i + 1;
             }
+            if (document.getElementById("yaxis" + n).selectedIndex == 0)
+                document.getElementById("submit" + n).disabled = true;
 
             //update date range slider values
             var years = [];
             for (var i = 0; i < data.length; i++) {
                 years.push(data[i]["Year"]);
             }
-            console.log(years.length);
-            console.log(years[0], years[years.length - 1])
             var min = Math.min(...years);
             var max = Math.max(...years);
             if (min > previousLowDate || max < previousHighDate)
@@ -1222,8 +1223,11 @@ function swap(savedNum, graphNum) {
     var savedColor = savedGraph.color;
 
     saveGraph(savedNum, graphNum, false);
-    graphData(savedDB, savedX, savedY, graphNum, savedLowDate, savedHighDate, savedMinDate, savedMaxDate, savedType, savedColor);
-
+    if (savedDB.startsWith("external"))
+        graphExternalData(savedDB, savedX, savedY, graphNum, savedLowDate, savedHighDate, savedMinDate, savedMaxDate, savedType, savedColor);
+    else
+        graphData(savedDB, savedX, savedY, graphNum, savedLowDate, savedHighDate, savedMinDate, savedMaxDate, savedType, savedColor);
+    
     //updating the controls on the left side
     //set database 1 to savedDB
     var el = document.getElementById("database" + graphNum);
@@ -1243,16 +1247,26 @@ function swap(savedNum, graphNum) {
     }
 
     //update slider range
+    sessionStorage.setItem("dataSet" + graphNum + "Min", savedMinDate);
+    sessionStorage.setItem("dataSet" + graphNum + "Max", savedMaxDate);
     updateSliderOnlyRange(graphNum, savedMinDate, savedMaxDate, savedLowDate, savedHighDate);
 
     changeColorButton(graphNum, savedColor);
 
     clearMenu("yaxis" + graphNum, false);
 
-    d3.csv(dataloc_dict[savedDB])
-    .then(function(data) {
-        var keys = Object.keys(data[0]);
+    if (savedDB.startsWith("external")) {
+        //load keys into y-axis menu
+        var allData = sessionStorage.getItem(savedDB);
+        allData = allData.split("\n");
+        var keys = [];
+        for (var i = 0; i < allData.length; i++) {
+            var subject = allData[i].substr(0, allData[i].indexOf(","));
+            keys.push(subject);
+        }
         keys.sort();
+
+        //add each key to y-axis menu
         for (var i = 0; i < keys.length; i++) {
             if (keys[i] == "Year")
                 continue;
@@ -1262,13 +1276,34 @@ function swap(savedNum, graphNum) {
             option.appendChild(document.createTextNode(keys[i]));
             option.value = keys[i];
             elY.appendChild(option);
-            if (keys[i] == savedY) {
+            if (keys[i] == savedY)
                 elY.selectedIndex = i + 1;
-            }
         }
 
         document.getElementById("submit" + graphNum).disabled = false;
-    });
+    }
+    else {
+        d3.csv(dataloc_dict[savedDB])
+        .then(function(data) {
+            var keys = Object.keys(data[0]);
+            keys.sort();
+            for (var i = 0; i < keys.length; i++) {
+                if (keys[i] == "Year")
+                    continue;
+
+                var elY = document.getElementById("yaxis" + graphNum);
+                var option = document.createElement("option");
+                option.appendChild(document.createTextNode(keys[i]));
+                option.value = keys[i];
+                elY.appendChild(option);
+                if (keys[i] == savedY) {
+                    elY.selectedIndex = i + 1;
+                }
+            }
+
+            document.getElementById("submit" + graphNum).disabled = false;
+        });
+    }
 }
 
 //Relocates a saved graph to another spot
