@@ -106,6 +106,7 @@ var line = "";
 //When the page first loads.
 $(document).ready( function() {
     console.log("Ready!");
+    sessionStorage.clear();
     Chart.defaults.global.defaultFontColor = "#524636";
 
     for (var i = 0; i < 10; i++) {
@@ -174,10 +175,16 @@ function handleFiles(files) {
 function handleDataURL() {
     // read text from URL location
     var url = document.getElementById("data_url").value;
+    if (sessionStorage.getItem("external:" + url) != null) {
+        alert(url + " is already uploaded.");
+        return;
+    }
     
     //make request to read file
     var request = new XMLHttpRequest();
-    request.open('GET', 'https://chenderm.github.io/csv/GDP.csv', true);
+    url = "https://chenderm.github.io/csv/Life Expectancy - Continents.csv";
+    //request.open('GET', 'https://chenderm.github.io/csv/GDP.csv', true);
+    request.open('GET', url, true);
     request.send(null);
     request.onreadystatechange = function () {
         if (request.readyState == 4 && request.status === 200) {
@@ -199,19 +206,47 @@ function handleDataURL() {
                         dataSetTemp[j].push(rowText[j]);
                     }
                 }
-                console.log(dataSetTemp[0]);
 
-                var dataSetReal = {};
+                var bigString = "";
                 for (var i = 0; i < dataSetTemp.length; i++) {
-                    dataSetReal[dataSetTemp[i][0]] = dataSetTemp[i].slice(1);
+                    for (var j = 0; j < dataSetTemp[i].length; j++) {
+                        bigString += dataSetTemp[i][j] + ",";
+                    }
+                    while (bigString.endsWith(",")) {
+                        bigString = bigString.substr(0, bigString.length - 1);
+                    }
+                    bigString += "\n";
                 }
+                bigString = bigString.substr(0, bigString.length - 1);
+                console.log(bigString);
                 
-                var externalDataSets = sessionStorage.getItem("externalDataSets");
-                if (externalDataSets == null)
-                    externalDataSets = {};
-                externalDataSets[url] = dataSetReal;
-                sessionStorage.setItem("externalDataSets", externalDataSets);
+                sessionStorage.setItem("external:" + url, bigString);
+                alert(url + " uploaded.");
+
+                //close popup
+                closeModal();
+
+                var dbMenu1 = document.getElementById("database1");
+                var option = document.createElement("option");
+                if (url.length > 25)
+                    option.appendChild(document.createTextNode("external: ..." + url.substring(url.length - 25)));
+                else
+                    option.appendChild(document.createTextNode("external: " + url));
+                option.value = "external:" + url;
+                dbMenu1.appendChild(option);
+                
+                var dbMenu2 = document.getElementById("database2");
+                option = document.createElement("option");
+                if (url.length > 25)
+                    option.appendChild(document.createTextNode("external: ..." + url.substring(url.length - 25)));
+                else
+                    option.appendChild(document.createTextNode("external: " + url));
+                option.value = "external:" + url;
+                dbMenu2.appendChild(option);
             }
+        }
+        else if (request.readyState == 4 && request.status == 404) {
+            alert("File " + url + " was not found.");
         }
     }
 
@@ -297,7 +332,7 @@ function submitDrivingQuestions(){
 // Dynamically render the drop down meun 'Database (DB)'
 // to include only selected databases
 function selectDatabases(dbSelected){
-    select = document.getElementById("database1");
+    var select = document.getElementById("database1");
     select.innerHTML = '';
     var empty_option = document.createElement("option");
     select.appendChild(empty_option);
@@ -309,7 +344,7 @@ function selectDatabases(dbSelected){
     }
     select = document.getElementById("database2");
     select.innerHTML = '';
-    var empty_option = document.createElement("option");
+    empty_option = document.createElement("option");
     select.appendChild(empty_option);
     for (const db of dbSelected) {
         var option = document.createElement("option");
@@ -380,7 +415,7 @@ function graphData(database, xaxis, yaxis, n, lowDate, highDate, minDate, maxDat
                                 speed: 3000,
                             }
                         },
-                        colorschemes: {scheme: colorSchemeValues[color],}
+                        colorschemes: {scheme: colorSchemeValues[color]}
                     }
                 }
             });
@@ -461,6 +496,141 @@ function graphData(database, xaxis, yaxis, n, lowDate, highDate, minDate, maxDat
     })
 }
 
+//Graphs data for the nth grade, using an external data set
+function graphExternalData(database, xaxis, yaxis, n, lowDate, highDate, minDate, maxDate, gtype, color) {
+    if (n == 1 && graph1 !== undefined)
+        graph1.destroy();
+    else if (n == 2 && graph2 !== undefined)
+        graph2.destroy();
+
+    var allText = sessionStorage.getItem(database);
+    allText = allText.split("\n");
+    var dataSet = {};
+    for (var i = 0; i < allText.length; i++) {
+        var temp = allText[i].substring(0, allText[i].length - 1);
+        temp = temp.split(",");
+        dataSet[temp[0]] = temp.slice(1);
+    }
+    console.log(dataSet);
+    var tempLabels = dataSet[xaxis];
+    var tempData = dataSet[yaxis];
+    var labelsArr = [];
+    var dataArr = [];
+    for (var i = 0; i < tempLabels.length; i++) {
+        if (parseInt(tempLabels[i], 10) >= lowDate && parseInt(tempLabels[i], 10) <= highDate) {
+            labelsArr.push(tempLabels[i]);
+            dataArr.push(tempData[i]);
+        }
+    }
+
+    document.getElementById("driving_question").innerHTML = "";
+
+    var ctx = document.getElementById("canvas" + n);
+    ctx = ctx.getContext("2d");
+    if (n == 1) {
+        graph1 = new Chart(ctx, {
+            type: gtype,
+            data: {
+                datasets: [{
+                    label: yaxis + " (" + gtype + ")",
+                    data: dataArr,
+                }],
+                labels: labelsArr
+            },
+            options: {
+                plugins: {
+                    zoom: {
+                        pan: {
+                            enabled: true,
+                            mode: 'x',
+                            speed: 3000,
+                        },
+                        zoom: {
+                            enalbed: true,
+                            mode: 'x',
+                            speed: 3000,
+                        }
+                    },
+                    colorschemes: {scheme: colorSchemeValues[color]}
+                }
+            }
+        });
+
+        //create descriptions & properties for graphs
+        //needed for tooltip hover in saved region
+        var description = {
+            "DB": database,
+            "Yaxis": yaxis,
+            "lowDate": lowDate,
+            "highDate": highDate,
+            "gtype": gtype
+        }
+        graph1.description = JSON.stringify(description, null, 2);
+        graph1.DB = database;
+        graph1.X = xaxis;
+        graph1.Y = yaxis;
+        graph1.lowDate = lowDate;
+        graph1.highDate = highDate;
+        graph1.minDate = minDate;
+        graph1.maxDate = maxDate;
+        graph1.type = gtype;
+        graph1.color = color;
+        document.getElementById("save" + n).style.display = "block";
+        document.getElementById("export" + n).style.display = "block";
+    }
+    else if (n == 2) {
+        graph2 = new Chart(ctx, {
+            type: gtype,
+            data: {
+                datasets: [{
+                    label: yaxis + " (" + gtype + ")",
+                    data: dataArr,
+                }],
+                labels: labelsArr
+            },
+            options: {
+                plugins: {
+                    zoom: {
+                        pan: {
+                            enabled: true,
+                            mode: 'x',
+                            speed: 3000,
+                        },
+                        zoom: {
+                            enalbed: true,
+                            mode: 'x',
+                            speed: 3000,
+                        }
+                    },
+                    colorschemes: {scheme: colorSchemeValues[color]}
+                }
+            }
+        });
+
+        //create descriptions & properties for graphs
+        //needed for tooltip hover in saved region
+        var description = {
+            "DB": database,
+            "Yaxis": yaxis,
+            "lowDate": lowDate,
+            "highDate": highDate,
+            "gtype": gtype
+        }
+        graph2.description = JSON.stringify(description, null, 2);
+        graph2.DB = database;
+        graph2.X = xaxis;
+        graph2.Y = yaxis;
+        graph2.lowDate = lowDate;
+        graph2.highDate = highDate;
+        graph2.minDate = minDate;
+        graph2.maxDate = maxDate;
+        graph2.type = gtype;
+        graph2.color = color;
+        document.getElementById("save" + n).style.display = "block";
+        document.getElementById("export" + n).style.display = "block";
+    }
+}
+
 //Runs when user clicks the submit button.
 //n = 1 when the button is for the first graph
 //n = 2 when the button is for the second graph
@@ -476,12 +646,18 @@ function submitGraphData(n) {
     el = document.getElementById("gtype" + n);
     var gtype = el.options[el.selectedIndex].value;
 
-    var lowDate = $("#range1").data("from");
-    var highDate = $("#range1").data("to");
+    var lowDate = $("#range" + n).data("from");
+    var highDate = $("#range" + n).data("to");
+    var minDate = $("#range" + n).data("min");
+    var maxDate = $("#range" + n).data("max");
 
     var color = document.getElementById("colorButton" + n).value;
 
-    graphData(dbOption, xOption, yOption, n, lowDate, highDate, lowDate, highDate, gtype, color);
+    if (dbOption.startsWith("external")) {
+        graphExternalData(dbOption, xOption, yOption, n, lowDate, highDate, minDate, maxDate, gtype, color);
+    }
+    else
+        graphData(dbOption, xOption, yOption, n, lowDate, highDate, minDate, maxDate, gtype, color);
 }
 
 //Runs when the user clicks the default button.
@@ -701,6 +877,65 @@ function verifyDB(n) {
 
         //disable submit button
         document.getElementById("submit" + n).disabled = true;
+    }
+    else if (dbOption.startsWith("external")) {
+        //save all previous data
+        var previousYAxisMenu = document.getElementById("yaxis" + n);
+        var previousYAxisValue = previousYAxisMenu.options[previousYAxisMenu.selectedIndex].value;
+        var previousLowDate = $("#range" + n).data("from");
+        var previousHighDate = $("#range" + n).data("to");
+        var previousGTypeMenu = document.getElementById("gtype" + n);
+        var previousGTypeValue = previousGTypeMenu.options[previousGTypeMenu.selectedIndex].value;
+        var previousColor = document.getElementById("colorButton" + n).value;
+        
+        //clear and enable y-axis menu
+        clearMenu("yaxis" + n, false);
+
+        //load keys into y-axis menu
+        var allData = sessionStorage.getItem(dbOption);
+        allData = allData.split("\n");
+        var keys = [];
+        for (var i = 0; i < allData.length; i++) {
+            var subject = allData[i].substr(0, allData[i].indexOf(","));
+            keys.push(subject);
+        }
+        keys.sort();
+
+        //add each key to y-axis menu
+        for (var i = 0; i < keys.length; i++) {
+            if (keys[i] == "Year")
+                continue;
+
+            var elY = document.getElementById("yaxis" + n);
+            var option = document.createElement("option");
+            option.appendChild(document.createTextNode(keys[i]));
+            option.value = keys[i];
+            elY.appendChild(option);
+            if (keys[i] == previousYAxisValue)
+                elY.selectedIndex = i + 1;
+        }
+
+        //update date range slider values
+        var years = allData[0].split(",");
+        years = years.slice(1);
+        var min = Math.min(...years);
+        var max = Math.max(...years);
+        if (min > previousLowDate || max < previousHighDate)
+            updateSlider(n, min, max);
+        else
+            updateSliderOnlyRange(n, min, max, previousLowDate, previousHighDate);
+        
+        //enable graph type menu
+        var el = document.getElementById("gtype" + n);
+        el.disabled = false;
+        if (previousGTypeValue == "line")
+            el.selectedIndex = 1;
+        if (previousGTypeValue == "bar")
+            el.selectedIndex = 2;
+        
+        //enable color button
+        changeColorButton(n, previousColor);
+        document.getElementById("colorButton" + n).disabled = false;
     }
     else {
         //save all previous data
