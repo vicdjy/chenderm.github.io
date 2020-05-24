@@ -1226,10 +1226,10 @@ function swap(savedNum, graphNum) {
         graphData(savedDB, savedX, savedY, graphNum, savedLowDate, savedHighDate, savedMinDate, savedMaxDate, savedType, savedColor);
     
     //updating the controls on the left side
-    //set database 1 to savedDB
+    //set database to savedDB
     var el = document.getElementById("database" + graphNum);
     for (var i = 0; i < el.options.length; i++) {
-        if (el.options[i].text === savedDB) {
+        if (el.options[i].value === savedDB) {
             el.selectedIndex = i;
             break;
         }
