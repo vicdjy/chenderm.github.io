@@ -91,9 +91,6 @@ var database_dict = {"Life, Death, Populations": [
                         "CO2 Emissions Cumulative Percentages"]
                     }
 
-// This dictionary store key value pairs {"database name" : "location of database"}
-var dataloc_dict = {}
-
 var graph1 = undefined;
 var graph2 = undefined;
 
@@ -137,23 +134,23 @@ $(document).ready( function() {
     switchToDefault();
 });
 
-// Construct a modal element.
-// This is the pop-up window when user selects 'Custom' button.
+//Construct a modal element.
+//This is the pop-up window when user selects 'Custom' button.
 let modal = document.querySelector(".modal")
 
-// Display Modal when user clicks 'Custom'
+//Display Modal when user clicks 'Custom'
 function displayModal(){
     let modal = document.querySelector(".modal")
     modal.style.display = "block"
 }
 
-// When the user clicks on (x), close the modal
+//When the user clicks on (x), close the modal
 function closeModal(){
     let modal = document.querySelector(".modal")
     modal.style.display = "none" 
 }
 
-// Close modal when user clicks anywhere outside of it.
+//Close modal when user clicks anywhere outside of it.
 window.onclick = function(e){
     let modal = document.querySelector(".modal")
     if(e.target == modal){
@@ -161,17 +158,39 @@ window.onclick = function(e){
     }
 }
 
-// Use browser's FileReader to read in uploaded file
-function handleFiles(files) {
-    // Check for the various File API support.
-    if (window.FileReader) {
-        // FileReader are supported.
-        getAsText(files[0]);
+//Use browser's FileReader to read in uploaded file
+function handleDrivingQuestionFiles(files) {
+    //Check for the various File API support.
+    if (window.FileReader) {    //FileReader is supported.
+        //only one file, the first one, is read
+        var fileToRead = files[0]; 
+
+        var reader = new FileReader();
+        reader.readAsText(fileToRead);
+        //handle errors load
+        reader.onload = loadHandler;
+        reader.onerror = errorHandler;
     } else {
-        alert('FileReader are not supported in this browser.');
+        alert('FileReader is not supported on this browser.');
     }
 }
 
+//runs if file from driving question upload is successfully read
+function loadHandler(event) {
+    var csv = event.target.result;
+    var allTextLines = csv.split(/\r\n|\n/);
+    for (var i = 0; i < allTextLines.length; i++) {
+        var data = allTextLines[i].split(';');
+        console.log(data);
+    }
+}
+
+//Is called when the submit button is clicked for
+//database URL input box
+//It reads the data from the URL and stores all data as
+//a long string inside session storage with the key
+//"external:" + URL
+//Reading data from this string will take some processing
 function handleDataURL() {
     // read text from URL location
     var url = document.getElementById("data_url").value;
@@ -190,9 +209,14 @@ function handleDataURL() {
             var type = request.getResponseHeader('Content-Type');
             if (type.indexOf("text") !== 1) {
                 //most of code above is syntax
-                //below: sets up each data set into dictionaries
-                //and stores them in the session
-                //the key to retrieve them is the url
+                //below: sets up each data set as a long string
+                //e.g. if data set is:
+                //Year  USA     UK
+                //2020  10      15
+                //It will be stored as
+                //"Year,2020
+                //USA,10
+                //UK,15"
                 var dataSetTemp = [];
                 
                 var allRows = request.responseText.split("\n");
@@ -203,6 +227,7 @@ function handleDataURL() {
                         if (dataSetTemp[j] == undefined)
                             dataSetTemp[j] = [];
                         dataSetTemp[j].push(rowText[j]);
+                        //sets up data like [Year, 2020], [USA, 10], [UK, 15]
                     }
                 }
 
@@ -211,19 +236,22 @@ function handleDataURL() {
                     for (var j = 0; j < dataSetTemp[i].length; j++) {
                         bigString += dataSetTemp[i][j] + ",";
                     }
-                    while (bigString.endsWith(",")) {
+                    while (bigString.endsWith(",")) {   //remove excess commas
                         bigString = bigString.substr(0, bigString.length - 1);
                     }
-                    bigString += "\n";
+                    bigString += "\n";  //add newline between categorized data
                 }
                 bigString = bigString.substr(0, bigString.length - 1);
+                //remove last newline of string
                 
                 sessionStorage.setItem("external:" + url, bigString);
-                alert(url + " uploaded.");
+                alert(url + " uploaded.");  //big string is stored now
 
                 //close popup
                 closeModal();
 
+                //add this data set to database dropdown menus
+                //if URL is too long, it will be abbreviated
                 var dbMenu1 = document.getElementById("database1");
                 var option = document.createElement("option");
                 if (url.length > 25)
@@ -262,59 +290,36 @@ function handleDataURL() {
 
 }
 
-function getAsText(fileToRead) {
-    var reader = new FileReader();
-    // Read file into memory as UTF-8      
-    reader.readAsText(fileToRead);
-    // Handle errors load
-    reader.onload = loadHandler;
-    reader.onerror = errorHandler;
-}
-
-function loadHandler(event) {
-    var csv = event.target.result;
-    processData(csv);
-}
-
-// process each line from csv file
-function processData(csv) {
-    var allTextLines = csv.split(/\r\n|\n/);
-    for (var i = 0; i < allTextLines.length; i++) {
-        var data = allTextLines[i].split(';');
-        console.log(data);
-    }
-
-}
-
+//runs if file from driving question upload is unsuccessful
 function errorHandler(evt) {
     if(evt.target.error.name == "NotReadableError") {
-        alert("Cannot read file !");
+        alert("Cannot read file!");
     }
 }
 
-// This function is called when user clicks on the 'Submit' button
-function submitDrivingQuestions(){
+//Runs when the submit button at the bottom of the modal is clicked
+function submitDrivingQuestions() {
     var checkboxes = document.getElementsByName("database_selection");  
     var numberOfCheckedItems = 0;  
     var dbSelected = [];
-    // Reads the database URL user provided
+
+    /*// Reads the database URL user provided
     var database_url = document.getElementById("data_url");
+
     // Updates location of the database to URL location
     dataloc_dict[database_url.value] = database_url.value;
     dbSelected.push(database_url.value);
-    drivingQuestion[database_url.value] = line;
+    drivingQuestion[database_url.value] = line;*/
 
-    for(var i = 0; i < checkboxes.length; i++)  
-    {   
-        if(checkboxes[i].checked)
-        { 
+    for (var i = 0; i < checkboxes.length; i++) {   
+        if (checkboxes[i].checked) {
+            var databaseName = checkboxes[i].value;
+            dbSelected.push(databaseName);
+
+            //update driving question associated with the database
+            drivingQuestion[databaseName] = line;
+
             numberOfCheckedItems++;
-            database_name = checkboxes[i].value
-            dbSelected.push(database_name);
-            // update driving question associated with the database
-            drivingQuestion[database_name] = line;
-            // update location of the database to server's file directory
-            dataloc_dict[database_name] = "/csv/" + database_name + ".csv"
         }
     }
     if (numberOfCheckedItems == 0) {
@@ -327,8 +332,7 @@ function submitDrivingQuestions(){
     alert("Submitted");
 }
 
-// Dynamically render the drop down meun 'Database (DB)'
-// to include only selected databases
+//only display the currently selected databases
 function selectDatabases(dbSelected){
     var select = document.getElementById("database1");
     select.innerHTML = '';
@@ -360,7 +364,7 @@ function graphData(database, xaxis, yaxis, n, lowDate, highDate, minDate, maxDat
         graph2.destroy();
 
     //add labels and data to respective arrays
-    d3.csv(dataloc_dict[database])
+    d3.csv("/csv/" + database + ".csv")
     .then(function(data) {
         var labelsArr = [];
         var dataArr = [];
@@ -372,16 +376,13 @@ function graphData(database, xaxis, yaxis, n, lowDate, highDate, minDate, maxDat
         }
 
         //add driving question (only use the first graph)
-        if (n==1) {
+        if (n == 1) {
             var dq = document.getElementById("driving_question");
             var question = "";
-            if (typeof drivingQuestion[database] === 'undefined') {
-                //alert("this database does not have a driving question");
+            if (typeof drivingQuestion[database] === 'undefined')
                 question = "default driving question";
-            }
-            else {
+            else
                 question = drivingQuestion[database];
-            }
             
             dq.innerHTML = question;
         }   
@@ -669,7 +670,7 @@ function switchToDefault() {
     //clear y-axis menu 1
     clearMenu("yaxis1", false);
     //read the csv file to get all keys
-    d3.csv(dataloc_dict[defaultDatabase])
+    d3.csv("/csv/"  + defaultDatabase + ".csv")
     .then(function(data) {
         var keys = Object.keys(data[0]);
         keys.sort();
@@ -720,7 +721,7 @@ function switchToDefault() {
     //clear y-axis menu
     clearMenu("yaxis2", false);
     //read the csv file to get all keys
-    d3.csv(dataloc_dict[defaultDatabase])
+    d3.csv("/csv/" + defaultDatabase + ".csv")
     .then(function(data) {
         var keys = Object.keys(data[0]);
         keys.sort();
@@ -779,11 +780,10 @@ function switchToDefaultDatabases(n) {
         var value = database_dict[key];
         var optgroup = document.createElement("optgroup");
         optgroup.label = key;
-        for (index=0; index < value.length; index++) {
+        for (index = 0; index < value.length; index++) {
             var option = document.createElement("option");
             option.val = value[index];
             option.text = value[index];
-            dataloc_dict[value[index]] = "/csv/" + value[index] + ".csv"
             optgroup.appendChild(option);
         }
         el.appendChild(optgroup);
@@ -949,7 +949,7 @@ function verifyDB(n) {
         clearMenu("yaxis" + n, false);
 
         //load keys into y-axis menu
-        d3.csv(dataloc_dict[dbOption])
+        d3.csv("/csv/" + dbOption + ".csv")
         .then(function(data) {
             var keys = Object.keys(data[0]);
             keys.sort();
@@ -1280,7 +1280,7 @@ function swap(savedNum, graphNum) {
         document.getElementById("submit" + graphNum).disabled = false;
     }
     else {
-        d3.csv(dataloc_dict[savedDB])
+        d3.csv("/csv/" + savedDB + ".csv")
         .then(function(data) {
             var keys = Object.keys(data[0]);
             keys.sort();
