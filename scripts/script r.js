@@ -1797,7 +1797,13 @@ function regraph(n) {
         color = graph2.color;
     }
 
-    graphData(db, x, y, n, lowDate, highDate, minDate, maxDate, graphType, color);
+    if (db.startsWith("external")) {
+        graphExternalData(db, x, y, n, lowDate, highDate, minDate, maxDate, graphType, color);
+    }
+    else {
+        graphData(db, x, y, n, lowDate, highDate, minDate, maxDate, graphType, color);
+    }
+    
 }
 
 //redraws a graph in the saved region
