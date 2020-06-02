@@ -1,0 +1,142 @@
+.col1 {
+	width: 30%;
+}
+
+.col2 {
+	width: 32%;
+}
+
+.col3 {
+	float: left;
+	height: 100%;
+	width: 30%;
+	padding-right: 10px;
+	padding-bottom: 10px;
+	padding-left: 20px;
+	color: #524636;
+	background-color:#66aedb;
+}
+
+.pillar {
+	float: left;
+	height: 100% - 50px;
+	width: 50%;
+	min-width: 100px;
+	overflow: hidden;
+}
+
+.frame {
+	display: block;
+	position: relative;
+	height: 15%;
+	width: 100%;
+	margin-bottom: 20px;
+	min-height: 75px;
+}
+
+.tile {
+	float: none;
+	display: inline-block;
+	width: 80%;
+	height: 80%;
+	margin: auto;
+	border: 1px solid #524636;
+}
+
+.exit {
+	visibility: hidden;
+	position: absolute;
+	font-size: 13px;
+	top: 0px;
+	left: 80%;
+	margin-left: 4px;
+	text-decoration: none;
+	cursor: pointer;
+	color: #524636;
+	z-index: 5;
+}
+
+.swap {
+	visibility: hidden;
+	position: absolute;
+	font-size: 13px;
+	top: 60%;
+	left: 80%;
+	margin-left: 4px;
+	text-decoration: none;
+	cursor: move;
+	color: #524636;
+	z-index: 5;
+}
+
+.tile a {
+	text-decoration: none;
+}
+
+.tile .tooltiptext {
+	visibility: hidden;
+	width: 70%;
+	background-color: #555;
+	color: #fff;
+	position: absolute;
+	font-size: 12;
+	display: none;
+	text-align: left;
+	padding: 5px;
+	z-index: 20;
+	line-height: normal;
+}
+
+.exit .hoverTip {
+	font-size: 12px;
+	visibility: hidden;
+	right: 11px;
+	top: 1px;
+	background-color: #0000005c;
+	color: white;
+	padding: 3px 3px;
+	position: absolute;
+	z-index: 6;
+}
+
+.swap .hoverTip {
+	font-size: 12px;
+	visibility: hidden;
+	right: 17px;
+	bottom: 1px;
+	background-color: #0000005c;
+	color: white;
+	padding: 3px 3px;
+	position: absolute;
+	z-index: 6;
+}
+
+.exit:hover .hoverTip {
+	visibility: visible;
+}
+
+.swap:hover .hoverTip {
+	visibility: visible;
+}
+
+.graphRegion {
+	height: 33%;
+}
+
+.saveButton {
+	display: block;
+	float: left;
+	background-color: #E2953D;
+	color: white;
+	z-index: 2;
+	cursor: move;
+}
+
+.export {
+	display: block;
+	float: left;
+	margin-left: 5px;
+	background-color: #097000;
+	color: white;
+	z-index: 2;
+}

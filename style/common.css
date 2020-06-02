@@ -1,288 +1,151 @@
 body {
-  background-color:#c2edce;
+	background-color:#c2edce;
 }
 
 * {
- font-family: Arial;
+	font-family: Arial;
 }
 
 .logo {
-  margin-top: 10px;
-  margin-left: -5px;
-  height: 81px;
-  width: 322px;
+	margin-top: 10px;
+	margin-left: -5px;
+	height: 81px;
+	width: 322px;
 }
 
 .container {
-  height: 100%;
-  width: 100%;
-  min-width: 1300px;
-  min-height: 600px;
+	height: 100%;
+	width: 100%;
+	min-width: 1300px;
+	min-height: 600px;
 }
 
 .col1 {
-  float: left;
-  height: 100%;
-  width: 30%;
-  padding-right: 10px;
-  padding-left: 10px;
-  color: #524636;
+	float: left;
+	height: 100%;
+	padding-right: 10px;
+	padding-left: 10px;
+	color: #524636;
 }
 
 .row {
-  font-size: 12px;
-  line-height: 1%;
-  padding-right: 10px;
-  padding-bottom: 10px;
-  padding-left: 5px;
-  background-color:#92bbbd;
+	font-size: 12px;
+	line-height: 1%;
+	padding-right: 10px;
+	padding-bottom: 10px;
+	padding-left: 5px;
+	background-color:#92bbbd;
 }
 
 .select {
-  background-color: white;
-  color: black;
-  border: none;
+	background-color: white;
+	color: black;
+	border: none;
 }
 
 .col2 {
-  float: left;
-  height: 100%;
-  width: 32%;
-  padding-right: 20px;
-  padding-bottom: 5px;
-  padding-left: 20px;
-  color: #524636;
-  background-color:#f6f6f2;
-}
-
-.col3 {
-  float: left;
-  height: 100%;
-  width: 30%;
-  padding-right: 10px;
-  padding-bottom: 10px;
-  padding-left: 20px;
-  color: #524636;
-  background-color:#66aedb;
-}
-
-.pillar {
-  float: left;
-  height: 100% - 50px;
-  width: 50%;
-  min-width: 100px;
-  overflow: hidden;
-}
-
-.frame {
-  display: block;
-  position: relative;
-  height: 15%;
-  width: 100%;
-  margin-bottom: 20px;
-  min-height: 75px;
-}
-
-.tile {
-  float: none;
-  display: inline-block;
-  width: 80%;
-  height: 80%;
-  margin: auto;
-  border: 1px solid #524636;
-}
-
-.exit {
-  visibility: hidden;
-  position: absolute;
-  font-size: 13px;
-  top: 0px;
-  left: 80%;
-  margin-left: 4px;
-  text-decoration: none;
-  cursor: pointer;
-  color: #524636;
-  z-index: 5;
-}
-
-.swap {
-  visibility: hidden;
-  position: absolute;
-  font-size: 13px;
-  top: 60%;
-  left: 80%;
-  margin-left: 4px;
-  text-decoration: none;
-  cursor: move;
-  color: #524636;
-  z-index: 5;
-}
-
-.tile a {
-  text-decoration: none;
-}
-
-.exit .hoverTip {
-  font-size: 12px;
-  visibility: hidden;
-  right: 11px;
-  top: 1px;
-  background-color: #0000005c;
-  color: white;
-  padding: 3px 3px;
-  position: absolute;
-  z-index: 6;
-}
-
-.swap .hoverTip {
-  font-size: 12px;
-  visibility: hidden;
-  right: 17px;
-  bottom: 1px;
-  background-color: #0000005c;
-  color: white;
-  padding: 3px 3px;
-  position: absolute;
-  z-index: 6;
-}
-
-.exit:hover .hoverTip {
-  visibility: visible;
-}
-
-.swap:hover .hoverTip {
-  visibility: visible;
+	float: left;
+	height: 100%;
+	padding-right: 20px;
+	padding-bottom: 5px;
+	padding-left: 20px;
+	color: #524636;
+	background-color:#f6f6f2;
 }
 
 .colorButton {
-  height: 15px;
+	height: 15px;
 }
 
 .colorwheelMenu {
-  visibility: hidden;
-  left: 62px;
-  padding-left: 4px;
-  position: absolute;
-  bottom: -30px;
-  z-index: 1;
-  width: 160px;
-  border: 2px solid black;
+	visibility: hidden;
+	left: 62px;
+	padding-left: 4px;
+	position: absolute;
+	bottom: -30px;
+	z-index: 1;
+	width: 160px;
+	border: 2px solid black;
 }
 
 .colorwheelMenu item {
-  color: black;
-  height: 20px;
-  width: 20px;
-  margin-left: -4px;
-  display: inline-block;
-  cursor: pointer;
+	color: black;
+	height: 20px;
+	width: 20px;
+	margin-left: -4px;
+	display: inline-block;
+	cursor: pointer;
 }
 
 .submit {
-  background-color: #f8d605;
-  color: black;
-  font-size: 14px;
-  height: 20px;
+	background-color: #f8d605;
+	color: black;
+	font-size: 14px;
+	height: 20px;
 }
 
 #default {
-  background-color: #b7b7b7;
-  color: black;
-  display: inline-block;
+	background-color: #b7b7b7;
+	color: black;
+	display: inline-block;
 }
 
 #clear {
-  background-color: #990000;
-  color: white;
-  display: inline-block;
-}
-
-.graphRegion {
-  height: 33%;
-}
-
-.saveButton {
-  display: block;
-  float: left;
-  background-color: #E2953D;
-  color: white;
-  z-index: 2;
-  cursor: move;
-}
-
-.export {
-  display: block;
-  float: left;
-  margin-left: 5px;
-  background-color: #097000;
-  color: white;
-  z-index: 2;
-}
-
-.tile .tooltiptext {
-  visibility: hidden;
-  width: 70%;
-  background-color: #555;
-  color: #fff;
-  position: absolute;
-  font-size: 12;
-  display: none;
-  text-align: left;
-  padding: 5px;
-  z-index: 20;
-  line-height: normal;
+	background-color: #990000;
+	color: white;
+	display: inline-block;
 }
 
 .modal {
-  display: none;
-  position: fixed; 
-  padding-top: 30px;
-  left: 0; 
-  top: 0;
-  width: 100%; 
-  background-color: rgba(0, 0, 0, 0.5);
-  height:100%;
-  overflow: scroll;
+	display: none;
+	position: fixed; 
+	padding-top: 30px;
+	left: 0; 
+	top: 0;
+	width: 100%; 
+	background-color: rgba(0, 0, 0, 0.5);
+	height:100%;
+	overflow: scroll;
 }
 
 #modal-btn {
-  background-color: #E2953D;
-  color: white;
-  z-index: 2;
-  display: inline-block;
+	background-color: #E2953D;
+	color: white;
+	z-index: 2;
+	display: inline-block;
 }
 
 .modal-content {
-  position: relative; 
-  background-color: white;
-  color: black;
-  padding: 20px; 
-  margin: auto; 
-  width: 75%;  
-  -webkit-animation-name: animatetop;
-  -webkit-animation-duration: 0.4s;
-  animation-name: animatetop;
-  animation-duration: 0.4s;
+	position: relative; 
+	background-color: white;
+	color: black;
+	padding: 20px; 
+	margin: auto; 
+	width: 75%;  
+	-webkit-animation-name: animatetop;
+	-webkit-animation-duration: 0.4s;
+	animation-name: animatetop;
+	animation-duration: 0.4s;
 }
 
 .close-btn {
-  float: right; 
-  color: lightgray; 
-  font-size: 24px;  
-  font-weight: bold;
+	float: right; 
+	color: lightgray; 
+	font-size: 24px;  
+	font-weight: bold;
 }
 
 .close-btn:hover {
-  color: darkgray;
-  cursor: pointer;
+	color: darkgray;
+	cursor: pointer;
 }
 
 @-webkit-keyframes animatetop {
-  from {top:-300px; opacity:0} 
-  to {top:0; opacity:1}
+	from {top:-300px; opacity:0} 
+	to {top:0; opacity:1}
 }
 
 @keyframes animatetop {
-  from {top:-300px; opacity:0}
-  to {top:0; opacity:1}
+	from {top:-300px; opacity:0}
+	to {top:0; opacity:1}
 }
