@@ -18,17 +18,6 @@ var defaultTextValue = {
         }
     ]
 };
-var firstLoad = true;
-
-var defaultDatabase0 = "Populations";
-var defaultXAxis0 = "Year";
-var defaultYAxis0 = "Rwanda";
-var defaultDatabase1 = "Populations";
-var defaultXAxis1 = "Year";
-var defaultYAxis1 = "Algeria";
-
-var graph0 = undefined;
-var graph1 = undefined;
 
 var jsonObj = {};
 
@@ -98,7 +87,7 @@ function submitText(id) {
     gtype = g.gtype;
     color = g.color;
 
-    setOptions(database, yaxis, xaxis, gtype, lowDate, highDate, n, color);
+    setOptions(database, yaxis, xaxis, gtype, lowDate, highDate, 0, 0, n, color, true);
 }
 
 function displayHelp() {
@@ -149,96 +138,26 @@ function updateScript(Id, DB, Yaxis, lowDate, highDate, gtype, color) {
     document.getElementById("box" + Id).value = textValue;
 }
 
-//sets menus on the left to appropriate values
-//plots graphs based on input
-function setOptions(databaseName, yaxis, xaxis, gtype, lowDate, highDate, n, color) {
-    var el = document.getElementById("database" + n);
-    for (var i = 0; i < el.options.length; i++) {
-        if (el.options[i].text === databaseName) {
-            el.selectedIndex = i;
-            break;
-        }
-    }
-
-    el = document.getElementById("gtype" + n);
-    for (var i = 0; i < el.options.length; i++) {
-        if (el.options[i].value === gtype) {
-            el.selectedIndex = i;
-            break;
-        }
-    }
-
-    //clear y-axis menu
-    clearMenu("yaxis" + n, false);
-
-    //read the csv file to get all keys
-    d3.csv("/csv/" + databaseName + ".csv")
-    .then(function (data) {
-        var keys = Object.keys(data[0]);
-        keys.sort();
-        //add each key to y-axis menu
-        for (var i = 0; i < keys.length; i++) {
-            if (keys[i] == "Year")
-                continue;
-
-            var elY = document.getElementById("yaxis" + n);
-            var option = document.createElement("option");
-            option.appendChild(document.createTextNode(keys[i]));
-            option.value = keys[i];
-            elY.appendChild(option);
-            if (keys[i] == yaxis) {
-                elY.selectedIndex = i + 1;
-            }
-        }
-
-        //update date range slider values
-        var years = [];
-        for (var i = 0; i < data.length; i++) {
-            years.push(data[i]["Year"]);
-        }
-        if (highDate === 0) {
-            lowDate = years[0];
-            highDate = years[years.length - 1];
-        }
-
-        updateSliderOnlyRange(n, years[0], years[years.length - 1], lowDate, highDate);
-
-        //enable the submit button
-        document.getElementById("submit" + n).disabled = false;
-
-        //graph data
-        graphData(databaseName, xaxis, yaxis, n, lowDate, highDate, years[0], years[years.length - 1], gtype, color);        
-    })
-    .catch(function (error) {
-        if (error.message === "404 Not Found") {
-            alert("Database not found: " + databaseName);
-        }
-    })
-
-    //reset color button;
-    changeColorButton(n, color);
-    document.getElementById("colorButton" + n).disabled = false;
-
-    if (firstLoad) {
-        for (i in defaultTextValue.Graphs) {
-            g = defaultTextValue.Graphs[i];
-            textValue = JSON.stringify(g, null, 2);
-            document.getElementById("box" + (parseInt(i) + 1)).value = textValue;
-        }
-    }
-}
-
 //Runs when the user clicks the default button.
 //Switches all database, y-axis, graph type values to
 //default values, which are set at the top of this file.
 //Enables y-axis, graph type select menus
 //Updates date range sliders to proper mins & maxes
 //Enables date range sliders
-function switchToDefault() {
-    firstLoad = true;
-    setOptions(defaultDatabase0, defaultYAxis0, defaultXAxis0, 'bar', 0, 0, 1, "orange");
-    setOptions(defaultDatabase1, defaultYAxis1, defaultXAxis1, 'bar', 0, 0, 2, "darkBrown");
-    firstLoad = false;
+function switchToDefault() {    //overwrites switchToDefault() from common.js
+    //set database 1 to default
+    switchToDefaultDatabases(1);
+    setOptions(defaultValues.db, defaultValues.y1, defaultValues.x1, defaultValues.gtype1, defaultValues.lowDate1, defaultValues.highDate1, defaultValues.lowDate1, defaultValues.highDate1, 1, defaultValues.color1, true);
+    
+    //set database 2 to default
+    switchToDefaultDatabases(2);
+    setOptions(defaultValues.db, defaultValues.y2, defaultValues.x2, defaultValues.gtype2, defaultValues.lowDate2, defaultValues.highDate2, defaultValues.lowDate2, defaultValues.highDate2, 2, defaultValues.color2, true);
+    
+    for (var i in defaultTextValue.Graphs) {
+        var g = defaultTextValue.Graphs[i];
+        var textValue = JSON.stringify(g, null, 2);
+        document.getElementById("box" + (parseInt(i) + 1)).value = textValue;
+    }
 }
 
 //Download graph as jpg
@@ -253,8 +172,8 @@ function changeColorTheme(element) {
     if (element.checked) {  //dark
         Chart.defaults.global.defaultFontColor = "white";
         //redraw graphs 0 and 1
-        regraph(0);
         regraph(1);
+        regraph(2);
 
         var x = document.getElementsByClassName("logo")[0];
         x.src = "img/HistoryInDatalogodark.png";
@@ -299,8 +218,8 @@ function changeColorTheme(element) {
     else {  //light
         Chart.defaults.global.defaultFontColor = "#524636";
         //redraw graphs 0 and 1
-        regraph(0);
         regraph(1);
+        regraph(2);
 
         var x = document.getElementsByClassName("logo")[0];
         x.src = "img/HistoryInDatalogolight.png";

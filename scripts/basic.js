@@ -1,11 +1,5 @@
-var graph1 = undefined;
-var graph2 = undefined;
-
 var savedGraphs = [];
 var savedGraphColor = undefined;
-
-window.drivingQuestion = {};
-var line = "";
 
 //When the page first loads.
 $(document).ready( function() {
@@ -15,165 +9,12 @@ $(document).ready( function() {
     savedGraphColor = "#524636";
 });
 
-//Runs when the user clicks the default button.
-//Switches databases to default
-//Switches y axes to default and enables the menu
-//Resets date ranges
-//Switches graph types to default and enables the menu
-//Resets & enables color button
-function switchToDefault() {
-    //set database 1 to default
-    switchToDefaultDatabases(1);
-
-    //clear y-axis menu 1
-    clearMenu("yaxis1", false);
-    //read the csv file to get all keys
-    d3.csv("/csv/"  + defaultDatabase + ".csv")
-    .then(function(data) {
-        var keys = Object.keys(data[0]);
-        keys.sort();
-        //add each key to y-axis menu
-        for (var i = 0; i < keys.length; i++) {
-            if (keys[i] == "Year")
-                continue;
-
-            var elY = document.getElementById("yaxis1");
-            var option = document.createElement("option");
-            option.appendChild(document.createTextNode(keys[i]));
-            option.value = keys[i];
-            elY.appendChild(option);
-            if (keys[i] == defaultYAxis1) {
-                elY.selectedIndex = i + 1;
-            }
-        }
-
-        //update date range slider values
-        var years = [];
-        for (var i = 0; i < data.length; i++) {
-            years.push(data[i]["Year"]);
-        }
-        updateSlider(1, years[0], years[years.length - 1]);
-
-        //enable the submit button
-        document.getElementById("submit1").disabled = false;
-
-        //graph data
-        graphData(defaultDatabase, defaultXAxis1, defaultYAxis1, 1, years[0], years[years.length - 1], years[0], years[years.length - 1], 'bar', "orange");
-    })
-    .catch(function(error) {
-        if (error.message === "404 Not Found") {
-            alert("File not found: " + database);
-        }
-    })
-
-    //reset graph type menu 1
-    document.getElementById("gtype1").selectedIndex = 2;
-
-    //reset color button 1
-    changeColorButton(1, "orange");
-    document.getElementById("colorButton1").disabled = false;
-
-    //set database 2 to default
-    switchToDefaultDatabases(2);
-
-    //clear y-axis menu
-    clearMenu("yaxis2", false);
-    //read the csv file to get all keys
-    d3.csv("/csv/" + defaultDatabase + ".csv")
-    .then(function(data) {
-        var keys = Object.keys(data[0]);
-        keys.sort();
-        //add each key to y-axis menu
-        for (var i = 0; i < keys.length; i++) {
-            if (keys[i] == "Year")
-                continue;
-
-            var elY = document.getElementById("yaxis2");
-            var option = document.createElement("option");
-            option.appendChild(document.createTextNode(keys[i]));
-            option.value = keys[i];
-            elY.appendChild(option);
-            if (keys[i] == defaultYAxis2) {
-                elY.selectedIndex = i + 1;
-            }
-        }
-
-        //update date range slider values
-        var years = [];
-        for (var i = 0; i < data.length; i++) {
-            years.push(data[i]["Year"]);
-        }
-        updateSlider(2, years[0], years[years.length - 1]);
-
-        //enable the submit button
-        document.getElementById("submit2").disabled = false;
-
-        //graph data
-        graphData(defaultDatabase, defaultXAxis2, defaultYAxis2, 2, years[0], years[years.length - 1], years[0], years[years.length - 1], 'bar', "darkBrown");
-    })
-    .catch(function(error) {
-        if (error.message === "404 Not Found") {
-            alert("File not found: " + database);
-        }
-    })
-
-    //reset graph type menu 2
-    el = document.getElementById("gtype2");
-    el.selectedIndex = 2;
-
-    //reset color button 2
-    changeColorButton(2, "darkBrown");
-    document.getElementById("colorButton2").disabled = false;
-}
-
-// Runs when user clicks the default button
-// Show all available databases in the drop down menu
-// Select the default database
-function switchToDefaultDatabases(n) {
-    var el = document.getElementById("database" + n);
-    el.innerHTML = '';
-    var empty_option = document.createElement("option");
-    el.appendChild(empty_option);
-    for (var key in database_dict) {
-        var value = database_dict[key];
-        var optgroup = document.createElement("optgroup");
-        optgroup.label = key;
-        for (index = 0; index < value.length; index++) {
-            var option = document.createElement("option");
-            option.val = value[index];
-            option.text = value[index];
-            optgroup.appendChild(option);
-        }
-        el.appendChild(optgroup);
-    }
-    
-    for (var i = 0; i < el.options.length; i++) {
-        if (el.options[i].text === defaultDatabase) {
-            el.selectedIndex = i;
-            break;
-        }
-    }
-}
-
-//Runs when the user clicks SAVE GRAPH
+//Runs when the user drags from SAVE GRAPH onto a space on the right
 function saveGraph(saveNum, graphNum, swap) {
     if (graphNum == 1 && graph1 == undefined)
         return;
     else if (graphNum == 2 && graph2 == undefined)
         return;
-
-    var labelsArr = undefined;
-    var dataArr = undefined;
-    var hoverText = undefined;
-    var db = undefined;
-    var x = undefined;
-    var y = undefined;
-    var lowDate = undefined;
-    var highDate = undefined;
-    var minDate = undefined;
-    var maxDate = undefined;
-    var graph_type = undefined;
-    var color = undefined;
 
     var destination = saveNum;
     var g = savedGraphs[saveNum - 1];
@@ -185,34 +26,24 @@ function saveGraph(saveNum, graphNum, swap) {
     tip.style.backgroundColor = "transparent";
     tip.innerHTML = "";
 
-    if (graphNum == 1) {
-        labelsArr = graph1.config.data.labels;
-        dataArr = graph1.config.data.datasets[0].data;
-        hoverText = graph1.description;
-        db = graph1.DB;
-        x = graph1.X;
-        y = graph1.Y;
-        lowDate = graph1.lowDate;
-        highDate = graph1.highDate;
-        minDate = graph1.minDate;
-        maxDate = graph1.maxDate;
-        graph_type = graph1.type;
-        color = graph1.color;
-    }
-    else if (graphNum == 2) {
-        labelsArr = graph2.config.data.labels;
-        dataArr = graph2.config.data.datasets[0].data;
-        hoverText = graph2.description;
-        db = graph2.DB;
-        x = graph2.X;
-        y = graph2.Y;
-        lowDate = graph2.lowDate;
-        highDate = graph2.highDate;
-        minDate = graph2.minDate;
-        maxDate = graph2.maxDate;
-        graph_type = graph2.type;
-        color = graph2.color;
-    }
+    var tempGraph = undefined;
+    if (graphNum == 1)
+        tempGraph = graph1;
+    else
+        tempGraph = graph2;
+
+    var labelsArr = tempGraph.config.data.labels;
+    var dataArr = tempGraph.config.data.datasets[0].data;
+    var hoverText = tempGraph.description;
+    var db = tempGraph.DB;
+    var x = tempGraph.X;
+    var y = tempGraph.Y;
+    var lowDate = tempGraph.lowDate;
+    var highDate = tempGraph.highDate;
+    var minDate = tempGraph.minDate;
+    var maxDate = tempGraph.maxDate;
+    var graph_type = tempGraph.type;
+    var color = tempGraph.color;
 
     //check if current graph is already saved
     for (var i = 0; i < savedGraphs.length; i++) {
@@ -220,10 +51,8 @@ function saveGraph(saveNum, graphNum, swap) {
             if (!swap) {
                 alert("Graph " + graphNum + " is already saved at box #" + (i + 1));
             }
-            var exit = document.getElementById("exit" + saveNum);
-            exit.style.visibility = "hidden";
-            var swap = document.getElementById("swap" + saveNum);
-            swap.style.visibility = "hidden";
+            document.getElementById("exit" + saveNum).style.visibility = "hidden";
+            document.getElementById("swap" + saveNum).style.visibility = "hidden";
             return;
         }
     }
@@ -282,11 +111,8 @@ function saveGraph(saveNum, graphNum, swap) {
     tip.innerHTML = hoverText;
     tip.style.visibility = "hidden";
 
-    var exit = document.getElementById("exit" + destination);
-    exit.style.visibility = "visible";
-
-    var swap = document.getElementById("swap" + destination);
-    swap.style.visibility = "visible";
+    document.getElementById("exit" + destination).style.visibility = "visible";
+    document.getElementById("swap" + destination).style.visibility = "visible";
 }
 
 //Transfers a saved graph to one of the main graphs,
@@ -304,94 +130,17 @@ function swap(savedNum, graphNum) {
     var savedColor = savedGraph.color;
 
     saveGraph(savedNum, graphNum, false);
-    if (savedDB.startsWith("external"))
-        graphExternalData(savedDB, savedX, savedY, graphNum, savedLowDate, savedHighDate, savedMinDate, savedMaxDate, savedType, savedColor);
-    else
-        graphData(savedDB, savedX, savedY, graphNum, savedLowDate, savedHighDate, savedMinDate, savedMaxDate, savedType, savedColor);
     
-    //updating the controls on the left side
-    //set database to savedDB
-    var el = document.getElementById("database" + graphNum);
-    for (var i = 0; i < el.options.length; i++) {
-        if (el.options[i].value === savedDB) {
-            el.selectedIndex = i;
-            break;
-        }
-    }
-
-    var el = document.getElementById("gtype" + graphNum);
-    for (var i = 0; i < el.options.length; i++) {
-        if (el.options[i].text === savedType) {
-            el.selectedIndex = i;
-            break;
-        }
-    }
-
-    //update slider range
-    sessionStorage.setItem("dataSet" + graphNum + "Min", savedMinDate);
-    sessionStorage.setItem("dataSet" + graphNum + "Max", savedMaxDate);
-    updateSliderOnlyRange(graphNum, savedMinDate, savedMaxDate, savedLowDate, savedHighDate);
-
-    changeColorButton(graphNum, savedColor);
-
-    clearMenu("yaxis" + graphNum, false);
-
-    if (savedDB.startsWith("external")) {
-        //load keys into y-axis menu
-        var allData = sessionStorage.getItem(savedDB);
-        allData = allData.split("\n");
-        var keys = [];
-        for (var i = 0; i < allData.length; i++) {
-            var subject = allData[i].substr(0, allData[i].indexOf(","));
-            keys.push(subject);
-        }
-        keys.sort();
-
-        //add each key to y-axis menu
-        for (var i = 0; i < keys.length; i++) {
-            if (keys[i] == "Year")
-                continue;
-
-            var elY = document.getElementById("yaxis" + graphNum);
-            var option = document.createElement("option");
-            option.appendChild(document.createTextNode(keys[i]));
-            option.value = keys[i];
-            elY.appendChild(option);
-            if (keys[i] == savedY)
-                elY.selectedIndex = i + 1;
-        }
-
-        document.getElementById("submit" + graphNum).disabled = false;
-    }
-    else {
-        d3.csv("/csv/" + savedDB + ".csv")
-        .then(function(data) {
-            var keys = Object.keys(data[0]);
-            keys.sort();
-            for (var i = 0; i < keys.length; i++) {
-                if (keys[i] == "Year")
-                    continue;
-
-                var elY = document.getElementById("yaxis" + graphNum);
-                var option = document.createElement("option");
-                option.appendChild(document.createTextNode(keys[i]));
-                option.value = keys[i];
-                elY.appendChild(option);
-                if (keys[i] == savedY) {
-                    elY.selectedIndex = i + 1;
-                }
-            }
-
-            document.getElementById("submit" + graphNum).disabled = false;
-        });
-    }
+    //update menus on the left side and graph data
+    setOptions(savedDB, savedY, savedX, savedType, savedLowDate, savedHighDate, savedMinDate, savedMaxDate, graphNum, savedColor, true);
 }
 
 //Relocates a saved graph to another spot
 //Swaps if both saved spots have graphs
 function relocate(prevSave, nextSave) {
     if (prevSave == nextSave) return;
-    if (savedGraphs[nextSave - 1] == undefined || savedGraphs[nextSave - 1] == null) {
+
+    if (savedGraphs[nextSave - 1] == undefined || savedGraphs[nextSave - 1] == null) {  //move graph
         var prevSavedGraph = savedGraphs[prevSave - 1];
         var prevLabelsArr = prevSavedGraph.config.data.labels;
         var prevDataArr = prevSavedGraph.config.data.datasets[0].data;
@@ -459,13 +208,10 @@ function relocate(prevSave, nextSave) {
         tip.innerHTML = prevHoverText;
         tip.style.visibility = "hidden";
 
-        var exit = document.getElementById("exit" + nextSave);
-        exit.style.visibility = "visible";
-
-        var swap = document.getElementById("swap" + nextSave);
-        swap.style.visibility = "visible";
+        document.getElementById("exit" + nextSave).style.visibility = "visible";
+        document.getElementById("swap" + nextSave).style.visibility = "visible";
     }
-    else {
+    else {  //swap saved graphs, as opposed to just moving one
         var savedGraph1 = savedGraphs[prevSave - 1];
         var labelsArr1 = savedGraph1.config.data.labels;
         var dataArr1 = savedGraph1.config.data.datasets[0].data;
@@ -554,11 +300,8 @@ function relocate(prevSave, nextSave) {
         tip.innerHTML = hoverText1;
         tip.style.visibility = "hidden";
 
-        var exit = document.getElementById("exit" + nextSave);
-        exit.style.visibility = "visible";
-
-        var swap = document.getElementById("swap" + nextSave);
-        swap.style.visibility = "visible";
+        document.getElementById("exit" + nextSave).style.visibility = "visible";
+        document.getElementById("swap" + nextSave).style.visibility = "visible";
 
         var canvas2 = document.getElementById("saved" + prevSave);
         canvas2 = canvas2.getContext("2d");
@@ -606,11 +349,8 @@ function relocate(prevSave, nextSave) {
         tip.innerHTML = hoverText2;
         tip.style.visibility = "hidden";
 
-        exit = document.getElementById("exit" + prevSave);
-        exit.style.visibility = "visible";
-
-        swap = document.getElementById("swap" + prevSave);
-        swap.style.visibility = "visible";
+        document.getElementById("exit" + prevSave).style.visibility = "visible";
+        document.getElementById("swap" + prevSave).style.visibility = "visible";
     }
 }
 
@@ -626,11 +366,8 @@ function deleteGraph(savedNum) {
     tip.innerHTML = "";
     tip.style.visibility = "hidden";
 
-    var exit = document.getElementById("exit" + savedNum);
-    exit.style.visibility = "hidden";
-
-    var swap = document.getElementById("swap" + savedNum);
-    swap.style.visibility = "hidden";
+    document.getElementById("exit" + savedNum).style.visibility = "hidden";
+    document.getElementById("swap" + savedNum).style.visibility = "hidden";
 }
 
 //Shows tooltip over saved graph
@@ -823,8 +560,8 @@ function resave(saveNum) {
     var savedGraph = savedGraphs[saveNum - 1];
     if (savedGraph == undefined)
         return;
-    if (g != null)
-        g.destroy();
+    else if (savedGraph != null)
+        savedGraph.destroy();
     savedGraph[saveNum - 1] = undefined;
     
     var labelsArr = savedGraph.config.data.labels;
@@ -839,11 +576,6 @@ function resave(saveNum) {
     var maxDate = savedGraph.maxDate;
     var graph_type = savedGraph.type;
     var color = savedGraph.color;
-
-    var tip = document.getElementById("tip" + saveNum);
-    tip.style.display = "none";
-    tip.style.backgroundColor = "transparent";
-    tip.innerHTML = "";
 
     var canvas = document.getElementById("saved" + saveNum);
     canvas = canvas.getContext("2d");
@@ -890,73 +622,30 @@ function resave(saveNum) {
     g.color = color;
     savedGraphs[saveNum - 1] = g;
 
-    var tip = document.getElementById("tip" + saveNum);
-    tip.style.display = "block";
-    tip.style.backgroundColor = "#0000005c";
-    hoverText = hoverText.replace(/\n( *)/g, function (match, p1) {
-        return '<br>' + '&nbsp;'.repeat(p1.length);
-    });
-    tip.innerHTML = hoverText;
-    tip.style.visibility = "hidden";
+    document.getElementById("tip" + saveNum).style.visibility = "hidden";
 
-    var exit = document.getElementById("exit" + saveNum);
-    exit.style.visibility = "visible";
-
-    var swap = document.getElementById("swap" + saveNum);
-    swap.style.visibility = "visible";
+    document.getElementById("exit" + saveNum).style.visibility = "visible";
+    document.getElementById("swap" + saveNum).style.visibility = "visible";
 }
 
 function exportGraph(n) {
-    var labelsArr = undefined;
-    var dataArr = undefined;
-    var db = undefined;
-    var x = undefined;
-    var y = undefined;
-    var lowDate = undefined;
-    var highDate = undefined;
-    var minDate = undefined;
-    var maxDate = undefined;
-    var graph_type = undefined;
-    var color = undefined;
+    var tempGraph = undefined;
+    if (n == 1)
+        tempGraph = graph1;
+    else if (n == 2)
+        tempGraph = graph2;
 
-    if (n == 1) {
-        labelsArr = graph1.config.data.labels;
-        dataArr = graph1.config.data.datasets[0].data;
-        db = graph1.DB;
-        x = graph1.X;
-        y = graph1.Y;
-        lowDate = graph1.lowDate;
-        highDate = graph1.highDate;
-        minDate = graph1.minDate;
-        maxDate = graph1.maxDate;
-        graph_type = graph1.type;
-        color = graph1.color;
-    }
-    else if (n == 2) {
-        labelsArr = graph2.config.data.labels;
-        dataArr = graph2.config.data.datasets[0].data;
-        db = graph2.DB;
-        x = graph2.X;
-        y = graph2.Y;
-        lowDate = graph2.lowDate;
-        highDate = graph2.highDate;
-        minDate = graph2.minDate;
-        maxDate = graph2.maxDate;
-        graph_type = graph2.type;
-        color = graph2.color;
-    }
-
-    sessionStorage.setItem("labelsArr", labelsArr);
-    sessionStorage.setItem("dataArr", dataArr);
-    sessionStorage.setItem("db", db);
-    sessionStorage.setItem("x", x);
-    sessionStorage.setItem("y", y);
-    sessionStorage.setItem("lowDate", lowDate);
-    sessionStorage.setItem("highDate", highDate);
-    sessionStorage.setItem("minDate", minDate);
-    sessionStorage.setItem("maxDate", maxDate);
-    sessionStorage.setItem("graph_type", graph_type);
-    sessionStorage.setItem("color", colorSchemeValues[color]);
+    sessionStorage.setItem("labelsArr", tempGraph.config.data.labels);
+    sessionStorage.setItem("dataArr", tempGraph.config.data.datasets[0].data);
+    sessionStorage.setItem("db", tempGraph.DB);
+    sessionStorage.setItem("x", tempGraph.X);
+    sessionStorage.setItem("y", tempGraph.Y);
+    sessionStorage.setItem("lowDate", tempGraph.lowDate);
+    sessionStorage.setItem("highDate", tempGraph.highDate);
+    sessionStorage.setItem("minDate", tempGraph.minDate);
+    sessionStorage.setItem("maxDate", tempGraph.maxDate);
+    sessionStorage.setItem("graph_type", tempGraph.type);
+    sessionStorage.setItem("color", tempGraph.color);
 
     window.open("/export.html", "_blank");
 }

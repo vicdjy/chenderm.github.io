@@ -15,12 +15,20 @@ The ngrok website will have instructions for that. It's free.
 Once you get the ngrok URL that looks something like [jumbledMess].ngrok.io, just go to
 [jumbledMess].ngrok.io/index.html
 */
-
-var defaultDatabase = "Populations";
-var defaultXAxis1 = "Year";
-var defaultYAxis1 = "Rwanda";
-var defaultXAxis2 = "Year";
-var defaultYAxis2 = "Algeria";
+var defaultValues = {};
+defaultValues.db = "Populations";
+defaultValues.y1 = "Rwanda";
+defaultValues.x1 = "Year";
+defaultValues.lowDate1 = 1800;
+defaultValues.highDate1 = 2019;
+defaultValues.gtype1 = "bar";
+defaultValues.color1 = "orange";
+defaultValues.y2 = "Algeria";
+defaultValues.x2 = "Year";
+defaultValues.lowDate2 = 1800;
+defaultValues.highDate2 = 2019;
+defaultValues.gtype2 = "bar";
+defaultValues.color2 = "darkBrown";
 
 var colorValues = {
     "gray": "#6f6f6f",
@@ -80,7 +88,10 @@ var colorSchemeValues = {
     "lightPurple": "brewer.PRGn3",
 }
 
-// Dictionary with key value pairs {category: list of databases}
+//Dictionary with key value pairs {category: list of databases}
+//This is used when the user specifies which data sets
+//they want to display/remove in the dropdown menu, but
+//this feature is temporarily disabled
 var database_dict = {"Life, Death, Populations": [
                         "Populations", 
                         "Population Female Percentage", 
@@ -172,6 +183,7 @@ window.onclick = function(e) {
 }
 
 //Use browser's FileReader to read in uploaded file
+//Currently not quite working
 function handleDrivingQuestionFiles(files) {
     //Check for file API support
     if (window.FileReader) {    //FileReader is supported.
@@ -189,6 +201,8 @@ function handleDrivingQuestionFiles(files) {
 }
 
 //runs if file from driving question upload is successfully read
+//There's work here to be done to save driving questions for
+//corresponding data sets
 function loadHandler(event) {
     var csv = event.target.result;
     var allTextLines = csv.split(/\r\n|\n/);
@@ -199,7 +213,7 @@ function loadHandler(event) {
 }
 
 //Is called when the submit button is clicked for
-//database URL input box
+//database URL input box in modal
 //It reads the data from the URL and stores all data as
 //a long string inside session storage with the key
 //"external:" + URL
@@ -316,14 +330,6 @@ function submitDrivingQuestions() {
     var numberOfCheckedItems = 0;  
     var dbSelected = [];
 
-    /*// Reads the database URL user provided
-    var database_url = document.getElementById("data_url");
-
-    // Updates location of the database to URL location
-    dataloc_dict[database_url.value] = database_url.value;
-    dbSelected.push(database_url.value);
-    drivingQuestion[database_url.value] = line;*/
-
     for (var i = 0; i < checkboxes.length; i++) {   
         if (checkboxes[i].checked) {
             var databaseName = checkboxes[i].value;
@@ -347,7 +353,7 @@ function submitDrivingQuestions() {
 
 //only display the currently selected databases
 function selectDatabases(dbSelected){
-    var select = document.getElementById("database1");
+    /*var select = document.getElementById("database1");
     select.innerHTML = '';
     var empty_option = document.createElement("option");
     select.appendChild(empty_option);
@@ -357,6 +363,7 @@ function selectDatabases(dbSelected){
         option.text = db;
         select.appendChild(option);
     }
+
     select = document.getElementById("database2");
     select.innerHTML = '';
     empty_option = document.createElement("option");
@@ -366,7 +373,12 @@ function selectDatabases(dbSelected){
         option.val = db;
         option.text = db;
         select.appendChild(option);
-    }
+    }*/
+    //removed option to only show selected databases
+    //because in the case where the user saves a
+    //graph from a data set currently not shown
+    //in the menu, and does a swap, it causes a lot
+    //of problems
 }
 
 //Graphs data for the nth graph.
@@ -375,7 +387,7 @@ function graphData(database, xaxis, yaxis, n, lowDate, highDate, minDate, maxDat
         graph1.destroy();
     else if (n == 2 && graph2 !== undefined)
         graph2.destroy();
-
+    
     //add labels and data to respective arrays
     d3.csv("/csv/" + database + ".csv")
     .then(function(data) {
@@ -457,7 +469,9 @@ function graphData(database, xaxis, yaxis, n, lowDate, highDate, minDate, maxDat
             document.getElementById("save" + n).style.display = "block";
             document.getElementById("export" + n).style.display = "block";
         }
-        catch (ex) {
+        catch (ex) {   
+            //save and export buttons don't
+            //exist in the scripting version
         }
     })
 }
@@ -492,107 +506,66 @@ function graphExternalData(database, xaxis, yaxis, n, lowDate, highDate, minDate
 
     var ctx = document.getElementById("canvas" + n);
     ctx = ctx.getContext("2d");
-    if (n == 1) {
-        graph1 = new Chart(ctx, {
-            type: gtype,
-            data: {
-                datasets: [{
-                    label: yaxis + " (" + gtype + ")",
-                    data: dataArr,
-                }],
-                labels: labelsArr
-            },
-            options: {
-                plugins: {
-                    zoom: {
-                        pan: {
-                            enabled: true,
-                            mode: 'x',
-                            speed: 3000,
-                        },
-                        zoom: {
-                            enalbed: true,
-                            mode: 'x',
-                            speed: 3000,
-                        }
+    var tempGraph = new Chart(ctx, {
+        type: gtype,
+        data: {
+            datasets: [{
+                label: yaxis + " (" + gtype + ")",
+                data: dataArr,
+            }],
+            labels: labelsArr
+        },
+        options: {
+            plugins: {
+                zoom: {
+                    pan: {
+                        enabled: true,
+                        mode: 'x',
+                        speed: 3000,
                     },
-                    colorschemes: {scheme: colorSchemeValues[color]}
-                }
+                    zoom: {
+                        enalbed: true,
+                        mode: 'x',
+                        speed: 3000,
+                    }
+                },
+                colorschemes: {scheme: colorSchemeValues[color]}
             }
-        });
-
-        //create descriptions & properties for graphs
-        //needed for tooltip hover in saved region
-        var description = {
-            "DB": "external:" + database.substr(database.lastIndexOf("/") + 1),
-            "Yaxis": yaxis,
-            "lowDate": lowDate,
-            "highDate": highDate,
-            "gtype": gtype
         }
-        graph1.description = JSON.stringify(description, null, 2);
-        graph1.DB = database;
-        graph1.X = xaxis;
-        graph1.Y = yaxis;
-        graph1.lowDate = lowDate;
-        graph1.highDate = highDate;
-        graph1.minDate = minDate;
-        graph1.maxDate = maxDate;
-        graph1.type = gtype;
-        graph1.color = color;
+    });
+
+    //create descriptions & properties for graphs
+    //needed for tooltip hover in saved region
+    var description = {
+        "DB": "external:" + database.substr(database.lastIndexOf("/") + 1),
+        "Yaxis": yaxis,
+        "lowDate": lowDate,
+        "highDate": highDate,
+        "gtype": gtype
+    }
+    tempGraph.description = JSON.stringify(description, null, 2);
+    tempGraph.DB = database;
+    tempGraph.X = xaxis;
+    tempGraph.Y = yaxis;
+    tempGraph.lowDate = lowDate;
+    tempGraph.highDate = highDate;
+    tempGraph.minDate = minDate;
+    tempGraph.maxDate = maxDate;
+    tempGraph.type = gtype;
+    tempGraph.color = color;
+
+    if (n == 1)
+        graph1 = tempGraph;
+    else if (n == 2)
+        graph2 = tempGraph;
+
+    try {
         document.getElementById("save" + n).style.display = "block";
         document.getElementById("export" + n).style.display = "block";
     }
-    else if (n == 2) {
-        graph2 = new Chart(ctx, {
-            type: gtype,
-            data: {
-                datasets: [{
-                    label: yaxis + " (" + gtype + ")",
-                    data: dataArr,
-                }],
-                labels: labelsArr
-            },
-            options: {
-                plugins: {
-                    zoom: {
-                        pan: {
-                            enabled: true,
-                            mode: 'x',
-                            speed: 3000,
-                        },
-                        zoom: {
-                            enalbed: true,
-                            mode: 'x',
-                            speed: 3000,
-                        }
-                    },
-                    colorschemes: {scheme: colorSchemeValues[color]}
-                }
-            }
-        });
-
-        //create descriptions & properties for graphs
-        //needed for tooltip hover in saved region
-        var description = {
-            "DB": database,
-            "Yaxis": yaxis,
-            "lowDate": lowDate,
-            "highDate": highDate,
-            "gtype": gtype
-        }
-        graph2.description = JSON.stringify(description, null, 2);
-        graph2.DB = database;
-        graph2.X = xaxis;
-        graph2.Y = yaxis;
-        graph2.lowDate = lowDate;
-        graph2.highDate = highDate;
-        graph2.minDate = minDate;
-        graph2.maxDate = maxDate;
-        graph2.type = gtype;
-        graph2.color = color;
-        document.getElementById("save" + n).style.display = "block";
-        document.getElementById("export" + n).style.display = "block";
+    catch (ex) {
+        //save and export buttons don't
+        //exist in the scripting version
     }
 }
 
@@ -633,106 +606,11 @@ function submitGraphData(n) {
 function switchToDefault() {
     //set database 1 to default
     switchToDefaultDatabases(1);
-
-    //clear y-axis menu 1
-    clearMenu("yaxis1", false);
-    //read the csv file to get all keys
-    d3.csv("/csv/"  + defaultDatabase + ".csv")
-    .then(function(data) {
-        var keys = Object.keys(data[0]);
-        keys.sort();
-        //add each key to y-axis menu
-        for (var i = 0; i < keys.length; i++) {
-            if (keys[i] == "Year")
-                continue;
-
-            var elY = document.getElementById("yaxis1");
-            var option = document.createElement("option");
-            option.appendChild(document.createTextNode(keys[i]));
-            option.value = keys[i];
-            elY.appendChild(option);
-            if (keys[i] == defaultYAxis1) {
-                elY.selectedIndex = i + 1;
-            }
-        }
-
-        //update date range slider values
-        var years = [];
-        for (var i = 0; i < data.length; i++) {
-            years.push(data[i]["Year"]);
-        }
-        updateSlider(1, years[0], years[years.length - 1]);
-
-        //enable the submit button
-        document.getElementById("submit1").disabled = false;
-
-        //graph data
-        graphData(defaultDatabase, defaultXAxis1, defaultYAxis1, 1, years[0], years[years.length - 1], years[0], years[years.length - 1], 'bar', "orange");
-        })
-    .catch(function(error) {
-        if (error.message === "404 Not Found") {
-            alert("File not found: " + database);
-        }
-    })
-
-    //reset graph type menu 1
-    document.getElementById("gtype1").selectedIndex = 2;
-
-    //reset color button 1
-    changeColorButton(1, "orange");
-    document.getElementById("colorButton1").disabled = false;
-
+    setOptions(defaultValues.db, defaultValues.y1, defaultValues.x1, defaultValues.gtype1, defaultValues.lowDate1, defaultValues.highDate1, defaultValues.lowDate1, defaultValues.highDate1, 1, defaultValues.color1, true);
+    
     //set database 2 to default
     switchToDefaultDatabases(2);
-
-    //clear y-axis menu
-    clearMenu("yaxis2", false);
-    //read the csv file to get all keys
-    d3.csv("/csv/" + defaultDatabase + ".csv")
-    .then(function(data) {
-        var keys = Object.keys(data[0]);
-        keys.sort();
-        //add each key to y-axis menu
-        for (var i = 0; i < keys.length; i++) {
-            if (keys[i] == "Year")
-                continue;
-
-            var elY = document.getElementById("yaxis2");
-            var option = document.createElement("option");
-            option.appendChild(document.createTextNode(keys[i]));
-            option.value = keys[i];
-            elY.appendChild(option);
-            if (keys[i] == defaultYAxis2) {
-                elY.selectedIndex = i + 1;
-            }
-        }
-
-        //update date range slider values
-        var years = [];
-        for (var i = 0; i < data.length; i++) {
-            years.push(data[i]["Year"]);
-        }
-        updateSlider(2, years[0], years[years.length - 1]);
-
-        //enable the submit button
-        document.getElementById("submit2").disabled = false;
-
-        //graph data
-        graphData(defaultDatabase, defaultXAxis2, defaultYAxis2, 2, years[0], years[years.length - 1], years[0], years[years.length - 1], 'bar', "darkBrown");
-    })
-    .catch(function(error) {
-        if (error.message === "404 Not Found") {
-            alert("File not found: " + database);
-        }
-    })
-
-    //reset graph type menu 2
-    el = document.getElementById("gtype2");
-    el.selectedIndex = 2;
-
-    //reset color button 2
-    changeColorButton(2, "darkBrown");
-    document.getElementById("colorButton2").disabled = false;
+    setOptions(defaultValues.db, defaultValues.y2, defaultValues.x2, defaultValues.gtype2, defaultValues.lowDate2, defaultValues.highDate2, defaultValues.lowDate2, defaultValues.highDate2, 2, defaultValues.color2, true);
 }
 
 // Runs when user clicks the default button
@@ -757,11 +635,122 @@ function switchToDefaultDatabases(n) {
     }
     
     for (var i = 0; i < el.options.length; i++) {
-        if (el.options[i].text === defaultDatabase) {
+        if (el.options[i].text === defaultValues.db) {
             el.selectedIndex = i;
             break;
         }
     }
+}
+
+//sets menus on the left to appropriate values
+//plots graphs based on input
+function setOptions(databaseName, yaxis, xaxis, gtype, lowDate, highDate, minDate, maxDate, n, color, graphDataBool) {
+    var el = document.getElementById("database" + n);
+    for (var i = 0; i < el.options.length; i++) {
+        if (el.options[i].value === databaseName) {
+            el.selectedIndex = i;
+            break;
+        }
+    }
+
+    el = document.getElementById("gtype" + n);
+    for (var i = 0; i < el.options.length; i++) {
+        if (el.options[i].value === gtype) {
+            el.selectedIndex = i;
+            break;
+        }
+    }
+
+    //clear y-axis menu
+    clearMenu("yaxis" + n, false);
+
+    if (databaseName.startsWith("external")) {
+        //load keys into y-axis menu
+        var allData = sessionStorage.getItem(dbOption);
+        allData = allData.split("\n");
+        var keys = [];
+        for (var i = 0; i < allData.length; i++) {
+            var subject = allData[i].substr(0, allData[i].indexOf(","));
+            keys.push(subject);
+        }
+        keys.sort();
+
+        //add each key to y-axis menu
+        for (var i = 0; i < keys.length; i++) {
+            if (keys[i] == "Year")
+                continue;
+
+            var elY = document.getElementById("yaxis" + n);
+            var option = document.createElement("option");
+            option.appendChild(document.createTextNode(keys[i]));
+            option.value = keys[i];
+            elY.appendChild(option);
+            if (keys[i] == previousYAxisValue)
+                elY.selectedIndex = i + 1;
+        }
+
+        if (minDate == 0) {
+            var years = allData[0].split(",");
+            years = years.slice(1);
+            minDate = Math.min(...years);
+            maxDate = Math.max(...years);
+        }
+
+        //update date range slider values
+        updateSliderOnlyRange(n, minDate, maxDate, lowDate, highDate);
+        
+        verifyOptions(n);
+
+        if (graphDataBool == true)
+            graphExternalData(databaseName, xaxis, yaxis, n, lowDate, highDate, minDate, maxDate, gtype, color);
+    }
+    else {
+        //read the csv file to get all keys
+        d3.csv("/csv/" + databaseName + ".csv")
+        .then(function (data) {
+            var keys = Object.keys(data[0]);
+            keys.sort();
+            //add each key to y-axis menu
+            for (var i = 0; i < keys.length; i++) {
+                if (keys[i] == xaxis)
+                    continue;
+
+                var elY = document.getElementById("yaxis" + n);
+                var option = document.createElement("option");
+                option.appendChild(document.createTextNode(keys[i]));
+                option.value = keys[i];
+                elY.appendChild(option);
+                if (keys[i] == yaxis) {
+                    elY.selectedIndex = i + 1;
+                }
+            }
+
+            if (minDate == 0) {
+                var years = [];
+                for (var i = 0; i < data.length; i++)
+                    years.push(data[i]["Year"]);
+                minDate = Math.min(...years);
+                maxDate = Math.max(...years);
+            }
+
+            //update date range slider values
+            updateSliderOnlyRange(n, minDate, maxDate, lowDate, highDate);
+
+            verifyOptions(n);
+
+            if (graphDataBool == true)
+                graphData(databaseName, xaxis, yaxis, n, lowDate, highDate, minDate, maxDate, gtype, color);
+        })
+        .catch(function (error) {
+            if (error.message === "404 Not Found") {
+                alert("Database not found: " + databaseName);
+            }
+        })
+    }
+
+    //reset color button;
+    changeColorButton(n, color);
+    document.getElementById("colorButton" + n).disabled = false;
 }
 
 //Runs when the user clicks the clear button.
@@ -846,131 +835,19 @@ function verifyDB(n) {
         //disable submit button
         document.getElementById("submit" + n).disabled = true;
     }
-    else if (dbOption.startsWith("external")) {
-        //save all previous data
-        var previousYAxisMenu = document.getElementById("yaxis" + n);
-        var previousYAxisValue = previousYAxisMenu.options[previousYAxisMenu.selectedIndex].value;
-        var previousLowDate = $("#range" + n).data("from");
-        var previousHighDate = $("#range" + n).data("to");
-        var previousGTypeMenu = document.getElementById("gtype" + n);
-        var previousGTypeValue = previousGTypeMenu.options[previousGTypeMenu.selectedIndex].value;
-        var previousColor = document.getElementById("colorButton" + n).value;
-        
-        //clear and enable y-axis menu
-        clearMenu("yaxis" + n, false);
-
-        //load keys into y-axis menu
-        var allData = sessionStorage.getItem(dbOption);
-        allData = allData.split("\n");
-        var keys = [];
-        for (var i = 0; i < allData.length; i++) {
-            var subject = allData[i].substr(0, allData[i].indexOf(","));
-            keys.push(subject);
-        }
-        keys.sort();
-
-        //add each key to y-axis menu
-        for (var i = 0; i < keys.length; i++) {
-            if (keys[i] == "Year")
-                continue;
-
-            var elY = document.getElementById("yaxis" + n);
-            var option = document.createElement("option");
-            option.appendChild(document.createTextNode(keys[i]));
-            option.value = keys[i];
-            elY.appendChild(option);
-            if (keys[i] == previousYAxisValue)
-                elY.selectedIndex = i + 1;
-        }
-        if (document.getElementById("yaxis" + n).selectedIndex == 0)
-            document.getElementById("submit" + n).disabled = true;
-
-        //update date range slider values
-        var years = allData[0].split(",");
-        years = years.slice(1);
-        var min = Math.min(...years);
-        var max = Math.max(...years);
-        if (min > previousLowDate || max < previousHighDate)
-            updateSlider(n, min, max);
-        else
-            updateSliderOnlyRange(n, min, max, previousLowDate, previousHighDate);
-        
-        //enable graph type menu
-        var el = document.getElementById("gtype" + n);
-        el.disabled = false;
-        if (previousGTypeValue == "line")
-            el.selectedIndex = 1;
-        if (previousGTypeValue == "bar")
-            el.selectedIndex = 2;
-        
-        //enable color button
-        changeColorButton(n, previousColor);
-        document.getElementById("colorButton" + n).disabled = false;
-    }
     else {
         //save all previous data
         var previousYAxisMenu = document.getElementById("yaxis" + n);
         var previousYAxisValue = previousYAxisMenu.options[previousYAxisMenu.selectedIndex].value;
         var previousLowDate = $("#range" + n).data("from");
         var previousHighDate = $("#range" + n).data("to");
+        var previousMinDate = $("#range" + n).data("ionRangeSlider").options.min;
+        var previousMaxDate = $("#range" + n).data("ionRangeSlider").options.max;
         var previousGTypeMenu = document.getElementById("gtype" + n);
         var previousGTypeValue = previousGTypeMenu.options[previousGTypeMenu.selectedIndex].value;
         var previousColor = document.getElementById("colorButton" + n).value;
-        
-        //clear and enable y-axis menu
-        clearMenu("yaxis" + n, false);
 
-        //load keys into y-axis menu
-        d3.csv("/csv/" + dbOption + ".csv")
-        .then(function(data) {
-            var keys = Object.keys(data[0]);
-            keys.sort();
-
-            //add each key to y-axis menu
-            for (var i = 0; i < keys.length; i++) {
-                if (keys[i] == "Year")
-                    continue;
-    
-                var elY = document.getElementById("yaxis" + n);
-                var option = document.createElement("option");
-                option.appendChild(document.createTextNode(keys[i]));
-                option.value = keys[i];
-                elY.appendChild(option);
-                if (keys[i] == previousYAxisValue)
-                    elY.selectedIndex = i + 1;
-            }
-            if (document.getElementById("yaxis" + n).selectedIndex == 0)
-                document.getElementById("submit" + n).disabled = true;
-
-            //update date range slider values
-            var years = [];
-            for (var i = 0; i < data.length; i++) {
-                years.push(data[i]["Year"]);
-            }
-            var min = Math.min(...years);
-            var max = Math.max(...years);
-            if (min > previousLowDate || max < previousHighDate)
-                updateSlider(n, min, max);
-            else
-                updateSliderOnlyRange(n, min, max, previousLowDate, previousHighDate);
-        })
-        .catch(function(error) {
-            if (error.message === "404 Not Found") {
-                alert("File not found: " + database);
-            }
-        })
-        
-        //enable graph type menu
-        var el = document.getElementById("gtype" + n);
-        el.disabled = false;
-        if (previousGTypeValue == "line")
-            el.selectedIndex = 1;
-        if (previousGTypeValue == "bar")
-            el.selectedIndex = 2;
-        
-        //enable color button
-        changeColorButton(n, previousColor);
-        document.getElementById("colorButton" + n).disabled = false;
+        setOptions(dbOption, previousYAxisValue, "Year", previousGTypeValue, previousLowDate, previousHighDate, previousMinDate, previousMaxDate, n, previousColor, false);
     }
 }
 
@@ -1043,7 +920,7 @@ function verifyOptions(n) {
     }
 }
 
-//Runs when the user clicks SAVE GRAPH
+//Runs when the user drags from SAVE GRAPH onto a space on the right
 function saveGraph(saveNum, graphNum, swap) {
     if (graphNum == 1 && graph1 == undefined)
         return;
@@ -1063,8 +940,8 @@ function saveGraph(saveNum, graphNum, swap) {
     var graph_type = undefined;
     var color = undefined;
 
-    var destination = saveNum;
-    var g = savedGraphs[saveNum - 1];
+    var destination = saveNum;  //saveNum is numbered 1-10
+    var g = savedGraphs[saveNum - 1];   //savedGraphs is an array, numbered 0-9
     if (g != null)
         g.destroy();
     savedGraphs[saveNum - 1] = undefined;
@@ -1203,42 +1080,23 @@ function resetColorButton(num) {
 
 //redraws a graph in the second column
 function regraph(n) {
-    var db = undefined;
-    var x = undefined;
-    var y = undefined;
-    var lowDate = undefined;
-    var highDate = undefined;
-    var minDate = undefined;
-    var maxDate = undefined;
-    var graphType = undefined;
-    var color = undefined;
-
-    if (n == 1) {
-        if (graph1 == undefined)
-            return;
-        db = graph1.DB;
-        x = graph1.X;
-        y = graph1.Y;
-        lowDate = graph1.lowDate;
-        highDate = graph1.highDate;
-        minDate = graph1.minDate;
-        maxDate = graph1.maxDate;
-        graphType = graph1.type;
-        color = graph1.color;
-    }
-    else {
-        if (graph2 == undefined)
-            return;
-        db = graph2.DB;
-        x = graph2.X;
-        y = graph2.Y;
-        lowDate = graph2.lowDate;
-        highDate = graph2.highDate;
-        minDate = graph2.minDate;
-        maxDate = graph2.maxDate;
-        graphType = graph2.type;
-        color = graph2.color;
-    }
+    var tempGraph = undefined;
+    if (n == 1)
+        tempGraph = graph1;
+    else
+        tempGraph = graph2;
+    if (tempGraph == undefined)
+        return;
+    
+    var db = tempGraph.DB;
+    var x = tempGraph.X;
+    var y = tempGraph.Y;
+    var lowDate = tempGraph.lowDate;
+    var highDate = tempGraph.highDate;
+    var minDate = tempGraph.minDate;
+    var maxDate = tempGraph.maxDate;
+    var graphType = tempGraph.type;
+    var color = tempGraph.color;
 
     if (db.startsWith("external"))
         graphExternalData(db, x, y, n, lowDate, highDate, minDate, maxDate, graphType, color);
