@@ -15,6 +15,8 @@ The ngrok website will have instructions for that. It's free.
 Once you get the ngrok URL that looks something like [jumbledMess].ngrok.io, just go to
 [jumbledMess].ngrok.io/index.html
 */
+
+//default values, stored inside a dictionary
 var defaultValues = {};
 defaultValues.db = "Populations";
 defaultValues.y1 = "Rwanda";
@@ -30,6 +32,31 @@ defaultValues.highDate2 = 2019;
 defaultValues.gtype2 = "bar";
 defaultValues.color2 = "darkBrown";
 
+//Chart.js has color schemes available here: https://nagix.github.io/chartjs-plugin-colorschemes/colorchart.html
+//We use color scheme instead of regular single colors
+//because color schemes have a little more features available.
+//For example, giving a bar graph a color theme will
+//mean the bars will be a certain color, and hovering over
+//a bar in the graph will show it in a slightly different
+//color. This just helps the user highlight a particular
+//value when viewing the graph. It's possible to manually
+//select a color for the hover feature, but it's easier to
+//use the available color schemes.
+//The color themes are weird when you use it for a single
+//graph. Color themes are typically used when you have
+//multiple data sets displayed in one graph, because then
+//it will automatically assign different colors for each
+//curve. For a single data set, it only uses the first
+//color in each theme (e.g. brewer.YlGn3 means the graph
+//will be the light yellow color). If you wanted to use
+//the particular green from brewer.YlGn3, you'll just
+//have to pick a different scheme.
+//The colorValues dictionary simply stores the rgb values
+//for the first color in each scheme. This is used to
+//change the color of the color picker button in DV4L.
+//To get the particular value for the color shown in the
+//color scheme page, right click on the color and choose
+//"Inspect".
 var colorValues = {
     "gray": "#6f6f6f",
     "lightGray": "#a9a57c",
@@ -59,6 +86,9 @@ var colorValues = {
     "lightPurple": "#af8dc3",
 };
 
+//The colorSchemeValues dictionary will
+//store the names of each color scheme.
+//This is used for graphing.
 var colorSchemeValues = {
     "gray": "office.Angles6",
     "lightGray": "office.Adjacency6",
@@ -89,9 +119,9 @@ var colorSchemeValues = {
 }
 
 //Dictionary with key value pairs {category: list of databases}
-//This is used when the user specifies which data sets
-//they want to display/remove in the dropdown menu, but
-//this feature is temporarily disabled
+//This is supposed to be useful when the user specifies
+//which data sets they want to display/remove in the dropdown
+//menu, but this feature is temporarily disabled.
 var database_dict = {"Life, Death, Populations": [
                         "Populations", 
                         "Population Female Percentage", 
