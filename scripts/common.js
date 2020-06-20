@@ -152,19 +152,26 @@ var database_dict = {"Life, Death, Populations": [
                         "CO2 Emissions Cumulative Percentages"]
                     }
 
+//graphs are defined here to have easier access
+//throughout the rest of the file. Remember to
+//set each of them as undefined if you ever
+//delete a graph, and remember to set each of
+//them to a value if you make a graph.
 var graph1 = undefined;
 var graph2 = undefined;
 
-var savedGraphs = [];
-var savedGraphColor = undefined;
-
+//These are used to help make driving questions show up.
+//Currently it looks like functionality hasn't been fully
+//implemented.
+//To do: resolve driving question issues here and
+//possibly anywhere else in this file
 window.drivingQuestion = {};
 var line = "";
 
 //When the page first loads.
 $(document).ready( function() {
     console.log("Ready!");
-    sessionStorage.clear();
+    sessionStorage.clear(); //clear session storage, which is used when the user uploades an external data set
     Chart.defaults.global.defaultFontColor = "#524636";
 
     //initialize date range sliders
@@ -187,7 +194,7 @@ $(document).ready( function() {
         prettify_enabled: false,
     });
 
-    switchToDefault();
+    switchToDefault();  //load default view when the page first loads
 });
 
 //Display Modal when user clicks 'Custom'
@@ -212,8 +219,9 @@ window.onclick = function(e) {
     }
 }
 
-//Use browser's FileReader to read in uploaded file
+//Use browser's FileReader to read in uploaded file for driving questions
 //Currently not quite working
+//To do: implement this
 function handleDrivingQuestionFiles(files) {
     //Check for file API support
     if (window.FileReader) {    //FileReader is supported.
@@ -230,9 +238,8 @@ function handleDrivingQuestionFiles(files) {
     }
 }
 
-//runs if file from driving question upload is successfully read
-//There's work here to be done to save driving questions for
-//corresponding data sets
+//Runs if file from driving question upload is successfully read.
+//To do: implement this
 function loadHandler(event) {
     var csv = event.target.result;
     var allTextLines = csv.split(/\r\n|\n/);
@@ -249,23 +256,22 @@ function loadHandler(event) {
 //"external:" + URL
 //Reading data from this string will take some processing
 function handleDataURL() {
-    // read text from URL location
+    //Read text from URL text box
     var url = document.getElementById("data_url").value;
-    if (sessionStorage.getItem("external:" + url) != null) {
+    if (sessionStorage.getItem("external:" + url) != null) {    //check that the data set wasn't already uploaded
         alert(url + " is already uploaded.");
         return;
     }
     
     //make request to read file
     var request = new XMLHttpRequest();
-    //url = "https://chenderm.github.io/csv/Life Expectancy - Continents.csv";
+    //url = "https://chenderm.github.io/csv/Life Expectancy - Continents.csv";  //this is an example data set, just for testing purposes
     request.open('GET', url, true);
     request.send(null);
     request.onreadystatechange = function () {
         if (request.readyState == 4 && request.status === 200) {
             var type = request.getResponseHeader('Content-Type');
-            if (type.indexOf("text") !== 1) {
-                //most of code above is syntax
+            if (type.indexOf("text") !== 1) {   //everything above this is syntax
                 //below: sets up each data set as a long string
                 //e.g. if data set is:
                 //Year  USA     UK
@@ -274,11 +280,11 @@ function handleDataURL() {
                 //"Year,2020
                 //USA,10
                 //UK,15"
-                var dataSetTemp = [];
+                var dataSetTemp = [];   //will be an array of arrays
                 
                 var allRows = request.responseText.split("\n");
                 for (var i = 0; i < allRows.length; i++) {
-                    var rowText = allRows[i].split(",");
+                    var rowText = allRows[i].split(",");    //rowText stores individual text values in a row
 
                     for (var j = 0; j < rowText.length; j++) {
                         if (dataSetTemp[j] == undefined)
@@ -288,6 +294,8 @@ function handleDataURL() {
                     }
                 }
 
+                //session storage can only store strings, not arrays
+                //here we convert the array into a large string
                 var bigString = "";
                 for (var i = 0; i < dataSetTemp.length; i++) {
                     for (var j = 0; j < dataSetTemp[i].length; j++) {
@@ -298,8 +306,8 @@ function handleDataURL() {
                     }
                     bigString += "\n";  //add newline between categorized data
                 }
-                bigString = bigString.substr(0, bigString.length - 1);
-                //remove last newline of string
+                bigString = bigString.substr(0, bigString.length - 1);  //remove last newline of string
+                //data is now stored like "Year,2020\nUSA,10\nUK,15"
                 
                 sessionStorage.setItem("external:" + url, bigString);
                 alert(url + " uploaded.");  //big string is stored now
@@ -355,6 +363,7 @@ function errorHandler(evt) {
 }
 
 //Runs when the submit button at the bottom of the modal is clicked
+//To do: implement this if it's not working as intended
 function submitDrivingQuestions() {
     var checkboxes = document.getElementsByName("database_selection");  
     var numberOfCheckedItems = 0;  
@@ -382,6 +391,13 @@ function submitDrivingQuestions() {
 }
 
 //only display the currently selected databases
+//This feature is removed temporarily, because there are
+//issues involved if a saved graph is ever transferred
+//back to regular view and its database isn't included
+//in the menu
+//To do: find a good compromise between the option
+//to reduce the amount of info in the dropdown menu
+//and the bug mentioned above
 function selectDatabases(dbSelected){
     /*var select = document.getElementById("database1");
     select.innerHTML = '';
@@ -411,14 +427,17 @@ function selectDatabases(dbSelected){
     //of problems
 }
 
-//Graphs data for the nth graph.
+//Graphs data for the nth graph. n = 1 or 2
 function graphData(database, xaxis, yaxis, n, lowDate, highDate, minDate, maxDate, gtype, color) {
+    //clear existing graph if there is one
     if (n == 1 && graph1 !== undefined)
         graph1.destroy();
     else if (n == 2 && graph2 !== undefined)
         graph2.destroy();
     
     //add labels and data to respective arrays
+    //labelsArr will be the x axis (years)
+    //dataArr will be the y axis (actual data)
     d3.csv("/csv/" + database + ".csv")
     .then(function(data) {
         var labelsArr = [];
@@ -431,6 +450,7 @@ function graphData(database, xaxis, yaxis, n, lowDate, highDate, minDate, maxDat
         }
 
         //add driving question (only use the first graph)
+        //To do: make sure this is implemented correctly
         if (n == 1) {
             var dq = document.getElementById("driving_question");
             if (typeof drivingQuestion[database] === 'undefined')
@@ -471,7 +491,9 @@ function graphData(database, xaxis, yaxis, n, lowDate, highDate, minDate, maxDat
         });
 
         //create descriptions & properties for graphs
-        //needed for tooltip hover in saved region
+        //needed for tooltip hover in saved region.
+        //The saved feature is only used for the basic
+        //version of DV4L
         var description = {
             "DB": database,
             "Yaxis": yaxis,
@@ -490,12 +512,12 @@ function graphData(database, xaxis, yaxis, n, lowDate, highDate, minDate, maxDat
         tempGraph.type = gtype;
         tempGraph.color = color;
 
-        if (n == 1)
+        if (n == 1) //setting values to graph1 or graph2
             graph1 = tempGraph;
         else if (n == 2)
             graph2 = tempGraph;
         
-        try {
+        try {   //display save and export buttons when data gets graphed
             document.getElementById("save" + n).style.display = "block";
             document.getElementById("export" + n).style.display = "block";
         }
@@ -506,13 +528,18 @@ function graphData(database, xaxis, yaxis, n, lowDate, highDate, minDate, maxDat
     })
 }
 
-//Graphs data for the nth grade, using an external data set
+//Graphs data for the nth grade, using an external data set. n = 1 or 2
 function graphExternalData(database, xaxis, yaxis, n, lowDate, highDate, minDate, maxDate, gtype, color) {
+    //clear existing graph if there is one
     if (n == 1 && graph1 !== undefined)
         graph1.destroy();
     else if (n == 2 && graph2 !== undefined)
         graph2.destroy();
 
+    //a little extra work is needed to extract data
+    //from external data sets. The data are stored as
+    //a long string. See functions above to see
+    //formatting of the data
     var allText = sessionStorage.getItem(database);
     allText = allText.split("\n");
     var dataSet = {};
@@ -520,9 +547,12 @@ function graphExternalData(database, xaxis, yaxis, n, lowDate, highDate, minDate
         var temp = allText[i].substring(0, allText[i].length - 1);
         temp = temp.split(",");
         dataSet[temp[0]] = temp.slice(1);
+        //dataSet stores data (array) as the value, with the label (typcially a country name) as the key
     }
     var tempLabels = dataSet[xaxis];
     var tempData = dataSet[yaxis];
+    //tempLabels & tempData store all the data, but we still
+    //have to parse to get data between the high and low dates
     var labelsArr = [];
     var dataArr = [];
     for (var i = 0; i < tempLabels.length; i++) {
@@ -532,8 +562,10 @@ function graphExternalData(database, xaxis, yaxis, n, lowDate, highDate, minDate
         }
     }
 
+    //To do: replace with actual driving question
     document.getElementById("driving_question").innerHTML = "";
 
+    //create graph
     var ctx = document.getElementById("canvas" + n);
     ctx = ctx.getContext("2d");
     var tempGraph = new Chart(ctx, {
@@ -565,7 +597,9 @@ function graphExternalData(database, xaxis, yaxis, n, lowDate, highDate, minDate
     });
 
     //create descriptions & properties for graphs
-    //needed for tooltip hover in saved region
+    //needed for tooltip hover in saved region.
+    //The saved feature is only used for the basic
+    //version of DV4L
     var description = {
         "DB": "external:" + database.substr(database.lastIndexOf("/") + 1),
         "Yaxis": yaxis,
@@ -584,12 +618,12 @@ function graphExternalData(database, xaxis, yaxis, n, lowDate, highDate, minDate
     tempGraph.type = gtype;
     tempGraph.color = color;
 
-    if (n == 1)
+    if (n == 1) //setting values to graph1 or graph2
         graph1 = tempGraph;
     else if (n == 2)
         graph2 = tempGraph;
 
-    try {
+    try {   //display save and export buttons when data gets graphed
         document.getElementById("save" + n).style.display = "block";
         document.getElementById("export" + n).style.display = "block";
     }
@@ -599,7 +633,7 @@ function graphExternalData(database, xaxis, yaxis, n, lowDate, highDate, minDate
     }
 }
 
-//Runs when user clicks the submit button.
+//Runs when user clicks the submit button on the left.
 //n = 1 when the button is for the first graph
 //n = 2 when the button is for the second graph
 function submitGraphData(n) {
@@ -628,6 +662,8 @@ function submitGraphData(n) {
 }
 
 //Runs when the user clicks the default button.
+//Sets database menu options to default
+//Sets y axis menu optioms to default
 //Switches databases to default
 //Switches y axes to default and enables the menu
 //Resets date ranges
@@ -643,9 +679,9 @@ function switchToDefault() {
     setOptions(defaultValues.db, defaultValues.y2, defaultValues.x2, defaultValues.gtype2, defaultValues.lowDate2, defaultValues.highDate2, defaultValues.lowDate2, defaultValues.highDate2, 2, defaultValues.color2, true);
 }
 
-// Runs when user clicks the default button
-// Show all available databases in the drop down menu
-// Select the default database
+//Runs when user clicks the default button
+//Show all available databases in the drop down menu
+//Select the default database
 function switchToDefaultDatabases(n) {
     var el = document.getElementById("database" + n);
     el.innerHTML = '';
@@ -691,7 +727,10 @@ function setOptions(databaseName, yaxis, xaxis, gtype, lowDate, highDate, minDat
         }
     }
 
-    //clear y-axis menu
+    //Clear y-axis menu, we'll repopulate it later.
+    //It's always cleared because the database
+    //could be switched to something else, so it
+    //would have to be cleared anyways
     clearMenu("yaxis" + n, false);
 
     if (databaseName.startsWith("external")) {
@@ -706,11 +745,11 @@ function setOptions(databaseName, yaxis, xaxis, gtype, lowDate, highDate, minDat
         keys.sort();
 
         //add each key to y-axis menu
+        var elY = document.getElementById("yaxis" + n);
         for (var i = 0; i < keys.length; i++) {
             if (keys[i] == "Year")
                 continue;
 
-            var elY = document.getElementById("yaxis" + n);
             var option = document.createElement("option");
             option.appendChild(document.createTextNode(keys[i]));
             option.value = keys[i];
@@ -719,7 +758,7 @@ function setOptions(databaseName, yaxis, xaxis, gtype, lowDate, highDate, minDat
                 elY.selectedIndex = i + 1;
         }
 
-        if (minDate == 0) {
+        if (minDate == 0) { //no minDate or maxDate provided
             var years = allData[0].split(",");
             years = years.slice(1);
             minDate = Math.min(...years);
@@ -729,6 +768,7 @@ function setOptions(databaseName, yaxis, xaxis, gtype, lowDate, highDate, minDat
         //update date range slider values
         updateSliderOnlyRange(n, minDate, maxDate, lowDate, highDate);
         
+        //enables submit button, if in the right circumstances
         verifyOptions(n);
 
         if (graphDataBool == true)
@@ -740,12 +780,13 @@ function setOptions(databaseName, yaxis, xaxis, gtype, lowDate, highDate, minDat
         .then(function (data) {
             var keys = Object.keys(data[0]);
             keys.sort();
+
             //add each key to y-axis menu
+            var elY = document.getElementById("yaxis" + n);
             for (var i = 0; i < keys.length; i++) {
                 if (keys[i] == xaxis)
                     continue;
 
-                var elY = document.getElementById("yaxis" + n);
                 var option = document.createElement("option");
                 option.appendChild(document.createTextNode(keys[i]));
                 option.value = keys[i];
@@ -755,7 +796,7 @@ function setOptions(databaseName, yaxis, xaxis, gtype, lowDate, highDate, minDat
                 }
             }
 
-            if (minDate == 0) {
+            if (minDate == 0) { //no minDate or maxDate provided
                 var years = [];
                 for (var i = 0; i < data.length; i++)
                     years.push(data[i]["Year"]);
@@ -766,6 +807,7 @@ function setOptions(databaseName, yaxis, xaxis, gtype, lowDate, highDate, minDat
             //update date range slider values
             updateSliderOnlyRange(n, minDate, maxDate, lowDate, highDate);
 
+            //enables submit button, if in the right circumstances
             verifyOptions(n);
 
             if (graphDataBool == true)
@@ -824,14 +866,15 @@ function clearValues(n) {
         graph2 = undefined;
     }
     
-    try {
+    try {   //try to disable save and export buttons
         document.getElementById("save" + n).style.display = "none";
         document.getElementById("export" + n).style.display = "none";
     }
     catch (ex) {
+        //save and export buttons don't exist in scripting version
     }
 
-    // clear driving question
+    //clear driving question
     document.getElementById("driving_question").innerHTML = "";
 }
 
@@ -867,6 +910,11 @@ function verifyDB(n) {
     }
     else {
         //save all previous data
+        //this was requested by a user during a study. They had
+        //suggested if the database changed, keep the y axis
+        //option the same because a lot of times they're studying
+        //a specific country and would only want to see different
+        //information about it
         var previousYAxisMenu = document.getElementById("yaxis" + n);
         var previousYAxisValue = previousYAxisMenu.options[previousYAxisMenu.selectedIndex].value;
         var previousLowDate = $("#range" + n).data("from");
@@ -886,8 +934,7 @@ function verifyDB(n) {
 function clearMenu(name, disable) {
     var menu = document.getElementById(name);
     menu.selectedIndex = 0;
-    var length = 1;
-    while (menu.options.length != length) {
+    while (menu.options.length != 1) {
         menu.remove(menu.options.length - 1);
     }
     menu.disabled = disable;
@@ -950,140 +997,6 @@ function verifyOptions(n) {
     }
 }
 
-//Runs when the user drags from SAVE GRAPH onto a space on the right
-function saveGraph(saveNum, graphNum, swap) {
-    if (graphNum == 1 && graph1 == undefined)
-        return;
-    else if (graphNum == 2 && graph2 == undefined)
-        return;
-
-    var labelsArr = undefined;
-    var dataArr = undefined;
-    var hoverText = undefined;
-    var db = undefined;
-    var x = undefined;
-    var y = undefined;
-    var lowDate = undefined;
-    var highDate = undefined;
-    var minDate = undefined;
-    var maxDate = undefined;
-    var graph_type = undefined;
-    var color = undefined;
-
-    var destination = saveNum;  //saveNum is numbered 1-10
-    var g = savedGraphs[saveNum - 1];   //savedGraphs is an array, numbered 0-9
-    if (g != null)
-        g.destroy();
-    savedGraphs[saveNum - 1] = undefined;
-    var tip = document.getElementById("tip" + saveNum);
-    tip.style.display = "none";
-    tip.style.backgroundColor = "transparent";
-    tip.innerHTML = "";
-
-    if (graphNum == 1) {
-        labelsArr = graph1.config.data.labels;
-        dataArr = graph1.config.data.datasets[0].data;
-        hoverText = graph1.description;
-        db = graph1.DB;
-        x = graph1.X;
-        y = graph1.Y;
-        lowDate = graph1.lowDate;
-        highDate = graph1.highDate;
-        minDate = graph1.minDate;
-        maxDate = graph1.maxDate;
-        graph_type = graph1.type;
-        color = graph1.color;
-    }
-    else if (graphNum == 2) {
-        labelsArr = graph2.config.data.labels;
-        dataArr = graph2.config.data.datasets[0].data;
-        hoverText = graph2.description;
-        db = graph2.DB;
-        x = graph2.X;
-        y = graph2.Y;
-        lowDate = graph2.lowDate;
-        highDate = graph2.highDate;
-        minDate = graph2.minDate;
-        maxDate = graph2.maxDate;
-        graph_type = graph2.type;
-        color = graph2.color;
-    }
-
-    //check if current graph is already saved
-    for (var i = 0; i < savedGraphs.length; i++) {
-        if (savedGraphs[i] != undefined && hoverText == savedGraphs[i].description) {
-            if (!swap) {
-                alert("Graph " + graphNum + " is already saved at box #" + (i + 1));
-            }
-            var exit = document.getElementById("exit" + saveNum);
-            exit.style.visibility = "hidden";
-            var swap = document.getElementById("swap" + saveNum);
-            swap.style.visibility = "hidden";
-            return;
-        }
-    }
-
-    var canvas = document.getElementById("saved" + destination);
-    canvas = canvas.getContext("2d");
-    var g = new Chart(canvas, {
-        type: graph_type,
-        options: {
-            scales: {
-                xAxes: [{
-                    display: false
-                }],
-                yAxes: [{
-                    display: false
-                }],
-            },
-            legend: {
-                display: false
-            },
-            responsive: true,
-            maintainAspectRatio: false,
-            tooltips: false,
-            animation: {
-                duration: 0
-            }
-        },
-        data: {
-            labels: labelsArr,
-            datasets: [{
-                data: dataArr,
-                backgroundColor: savedGraphColor,
-                pointRadius: 0,
-                pointHoverRadius: 0
-            }]
-        }
-    });
-    g.description = hoverText;
-    g.DB = db;
-    g.X = x;
-    g.Y = y;
-    g.lowDate = lowDate;
-    g.highDate = highDate;
-    g.minDate = minDate;
-    g.maxDate = maxDate;
-    g.type = graph_type;
-    g.color = color;
-    savedGraphs[destination - 1] = g;
-
-    var tip = document.getElementById("tip" + destination);
-    tip.style.display = "block";
-    tip.style.backgroundColor = "#0000005c";
-    hoverText = hoverText.replace(/\n( *)/g, function (match, p1) {
-        return '<br>' + '&nbsp;'.repeat(p1.length);
-    });
-    tip.innerHTML = hoverText;
-    tip.style.visibility = "hidden";
-
-    var exit = document.getElementById("exit" + destination);
-    exit.style.visibility = "visible";
-
-    var swap = document.getElementById("swap" + destination);
-    swap.style.visibility = "visible";
-}
-
 //Opens and closes color pallette
 function showColorWheel(num) {
     var wheel = document.getElementById("colorWheel" + num);
@@ -1108,7 +1021,12 @@ function resetColorButton(num) {
     changeColorButton(num, "white");
 }
 
-//redraws a graph in the second column
+//Redraws a graph in the second column
+//This is used when the color theme of the page changes and there
+//are existing graphs present. Regraphs are necessary to change
+//the color of the text (e.g. axis labels) in the graph.
+//The function for the color theme change is in basic.js and
+//scripting.js
 function regraph(n) {
     var tempGraph = undefined;
     if (n == 1)
