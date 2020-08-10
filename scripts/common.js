@@ -454,7 +454,8 @@ function graphData(database, xaxis, yaxis, n, lowDate, highDate, minDate, maxDat
         if (n == 1) {
             var dq = document.getElementById("driving_question");
             if (typeof drivingQuestion[database] === 'undefined')
-                dq.innerHTML = "default driving question";
+                // dq.innerHTML = "default driving question";
+                dq.innerHTML = "";
             else
                 dq.innerHTML = drivingQuestion[database];
         }   
