@@ -777,7 +777,7 @@ function setOptions(databaseName, yaxis, xaxis, gtype, lowDate, highDate, minDat
     }
     else {
         //read the csv file to get all keys
-        d3.csv("/csv/" + databaseName + ".csv")
+        d3.csv("/dv4l/csv/" + databaseName + ".csv")
         .then(function (data) {
             var keys = Object.keys(data[0]);
             keys.sort();
