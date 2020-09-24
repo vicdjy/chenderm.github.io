@@ -720,19 +720,12 @@ function addNotes(element) {
     var c = document.getElementById("hide3");
     var d = document.getElementById("hide4");
 
-//   if (x.style.display === "none") {
-//     x.style.display = "block";
-//   } else {
-//     x.style.display = "none";
-//   }
-
     if (element.checked) { 
         x.style.display = "block";
         a.style.display = "none"
         b.style.display = "none"
         c.style.display = "none"
         d.style.display = "none"
-
     } else {
         x.style.display = "none";
         a.style.display = "block";
@@ -740,6 +733,16 @@ function addNotes(element) {
         c.style.display = "block"
         d.style.display = "block"
     }
-
 }
 
+function addDrivingQuestion(){
+    var input = document.getElementById('textinput')
+    var div = document.getElementById('textEntered');        
+    div.innerHTML = input.value;
+}
+
+function addDrivingQuestion2(){
+    var input = document.getElementById('textinput2')
+    var div = document.getElementById('textEntered');        
+    div.innerHTML = input.value;
+}
