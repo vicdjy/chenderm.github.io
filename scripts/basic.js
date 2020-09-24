@@ -705,3 +705,44 @@ function exportGraph(n) {
 
     window.open("/export.html", "_blank");
 }
+
+function exportNotes(){
+    var txt = document.getElementById('notes').value;
+    txt = txt.replace(/\r?\n/g, '<br />');
+    sessionStorage.setItem("notesarea", txt);
+    window.open("/notes.html", "_blank");
+}
+
+function addNotes(element) {
+    var x = document.getElementById("myNotes");
+    var a = document.getElementById("hide1");
+    var b = document.getElementById("hide2");
+    var c = document.getElementById("hide3");
+    var d = document.getElementById("hide4");
+
+    if (element.checked) { 
+        x.style.display = "block";
+        a.style.display = "none"
+        b.style.display = "none"
+        c.style.display = "none"
+        d.style.display = "none"
+    } else {
+        x.style.display = "none";
+        a.style.display = "block";
+        b.style.display = "block"
+        c.style.display = "block"
+        d.style.display = "block"
+    }
+}
+
+function addDrivingQuestion(){
+    var input = document.getElementById('textinput')
+    var div = document.getElementById('textEntered');        
+    div.innerHTML = input.value;
+}
+
+function addDrivingQuestion2(){
+    var input = document.getElementById('textinput2')
+    var div = document.getElementById('textEntered');        
+    div.innerHTML = input.value;
+}
