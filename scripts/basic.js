@@ -389,14 +389,21 @@ function deleteGraph(savedNum) {
     //clears exit and swap buttons
     document.getElementById("exit" + savedNum).style.visibility = "hidden";
     document.getElementById("swap" + savedNum).style.visibility = "hidden";
+    
+    sendData(-1);
 }
 
 //Shows tooltip over saved graph
 //Runs when the user clicks a saved graph
 function showToolTip(savedNum) {
+    //alert("in show tool tip");
     var tip = document.getElementById("tip" + savedNum);
-    if (tip.style.visibility != "visible")
+    if (tip.style.visibility != "visible"){//hidden turn visible
         tip.style.visibility = "visible";
+        //var scriptSeen = 1;
+        sendData(0, savedNum);
+        console.log("data sent - shown tool tip");
+    }
     else
         tip.style.visibility = "hidden";
 }

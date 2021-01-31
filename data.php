@@ -10,17 +10,23 @@ $decoded = json_decode($submitdata, true);
 //var_dump($submitdata);
 
 //connect to database and perform sql queries
-// echo $decoded['graphtype'];
-
+//echo $decoded['graphtype'];
 
 try{
-    $db = new PDO('sqlite:logdata.db');
-    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-    $statement = $db->prepare("INSERT INTO export
-    (sessionid,accesstime,yaxis,locationdata,lowdate,highdate,graphtype,color)
+    //$db = new PDO('sqlite:logdata.db');
+    //change to this  from ^ to use mySQL from sqlLite
+
+    $dsn = 'mysql:dbname=DV4L_schema; host=127.0.0.1';//local host
+    $user = 'root';
+    $password = 'password';//dchange
+    $dbh = new PDO($dsn, $user, $password);
+
+    $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $dbh->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+    $statement = $dbh->prepare("INSERT INTO export
+    (sessionid,accesstime,yaxis,locationdata,lowdate,highdate,graphtype,color,drivingQuestion, isDropDown, hasNotes, scriptSeen)
 VALUES
-    (:sessionid, :accestime, :yaxis, :locationdata, :lowdate, :highdate, :graphtype, :color)");
+    (:sessionid, :accestime, :yaxis, :locationdata, :lowdate, :highdate, :graphtype, :color, :drivingQuestion, :isDropDown, :hasNotes, :scriptSeen)");
 
     $statement->bindValue(':sessionid', $decoded['sessionid']);
     $statement->bindValue(':accestime', $decoded['accesstime']);
@@ -30,10 +36,17 @@ VALUES
     $statement->bindValue(':highdate', $decoded['highdate']);
     $statement->bindValue(':graphtype', $decoded['graphtype']);
     $statement->bindValue(':color', $decoded['color']);
+    $statement->bindValue(':drivingQuestion', $decoded['drivingQuestion']);
+    $statement->bindValue(':isDropDown', $decoded['isDropDown']);
+    $statement->bindValue(':hasNotes', $decoded['hasNotes']);
+    $statement->bindValue(':scriptSeen', $decoded['scriptSeen']);
+
     $statement->execute();
-    
+   
 }catch(PDOException $ex){
+    echo $ex;
     echo '{"status":0, "line":'.__LINE__.'}';
     exit;
 }
 
+?>

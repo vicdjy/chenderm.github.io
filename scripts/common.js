@@ -479,12 +479,20 @@ function graphData(
 
     //add driving question (only use the first graph)
     //To do: make sure this is implemented correctly
-    if (n == 1) {
-      var dq = document.getElementById('driving_question');
-      if (typeof drivingQuestion[database] === 'undefined')
-        dq.innerHTML = 'default driving question';
-      else dq.innerHTML = drivingQuestion[database];
-    }
+    // if (n == 1) {
+    //   var dq = document.getElementById('textinput2');
+    //   if (typeof drivingQuestion[database] === undefined)
+    //     dq.innerHTML = 'default driving question';
+    //   else dq.innerHTML = drivingQuestion[database];
+
+    //   //always saying default driving question
+    //   console.log(dq.innerHTML);
+    // }
+
+    // if (n==1){
+    //   var driving_text_input = document.getElementById('textinput2').value;
+
+    // }
 
     //create graph
     var ctx = document.getElementById('canvas' + n);
@@ -724,7 +732,7 @@ function submitGraphData(n) {
       gtype,
       color
     );
-  sendData(n);
+  sendData(n, 0);
   //Export file log analysis code
   //   var sessionid = globe;
   //   var accesstime = '2008-01-01 00:00:01';
@@ -1218,7 +1226,7 @@ function regraph(n) {
       minDate,
       maxDate,
       graphType,
-      color
+      color,
     );
   else
     graphData(
@@ -1242,7 +1250,8 @@ function randomstring(length, chars) {
   return result;
 }
 
-function sendData(n) {
+function sendData(n, savedNum) {
+  //alert("in send data");
   //Sessionid code
   var sessionid = rstring;
 
@@ -1261,25 +1270,94 @@ function sendData(n) {
   var datestring = year + '-' + (month + 1) + '-' + date;
   var accesstime = datestring + ' ' + time;
 
+
+  var ydatabase = "";
+  var locationname = "";
+  var ranges = "";
+  var rangestart = "";
+  var rangesend = "";
+  var gtypedata = "";
+  var colordata = "";
+  var drivingQuestion = "";
+  var isDropDown = -1;
+  var hasNotes = -1;
+  var scriptSeen = -1; //default to -1, deleted graph
+
+  if (n==0){
+    var data = document.getElementById('tip' + savedNum).textContent;
+    console.log(data);
+
+    //turn object into a string
+    var str_obj = String(data);
+    //console.log(typeof(str_obj))//check its a string
+
+    //get rid of characters we don't want
+    str_obj.replace(/(\r\n|\n|\r)/gm,"");//get rid of <br>, newlines
+    str_obj.replace(/&nbsp;/gm,"");//rid of nbsp
+    str_obj.replace(/\s/gm, "");//rid of empty space
+    console.log("got rid of line breaks");
+
+    //console.log(String(str_obj));
+
+    //console.log(data.Yaxis);
+    var mydata = JSON.parse(JSON.stringify(str_obj));
+    console.log(mydata);
+    console.log(mydata.DB);
+
+
+    alert("else stataemetn re");
+
+    //console.log("n==0");
+    var scriptSeen = 1;
+  }
+  // else if (n==-1){
+  //   scriptSeen = -1;
+  // }
+
   //Yaxis code
-  var ydatabase = document.getElementById('database' + n).value;
+  else if (n ==1 || n==2){ //not from showToolTip
+     ydatabase = document.getElementById('database' + n).value;
+      //Location code
+     locationname = document.getElementById('yaxis' + n).value;
 
-  //Location code
-  var locationname = document.getElementById('yaxis' + n).value;
+    //Range code
+     ranges = document.getElementById('range' + n).value;
+    rangesarray = ranges.split(';');
+     rangestart = rangesarray[0];
+     var rangesend = rangesarray[1];
 
-  //Range code
-  var ranges = document.getElementById('range' + n).value;
-  rangesarray = ranges.split(';');
-  var rangestart = rangesarray[0];
-  var rangesend = rangesarray[1];
+    //Graphtype code
+     gtypedata = document.getElementById('gtype' + n).value;
 
-  //Graphtype code
-  var gtypedata = document.getElementById('gtype' + n).value;
+    //Graphtype code
+     colordata = document.getElementById('colorButton' + n).value;
 
-   //Graphtype code
-  var 
-  colordata = document.getElementById('colorButton' + n).value;
+     drivingQuestion = document.getElementById('textinput2').value;
+    //console.log(drivingQuestion);
+     isDropDown = 0;
+    if (drivingQuestion == ""){
+      isDropDown = 1;
+    }
+    var notes = document.getElementById('notes').value;
+     hasNotes = 1;
+    if (notes == ""){
+      hasNotes = 0;
+    
+     scriptSeen = 0;
+    console.log("submit graph n==1, 2");
+  }
 
+  //console.log("here");
+
+
+  //var drivingQuestion = document.getElementById('driving_question'+n).value;
+  //if ()
+// if (typeof drivingQuestion[database] === 'undefined')
+//   var dq = 'default driving question';
+// else dq = drivingQuestion[database];
+  }
+
+  
   var submitdata = {
     'sessionid': sessionid,
     'accesstime': accesstime,
@@ -1289,9 +1367,14 @@ function sendData(n) {
     'highdate': rangesend,
     'graphtype': gtypedata,
     'color': colordata,
+    'drivingQuestion': drivingQuestion,
+    'isDropDown': isDropDown,
+    'hasNotes' : hasNotes,
+    'scriptSeen' : scriptSeen,
   };
+
   logs.push(submitdata);
-  // console.log(submitdata);
+  console.log(submitdata);
 
   //Send data to php code
     var submitdatastr = JSON.stringify(submitdata);
@@ -1303,7 +1386,7 @@ function sendData(n) {
       data: { submitdata: submitdatastr },
       success: function (response) {
         //do whatever.
-        //alert('Its done!');
+        alert('Its done!');
         //alert(response.message);
         console.log(response);
       },
