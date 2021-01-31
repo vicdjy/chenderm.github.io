@@ -8,8 +8,7 @@
     <script src="scripts/common.js"></script>
     <script src="scripts/basic.js"></script>
     <script src="https://d3js.org/d3.v5.min.js"></script>
-    <
-        script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.1"></script>
     <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@0.7.4"></script>
@@ -126,7 +125,7 @@
 
                     </select>
                     <br>OR<br>
-                    <input style="width:350px" placeholder="Enter Driving Question here" id="textinput2" onkeypress="addDrivingQuestion2()"></input>
+                    <input style="width:350px" placeholder="Enter Driving Question here" id="textinput2" name = "textinput2" value = "" onkeypress="addDrivingQuestion2()"></input>
                 </form>
                 <div>
                     <h3>Driving Question:</h3><p id="textEntered"></p>
@@ -293,9 +292,10 @@
             <div class="pillar">
 
                 <div class="frame" id="frame1">
-                    <div class="tile" onclick="showToolTip(1)" ondrop="drop(event, 'saved1')" ondragover="allowDrop(event)">
-                        <div class="tooltiptext" id="tip1"></div>
+                    <div class="tile"  ondrop="drop(event, 'saved1')" ondragover="allowDrop(event)" onclick="showToolTip(1)">
+                        <div class="tooltiptext"  id="tip1"></div>
                         <canvas id="saved1"></canvas>
+                        
                         <a id="exit1" class="exit" onclick="deleteGraph(1)">x
                             <div class="hoverTip">delete</div>
                         </a>
@@ -306,7 +306,7 @@
                 </div>
 
                 <div class="frame">
-                    <div class="tile" onclick="showToolTip(2)" ondrop="drop(event, 'saved2')" ondragover="allowDrop(event)">
+                    <div class="tile" ondrop="drop(event, 'saved2')" ondragover="allowDrop(event)" onclick="showToolTip(2)" >
                         <span class="tooltiptext" id="tip2"></span>
                         <canvas id="saved2"></canvas>
                         <a id="exit2" class="exit" onclick="deleteGraph(2)">x
@@ -319,7 +319,7 @@
                 </div>
 
                 <div class="frame">
-                    <div class="tile" onclick="showToolTip(3)" ondrop="drop(event, 'saved3')" ondragover="allowDrop(event)">
+                    <div class="tile"  ondrop="drop(event, 'saved3')" ondragover="allowDrop(event)" onclick="showToolTip(3)" >
                         <span class="tooltiptext" id="tip3"></span>
                         <canvas id="saved3"></canvas>
                         <a id="exit3" class="exit" onclick="deleteGraph(3)">x
@@ -332,8 +332,8 @@
                 </div>
 
                 <div class="frame" id="hide1" >
-                    <div class="tile" onclick="showToolTip(4)" ondrop="drop(event, 'saved4')" ondragover="allowDrop(event)">
-                        <span class="tooltiptext" id="tip4"></span>
+                    <div class="tile"  ondrop="drop(event, 'saved4')" ondragover="allowDrop(event)" onclick="showToolTip(4)">
+                        <span class="tooltiptext"  id="tip4"></span>
                         <canvas id="saved4"></canvas>
                         <a id="exit4" class="exit" onclick="deleteGraph(4)">x
                             <div class="hoverTip">delete</div>
@@ -345,7 +345,7 @@
                 </div>
 
                 <div class="frame" id="hide2" >
-                    <div class="tile" onclick="showToolTip(5)" ondrop="drop(event, 'saved5')" ondragover="allowDrop(event)">
+                    <div class="tile"  ondrop="drop(event, 'saved5')" ondragover="allowDrop(event)" onclick="showToolTip(5)" >
                         <span class="tooltiptext" id="tip5"></span>
                         <canvas id="saved5"></canvas>
                         <a id="exit5" class="exit" onclick="deleteGraph(5)">x
@@ -358,9 +358,8 @@
                 </div>
             </div>
             <div class="pillar">
-
                 <div class="frame">
-                    <div class="tile" onclick="showToolTip(6)" ondrop="drop(event, 'saved6')" ondragover="allowDrop(event)">
+                    <div class="tile"  ondrop="drop(event, 'saved6')" ondragover="allowDrop(event)" onclick="showToolTip(6)" >
                         <span class="tooltiptext" id="tip6"></span>
                         <canvas id="saved6"></canvas>
                         <a id="exit6" class="exit" onclick="deleteGraph(6)">x
@@ -428,7 +427,7 @@
             <!-- Notes code by DG -->
             <div id="myNotes" style="display:none;">
                 <h2>Notes</h2>
-                <textarea id="notes" rows="10" cols="40"></textarea>
+                <textarea id="notes" rows="10" cols="40" value=""></textarea>
                 <br><br>
             <button class="export"  onclick="exportNotes()">EXPORT NOTE</button>
             </div>

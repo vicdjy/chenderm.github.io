@@ -1,6 +1,6 @@
 CREATE TABLE export
 (
-    sessionid INTEGER NOT NULL,
+    sessionid VARCHAR(45) NOT NULL,
     accesstime TIMESTAMP NOT NULL,
     yaxis VARCHAR(20) NOT NULL,
     locationdata VARCHAR(20) NOT NULL,
