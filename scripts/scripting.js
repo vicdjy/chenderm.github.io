@@ -291,5 +291,8 @@ function changeColorTheme(element) {
         for (var y = 0; y < x.length; y++) {
             x[y].style.color = "black";
         }
+
+        document.getElementById("textinput").style.backgroundColor = "white";
+        document.getElementById("textinput2").style.backgroundColor = "white";
     }
 }
