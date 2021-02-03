@@ -1297,14 +1297,17 @@ function sendData(n, savedNum) {
                .replace(/[\u0000-\u0019]+/g,"")
                .replace(/[\u0000-\u001F]+/g,"");
     // remove non-printable and other non-valid JSON chars
-    //console.log(data);
+
+    //mydata is 
     var mydata = JSON.parse(data);
-    console.log(mydata);
-    console.log(mydata.lowDate);
+    
+    rangestart = mydata.lowDate;
+    rangesend = mydata.highDate;
+    ydatabase = mydata.DB;
+    gtypedata = mydata.gtype;
+    locationname = mydata.Yaxis;
 
-    // get info ready for the ajax call
-
-    var scriptSeen = 1;
+    scriptSeen = 1;
   }
   // else if (n==-1){
   //   scriptSeen = -1;
