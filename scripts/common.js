@@ -1285,29 +1285,25 @@ function sendData(n, savedNum) {
 
   if (n==0){
     var data = document.getElementById('tip' + savedNum).textContent;
-    console.log(data);
-
-    //turn object into a string
-    var str_obj = String(data);
-    //console.log(typeof(str_obj))//check its a string
-
-    //get rid of characters we don't want
-    str_obj.replace(/(\r\n|\n|\r)/gm,"");//get rid of <br>, newlines
-    str_obj.replace(/&nbsp;/gm,"");//rid of nbsp
-    str_obj.replace(/\s/gm, "");//rid of empty space
-    console.log("got rid of line breaks");
-
-    //console.log(String(str_obj));
-
-    //console.log(data.Yaxis);
-    var mydata = JSON.parse(JSON.stringify(str_obj));
+    data = data.replace(/\\n/g, "\\n")  
+               .replace(/\\'/g, "\\'")
+               .replace(/\\"/g, '\\"')
+               .replace(/\\&/g, "\\&")
+               .replace(/\\r/g, "\\r")
+               .replace(/\\t/g, "\\t")
+               .replace(/\\b/g, "\\b")
+               .replace(/\\f/g, "\\f")
+               .replace(/\s/gm, '')
+               .replace(/[\u0000-\u0019]+/g,"")
+               .replace(/[\u0000-\u001F]+/g,"");
+    // remove non-printable and other non-valid JSON chars
+    //console.log(data);
+    var mydata = JSON.parse(data);
     console.log(mydata);
-    console.log(mydata.DB);
+    console.log(mydata.lowDate);
 
+    // get info ready for the ajax call
 
-    alert("else stataemetn re");
-
-    //console.log("n==0");
     var scriptSeen = 1;
   }
   // else if (n==-1){
@@ -1392,7 +1388,7 @@ function sendData(n, savedNum) {
       },
       error: function (XMLHttpRequest, textStatus, errorThrown) {
         alert('Status: ' + textStatus);
-        alert('Error: ' + errorThrown);
+        alert('Error: ' + errorThrown); //error?
       },
     });
 }
