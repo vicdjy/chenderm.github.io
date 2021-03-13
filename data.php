@@ -13,12 +13,9 @@ $decoded = json_decode($submitdata, true);
 //echo $decoded['graphtype'];
 
 try{
-    //$db = new PDO('sqlite:logdata.db');
-    //change to this  from ^ to use mySQL from sqlLite
-
     $dsn = 'mysql:dbname=DV4L_schema; host=127.0.0.1';//local host
     $user = 'root';
-    $password = 'Abbeyhills1';//dchange
+    $password = 'Abbeyhills1';//change
     $dbh = new PDO($dsn, $user, $password);
 
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

@@ -1395,3 +1395,24 @@ function sendData(n, savedNum) {
       },
     });
 }
+//make a new URL - embed PHP inside of a webpage
+//dump database.html <? php code > in the code 
+//-loop to walk thru everything in the database, output to an html page using echo
+
+function getData() {
+  $.ajax({
+    url: '../getData.php',
+    type: 'GET',
+    //data: { submitdata: submitdatastr },
+    success: function (response) {
+      //do whatever.
+      alert('Its done!');
+      //alert(response.message);
+      console.log(response);
+    },
+    error: function (XMLHttpRequest, textStatus, errorThrown) {
+      alert('Status: ' + textStatus);
+      alert('Error: ' + errorThrown); //error?
+    },
+  });
+}

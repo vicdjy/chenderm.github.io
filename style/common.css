@@ -131,7 +131,7 @@ body {
 .close-btn {
 	float: right; 
 	color: lightgray; 
-	font-size: 24px;  
+	font-size: 24px; 
 	font-weight: bold;
 }
 
@@ -150,3 +150,10 @@ body {
 	to {top:0; opacity:1}
 }
 
+
+
+
+.php {
+	z-index: 40;
+	font-size: 40px;
+}

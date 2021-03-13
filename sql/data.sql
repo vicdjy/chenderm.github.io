@@ -1,1 +1,6 @@
-
+SELECT * FROM export
+INTO OUTFILE 'C:data.csv'--change
+FIELDS ENCLOSED BY '"' 
+TERMINATED BY ';' 
+ESCAPED BY '"' 
+LINES TERMINATED BY '\r\n';

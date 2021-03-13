@@ -28,6 +28,7 @@
 
 <!-- HTML -->
 <body>
+
     <div class="container">
         <div class="col1">
             <img class="logo" src="img/HistoryInDatalogolight.png">
@@ -434,6 +435,40 @@
 
         </div>
     </div>
+    <div class="button" onclick = "getData()">
+        button
+    </div>
+    
 </body>
 
 </html>
+
+
+<!--
+<script language = "php">
+
+print "there";
+$dsn = 'mysql:dbname=DV4L_schema; host=127.0.0.1';//local host
+$user = 'root';
+$password = 'Abbeyhills1';//change
+
+$dbh = new PDO($dsn, $user, $password);
+$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+$dbh->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+
+$sql = $dbh->prepare("SELECT * FROM export");
+$result = $dbh->query($sql);
+
+if ($result -> num_rows >0){
+    while($row = $result->fetch_assoc()) {
+        echo "sessionid: " . $row["sessionid"]"<br>";
+      }//while
+}//if
+
+else {
+    echo "no results";
+}
+$dbh -> close();
+
+</script>
+-->

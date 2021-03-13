@@ -19,7 +19,7 @@ INSERT INTO export
     (sessionid,accesstime,yaxis,locationdata,lowdate,highdate,graphtype,color,drivingQuestion,isDropDown,hasNotes,scriptSeen)
 VALUES
     (9492022, '2008-01-01 00:00:01', 'Population', 'Rwanda', '1870', '1940', 'bar', 'red', 
-    'is land area related to population growth,1,1,1');
+    'is land area related to population growth',1,1,1);
 
 
 -- DROP TABLE export;
