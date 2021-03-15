@@ -1,5 +1,4 @@
 <?php
-    //print "in getdata";
     /*
     $q = $_GET['q'];
     $con = mysqli_connect("127.0.0.1", "root", "Abbeyhills1", "DV4L_schema");
@@ -15,7 +14,7 @@
         echo $row['classtype'];
     }
     */
-
+try{
     $dsn = 'mysql:dbname=DV4L_schema; host=127.0.0.1';//local host
     $user = 'root';
     $password = 'DV4L@uofm9163';//change
@@ -29,9 +28,14 @@
     $result -> execute();
 
     //echo $result;
+    
     echo "numrows: ";
     echo $result -> num_rows;
     
+
+    //echo $result -> num_rows;
+    $num_rows = mysql_num_rows($result);
+    echo $num_rows;
     //error getting 0 rows going into else
     //if ($result -> num_rows >0){
         while($row = $result->fetch_assoc()) {
@@ -46,6 +50,16 @@
     /*else {
         echo " no results";
     }*/
+
     //$dbh -> close();
 
 ?>
+
+    $dbh -> close();
+}catch(PDOException $ex){
+    echo $ex;
+    echo '{"status":0, "line":'.__LINE__.'}';
+    exit;
+}
+?>
+
