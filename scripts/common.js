@@ -16,8 +16,6 @@ Once you get the ngrok URL that looks something like [jumbledMess].ngrok.io, jus
 [jumbledMess].ngrok.io/index.html
 */
 
-const { send } = require("node:process");
-
 //default values, stored inside a dictionary
 var defaultValues = {};
 defaultValues.db = 'Populations';
@@ -213,14 +211,7 @@ $(document).ready(function () {
     sendData(n,2);
     
 
-
   
-
-  switchToDefault(); //load default view when the page first loads
-  sendData(-2, 1);//
-
-
-
 });
 
 //Display Modal when user clicks 'Custom'
@@ -1301,24 +1292,24 @@ function sendData(n, savedNum) {
   var hasNotes = -1;
   var scriptSeen = -1; //default to -1, deleted graph
 
-  if (n == 0) {
+  if (n==0){
     var data = document.getElementById('tip' + savedNum).textContent;
     data = data.replace(/\\n/g, "\\n")
-      .replace(/\\'/g, "\\'")
-      .replace(/\\"/g, '\\"')
-      .replace(/\\&/g, "\\&")
-      .replace(/\\r/g, "\\r")
-      .replace(/\\t/g, "\\t")
-      .replace(/\\b/g, "\\b")
-      .replace(/\\f/g, "\\f")
-      .replace(/\s/gm, '')
-      .replace(/[\u0000-\u0019]+/g, "")
-      .replace(/[\u0000-\u001F]+/g, "");
+               .replace(/\\'/g, "\\'")
+               .replace(/\\"/g, '\\"')
+               .replace(/\\&/g, "\\&")
+               .replace(/\\r/g, "\\r")
+               .replace(/\\t/g, "\\t")
+               .replace(/\\b/g, "\\b")
+               .replace(/\\f/g, "\\f")
+               .replace(/\s/gm, '')
+               .replace(/[\u0000-\u0019]+/g,"")
+               .replace(/[\u0000-\u001F]+/g,"");
     // remove non-printable and other non-valid JSON chars
 
-    //mydata is 
+    //mydata is
     var mydata = JSON.parse(data);
-
+    
     rangestart = mydata.lowDate;
     rangesend = mydata.highDate;
     ydatabase = mydata.DB;
@@ -1332,48 +1323,49 @@ function sendData(n, savedNum) {
   // }
 
   //Yaxis code
-  else if (n == 1 || n == 2) { //not from showToolTip
-    ydatabase = document.getElementById('database' + n).value;
-    //Location code
-    locationname = document.getElementById('yaxis' + n).value;
+  else if (n ==1 || n==2){ //not from showToolTip
+     ydatabase = document.getElementById('database' + n).value;
+      //Location code
+     locationname = document.getElementById('yaxis' + n).value;
 
     //Range code
-    ranges = document.getElementById('range' + n).value;
+     ranges = document.getElementById('range' + n).value;
     rangesarray = ranges.split(';');
-    rangestart = rangesarray[0];
-    var rangesend = rangesarray[1];
+     rangestart = rangesarray[0];
+     var rangesend = rangesarray[1];
 
     //Graphtype code
-    gtypedata = document.getElementById('gtype' + n).value;
+     gtypedata = document.getElementById('gtype' + n).value;
 
     //Graphtype code
-    colordata = document.getElementById('colorButton' + n).value;
+     colordata = document.getElementById('colorButton' + n).value;
 
-    drivingQuestion = document.getElementById('textinput2').value;
+     drivingQuestion = document.getElementById('textinput2').value;
     //console.log(drivingQuestion);
-    isDropDown = 0;
-    if (drivingQuestion == "") {
+     isDropDown = 0;
+    if (drivingQuestion == ""){
       isDropDown = 1;
     }
     var notes = document.getElementById('notes').value;
-    hasNotes = 1;
-    if (notes == "") {
+     hasNotes = 1;
+    if (notes == ""){
       hasNotes = 0;
-
-      scriptSeen = 0;
-      console.log("submit graph n==1, 2");
-    }
-
-    //console.log("here");
-
-    //var drivingQuestion = document.getElementById('driving_question'+n).value;
-    //if ()
-    // if (typeof drivingQuestion[database] === 'undefined')
-    //   var dq = 'default driving question';
-    // else dq = drivingQuestion[database];
+    
+     scriptSeen = 0;
+    console.log("submit graph n==1, 2");
   }
 
+  //console.log("here");
 
+
+  //var drivingQuestion = document.getElementById('driving_question'+n).value;
+  //if ()
+// if (typeof drivingQuestion[database] === 'undefined')
+//   var dq = 'default driving question';
+// else dq = drivingQuestion[database];
+  }
+
+  
   var submitdata = {
     'sessionid': sessionid,
     'accesstime': accesstime,
@@ -1385,36 +1377,36 @@ function sendData(n, savedNum) {
     'color': colordata,
     'drivingQuestion': drivingQuestion,
     'isDropDown': isDropDown,
-    'hasNotes': hasNotes,
-    'scriptSeen': scriptSeen,
-
+    'hasNotes' : hasNotes,
+    'scriptSeen' : scriptSeen,
+    
   };
 
   logs.push(submitdata);
   console.log(submitdata);
 
   //Send data to php code
-  var submitdatastr = JSON.stringify(submitdata);
-  // console.log(submitdatastr);
+    var submitdatastr = JSON.stringify(submitdata);
+    // console.log(submitdatastr);
 
-  $.ajax({
-    url: '../data.php',
-    type: 'POST',
-    data: { submitdata: submitdatastr },
-    success: function (response) {
-      //do whatever.
-      alert('Its done!');
-      //alert(response.message);
-      console.log(response);
-    },
-    error: function (XMLHttpRequest, textStatus, errorThrown) {
-      alert('Status: ' + textStatus);
-      alert('Error: ' + errorThrown); //error?
-    },
-  });
+    $.ajax({
+      url: '../data.php',
+      type: 'POST',
+      data: { submitdata: submitdatastr },
+      success: function (response) {
+        //do whatever.
+        alert('Its done!');
+        //alert(response.message);
+        console.log(response);
+      },
+      error: function (XMLHttpRequest, textStatus, errorThrown) {
+        alert('Status: ' + textStatus);
+        alert('Error: ' + errorThrown); //error?
+      },
+    });
 }
 //make a new URL - embed PHP inside of a webpage
-//dump database.html <? php code > in the code 
+//dump database.html <? php code > in the code
 //-loop to walk thru everything in the database, output to an html page using echo
 
 function getData() {
