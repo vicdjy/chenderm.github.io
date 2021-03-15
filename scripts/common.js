@@ -203,8 +203,15 @@ $(document).ready(function () {
     hide_min_max: true,
     prettify_enabled: false,
   });
+    
+    
+    switchToDefault(); //load default view when the page first loads
+      
+    
+    sendData(n,2);
+    
 
-  switchToDefault(); //load default view when the page first loads
+  
 });
 
 //Display Modal when user clicks 'Custom'
@@ -1269,7 +1276,9 @@ function sendData(n, savedNum) {
     currentDate.getSeconds();
   var datestring = year + '-' + (month + 1) + '-' + date;
   var accesstime = datestring + ' ' + time;
+    
 
+  
 
   var ydatabase = "";
   var locationname = "";
@@ -1370,6 +1379,7 @@ function sendData(n, savedNum) {
     'isDropDown': isDropDown,
     'hasNotes' : hasNotes,
     'scriptSeen' : scriptSeen,
+    
   };
 
   logs.push(submitdata);
