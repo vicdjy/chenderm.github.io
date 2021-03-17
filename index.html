@@ -283,7 +283,8 @@
             <h2>Graphs</h2>
             <div id="driving_question" style="font-size: 14px"></div>
 
-            <div class="graphRegion" ondrop="drop(event, 'graph1'); alert('drop graph1')" ondragover="allowDrop(event)">
+            <div class="graphRegion" ondrop="drop(event, 'graph1')" ondragover="allowDrop(event)"
+                ondragend="sendData(1, 'saved')">
                 <canvas id="canvas1"></canvas>
                 <button class="saveButton" id="save1" draggable="true" ondragstart="drag(event, 'graph1')">SAVE GRAPH 1
                     (drag & drop)</button>
@@ -292,7 +293,8 @@
             </div>
 
             <br><br>
-            <div class="graphRegion" ondrop="drop(event, 'graph2')" ondragover="allowDrop(event)">
+            <div class="graphRegion" ondrop="drop(event, 'graph2')" ondragover="allowDrop(event)"
+                ondragend="sendData(1, 'saved')">
                 <canvas id="canvas2"></canvas>
                 <button class="saveButton" id="save2" draggable="true" ondragstart="drag(event, 'graph2')">SAVE GRAPH 2
                     (drag & drop)</button>

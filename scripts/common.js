@@ -203,27 +203,15 @@ $(document).ready(function () {
     hide_min_max: true,
     prettify_enabled: false,
   });
-<<<<<<< HEAD
 
 
   switchToDefault(); //load default view when the page first loads
 
 
-  sendData(n, 2);
+  sendData(-1, -1);
 
 
 
-=======
-    
-    
-    switchToDefault(); //load default view when the page first loads
-      
-    
-    sendData(-1,-1);
-    
-
-  
->>>>>>> b6376d7362b8d4ae1eb48f0814e1495257a59ac6
 });
 
 //Display Modal when user clicks 'Custom'
@@ -1289,16 +1277,16 @@ function sendData(n, savedNum) {
   var datestring = year + '-' + (month + 1) + '-' + date;
   var accesstime = datestring + ' ' + time;
 
-  var ydatabase = "";
-  var locationname = "";
-  var ranges = "";
-  var rangestart = "";
-  var rangesend = "";
-  var gtypedata = "";
-  var colordata = "";
-  var drivingQuestion = "";
-  var isDropDown = -1;
-  var hasNotes = -1;
+  var ydatabase = null;
+  var locationname = null;
+  var ranges = null;
+  var rangestart = null;
+  var rangesend = null;
+  var gtypedata = null;
+  var colordata = null;
+  var drivingQuestion = null;
+  var isDropDown = null;
+  var hasNotes = null;
   var scriptSeen = -1; //default to -1, deleted graph
   var savedGraphNum = null;
 
@@ -1352,9 +1340,12 @@ function sendData(n, savedNum) {
       scriptSeen = 0;//why are we doing this?
       console.log("submit graph n==1, 2");
     }
+    if (savedNum == "saved") {
+      savedGraphNum = n;
+    }
   }
-  else if (n == "") {
-
+  else if (n == -1) {
+    scriptSeen = null;
   }
 
 
@@ -1375,7 +1366,7 @@ function sendData(n, savedNum) {
   };
 
   logs.push(submitdata);
-  console.log(submitdata);
+  //console.log(submitdata);
 
   //Send data to php code
   var submitdatastr = JSON.stringify(submitdata);
@@ -1387,7 +1378,7 @@ function sendData(n, savedNum) {
     data: { submitdata: submitdatastr },
     success: function (response) {
       //do whatever.
-      alert('Its done!');
+      //alert('Its done!');
       //alert(response.message);
       console.log(response);
     },
@@ -1408,7 +1399,7 @@ function getData() {
     //data: { submitdata: submitdatastr },
     success: function (response) {
       //do whatever.
-      alert('Its done!');
+      //alert('Its done!');
       //alert(response.message);
       console.log(response);
     },

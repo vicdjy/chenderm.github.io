@@ -15,7 +15,7 @@ $decoded = json_decode($submitdata, true);
 try{
     $dsn = 'mysql:dbname=DV4L_schema; host=127.0.0.1';//local host
     $user = 'root';
-    $password = 'DV4L@uofm9163';//change
+    $password = 'Abbeyhills1';//change
     $dbh = new PDO($dsn, $user, $password);
 
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

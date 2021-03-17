@@ -17,7 +17,7 @@
 try{
     $dsn = 'mysql:dbname=DV4L_schema; host=127.0.0.1';//local host
     $user = 'root';
-    $password = 'DV4L@uofm9163';//change
+    $password = 'Abbeyhills1';//change
 
     $dbh = new PDO($dsn, $user, $password);
     //echo $dbh;
@@ -32,7 +32,6 @@ try{
     echo "numrows: ";
     echo $result -> num_rows;
     
-
     //echo $result -> num_rows;
     $num_rows = mysql_num_rows($result);
     echo $num_rows;
