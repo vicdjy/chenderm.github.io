@@ -208,7 +208,7 @@ $(document).ready(function () {
     switchToDefault(); //load default view when the page first loads
       
     
-    sendData(n,2);
+    sendData(-1,-1);
     
 
   

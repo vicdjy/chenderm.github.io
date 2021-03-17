@@ -53,7 +53,7 @@ try{
 
     //$dbh -> close();
 
-?>
+
 
     $dbh -> close();
 }catch(PDOException $ex){
