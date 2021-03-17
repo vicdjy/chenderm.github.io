@@ -203,6 +203,7 @@ $(document).ready(function () {
     hide_min_max: true,
     prettify_enabled: false,
   });
+<<<<<<< HEAD
 
 
   switchToDefault(); //load default view when the page first loads
@@ -212,6 +213,17 @@ $(document).ready(function () {
 
 
 
+=======
+    
+    
+    switchToDefault(); //load default view when the page first loads
+      
+    
+    sendData(-1,-1);
+    
+
+  
+>>>>>>> b6376d7362b8d4ae1eb48f0814e1495257a59ac6
 });
 
 //Display Modal when user clicks 'Custom'
