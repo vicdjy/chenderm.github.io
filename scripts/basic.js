@@ -390,7 +390,7 @@ function deleteGraph(savedNum) {
     document.getElementById("exit" + savedNum).style.visibility = "hidden";
     document.getElementById("swap" + savedNum).style.visibility = "hidden";
 
-    sendData(-1);
+    sendData(-1, -100);//second param is a dummy val
 }
 
 //Shows tooltip over saved graph
@@ -697,10 +697,14 @@ function resave(saveNum) {
 //This runs when the export button is clicked
 function exportGraph(n) {
     var tempGraph = undefined;
-    if (n == 1)
+    if (n == 1) {
         tempGraph = graph1;
-    else if (n == 2)
+        sendData(1, "export");
+    }
+    else if (n == 2) {
         tempGraph = graph2;
+        sendData(2, "export");
+    }
 
     sessionStorage.setItem("labelsArr", tempGraph.config.data.labels);
     sessionStorage.setItem("dataArr", tempGraph.config.data.datasets[0].data);

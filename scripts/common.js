@@ -208,7 +208,7 @@ $(document).ready(function () {
   switchToDefault(); //load default view when the page first loads
 
 
-  sendData(-1, -1);
+  sendData(200, -1);
 
 
 
@@ -1258,7 +1258,7 @@ function randomstring(length, chars) {
 }
 
 function sendData(n, savedNum) {
-  //alert("in send data");
+
   //Sessionid code
   var sessionid = rstring;
 
@@ -1287,8 +1287,9 @@ function sendData(n, savedNum) {
   var drivingQuestion = null;
   var isDropDown = null;
   var hasNotes = null;
-  var scriptSeen = -1; //default to -1, deleted graph
+  var scriptSeen = null;
   var savedGraphNum = null;
+  var exportNum = null;
 
   //tooltip clicked to see json code
   if (n == 0) {
@@ -1333,21 +1334,21 @@ function sendData(n, savedNum) {
     isDropDown = 0;
     if (drivingQuestion == "") { isDropDown = 1; }
     var notes = document.getElementById('notes').value;
-    hasNotes = 1;
+    hasNotes = 1;// ?
 
     if (notes == "") {
       hasNotes = 0;
-      scriptSeen = 0;//why are we doing this?
-      console.log("submit graph n==1, 2");
     }
     if (savedNum == "saved") {
       savedGraphNum = n;
     }
+    else if (savedNum == "export") {
+      exportNum = n;
+    }
   }
   else if (n == -1) {
-    scriptSeen = null;
+    scriptSeen = -1; //deleted graph
   }
-
 
   var submitdata = {
     'sessionid': sessionid,
@@ -1362,29 +1363,27 @@ function sendData(n, savedNum) {
     'isDropDown': isDropDown,
     'hasNotes': hasNotes,
     'scriptSeen': scriptSeen,
-    'savedGraphNum': savedGraphNum
+    'savedGraphNum': savedGraphNum,
+    'exportNum': exportNum
   };
 
   logs.push(submitdata);
-  //console.log(submitdata);
 
   //Send data to php code
   var submitdatastr = JSON.stringify(submitdata);
-  // console.log(submitdatastr);
 
   $.ajax({
     url: '../data.php',
     type: 'POST',
     data: { submitdata: submitdatastr },
     success: function (response) {
-      //do whatever.
-      //alert('Its done!');
+      //alert('info sent to database');
       //alert(response.message);
       console.log(response);
     },
     error: function (XMLHttpRequest, textStatus, errorThrown) {
       alert('Status: ' + textStatus);
-      alert('Error: ' + errorThrown); //error?
+      alert('Error: ' + errorThrown); //error msg
     },
   });
 }
@@ -1399,7 +1398,7 @@ function getData() {
     //data: { submitdata: submitdatastr },
     success: function (response) {
       //do whatever.
-      //alert('Its done!');
+      alert('Its done!');
       //alert(response.message);
       console.log(response);
     },
