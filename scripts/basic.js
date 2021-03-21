@@ -1,6 +1,6 @@
 var savedGraphs = [];
 var savedGraphColor = undefined;
-
+var isDeleted = [false, false, false, false, false, false, false, false, false, false];
 //When the page first loads.
 $(document).ready(function () {
     for (var i = 0; i < 10; i++) {
@@ -371,7 +371,10 @@ function relocate(prevSave, nextSave) {
         document.getElementById("swap" + prevSave).style.visibility = "visible";
     }
 }
-
+//changes bool to true if we are deleting the saved graph
+function changeBool(num) {
+    isDeleted[num - 1] = true;
+}
 //Removes a graph from the saved section
 //Runs when the user clicks the x next to a saved region
 function deleteGraph(savedNum) {
@@ -389,7 +392,7 @@ function deleteGraph(savedNum) {
     //clears exit and swap buttons
     document.getElementById("exit" + savedNum).style.visibility = "hidden";
     document.getElementById("swap" + savedNum).style.visibility = "hidden";
-
+    isDeleted[savedNum - 1] = false;
     sendData(-1, -100);//second param is a dummy val
 }
 
@@ -398,11 +401,15 @@ function deleteGraph(savedNum) {
 function showToolTip(savedNum) {
     //alert("in show tool tip");
     var tip = document.getElementById("tip" + savedNum);
+    if (isDeleted[savedNum - 1]) {
+        deleteGraph(savedNum);
+        return;
+    }
     if (tip.style.visibility != "visible") {//hidden turn visible
         tip.style.visibility = "visible";
         //var scriptSeen = 1;
         sendData(0, savedNum);
-        console.log("data sent - shown tool tip");
+        //console.log("data sent - shown tool tip");
     }
     else
         tip.style.visibility = "hidden";
@@ -430,7 +437,7 @@ function drop(ev, destination) {
             if (savedGraphs[saveNum - 1] == undefined || savedGraphs[saveNum - 1] == null) { //second saved region is empty
                 saveGraph(saveNum, graphNum, false);
                 sendData(destination, 0);
-                alert(destination);
+                //alert(destination);
             }
             else    //second saved region has a graph already
                 swap(saveNum, graphNum);

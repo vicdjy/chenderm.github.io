@@ -15,6 +15,7 @@ CREATE TABLE export
     savedGraphNum INTEGER,
     exportNum INTEGER
 );
+
 --scriptSeen is 1 if saved graph is clicked to see JSON
 --scriptSeen is -1 if saved graph is deleted
 
