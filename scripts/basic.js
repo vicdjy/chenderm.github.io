@@ -1,6 +1,8 @@
 var savedGraphs = [];
 var savedGraphColor = undefined;
 var isDeleted = [false, false, false, false, false, false, false, false, false, false];
+var dragging = [false, false];
+
 //When the page first loads.
 $(document).ready(function () {
     for (var i = 0; i < 10; i++) {
@@ -415,6 +417,31 @@ function showToolTip(savedNum) {
         tip.style.visibility = "hidden";
 }
 
+//set to false wheter it makes its destination or not
+function dropEnd() {
+    setTimeout(function () {
+        dragging[0] = false;
+        dragging[1] = false;
+    }, 10);
+
+}
+
+//todo
+//if graph makes the destination, we sendData, set to false
+function droppedDest() {
+    if (dragging[0] == true) {
+        sendData(1, "saved");
+        dragging[0] = false;
+    }
+    else if (dragging[1] == true) {
+        sendData(2, "saved");
+        dragging[1] = false;
+    }
+
+}
+function dragstart(graphNum) {
+    dragging[graphNum - 1] = true;
+}
 //Runs when dragging to save a graph into a saved region
 //It's mostly syntax
 function drag(ev, graph) {

@@ -283,20 +283,22 @@
             <h2>Graphs</h2>
             <div id="driving_question" style="font-size: 14px"></div>
 
-            <div class="graphRegion" ondrop="drop(event, 'graph1')" ondragover="allowDrop(event)"
-                ondragend="sendData(1, 'saved')">
+            <div class="graphRegion" ondrop="drop(event, 'graph1'); dropEnd()" ondragover="
+                allowDrop(event)" ondragend="sendData(1, 'saved')">
                 <canvas id="canvas1"></canvas>
-                <button class="saveButton" id="save1" draggable="true" ondragstart="drag(event, 'graph1')">SAVE GRAPH 1
+                <button class="saveButton" id="save1" draggable="true"
+                    ondragstart="drag(event, 'graph1'); dragstart('1')">SAVE GRAPH 1
                     (drag & drop)</button>
                 <button class="export" id="export1" onclick="exportGraph(1);">EXPORT</button>
 
             </div>
 
             <br><br>
-            <div class="graphRegion" ondrop="drop(event, 'graph2')" ondragover="allowDrop(event)"
+            <div class="graphRegion" ondrop="drop(event, 'graph2'); dropEnd()" ondragover="allowDrop(event)"
                 ondragend="sendData(1, 'saved')">
                 <canvas id="canvas2"></canvas>
-                <button class="saveButton" id="save2" draggable="true" ondragstart="drag(event, 'graph2')">SAVE GRAPH 2
+                <button class="saveButton" id="save2" draggable="true"
+                    ondragstart="drag(event, 'graph2'); dragstart('2')">SAVE GRAPH 2
                     (drag & drop)</button>
                 <button class="export" id="export2" onclick="exportGraph(2);">EXPORT</button>
 
@@ -317,7 +319,7 @@
             <div class="pillar">
 
                 <div class="frame" id="frame1">
-                    <div class="tile" ondrop="drop(event, 'saved1')" ondragover="allowDrop(event)"
+                    <div class="tile" ondrop="drop(event, 'saved1'); droppedDest()" ondragover="allowDrop(event)"
                         onclick="showToolTip(1)">
                         <div class="tooltiptext" id="tip1"></div>
                         <canvas id="saved1"></canvas>
@@ -332,7 +334,7 @@
                 </div>
 
                 <div class="frame">
-                    <div class="tile" ondrop="drop(event, 'saved2')" ondragover="allowDrop(event)"
+                    <div class="tile" ondrop="drop(event, 'saved2'); droppedDest()" ondragover="allowDrop(event)"
                         onclick="showToolTip(2)">
                         <span class="tooltiptext" id="tip2"></span>
                         <canvas id="saved2"></canvas>
@@ -346,7 +348,7 @@
                 </div>
 
                 <div class="frame">
-                    <div class="tile" ondrop="drop(event, 'saved3')" ondragover="allowDrop(event)"
+                    <div class="tile" ondrop="drop(event, 'saved3'); droppedDest()" ondragover="allowDrop(event)"
                         onclick="showToolTip(3)">
                         <span class="tooltiptext" id="tip3"></span>
                         <canvas id="saved3"></canvas>
@@ -360,7 +362,7 @@
                 </div>
 
                 <div class="frame" id="hide1">
-                    <div class="tile" ondrop="drop(event, 'saved4')" ondragover="allowDrop(event)"
+                    <div class="tile" ondrop="drop(event, 'saved4'); droppedDest()" ondragover="allowDrop(event)"
                         onclick="showToolTip(4)">
                         <span class="tooltiptext" id="tip4"></span>
                         <canvas id="saved4"></canvas>
@@ -374,7 +376,7 @@
                 </div>
 
                 <div class="frame" id="hide2">
-                    <div class="tile" ondrop="drop(event, 'saved5')" ondragover="allowDrop(event)"
+                    <div class="tile" ondrop="drop(event, 'saved5'); droppedDest()" ondragover="allowDrop(event)"
                         onclick="showToolTip(5)">
                         <span class="tooltiptext" id="tip5"></span>
                         <canvas id="saved5"></canvas>
@@ -389,7 +391,7 @@
             </div>
             <div class="pillar">
                 <div class="frame">
-                    <div class="tile" ondrop="drop(event, 'saved6')" ondragover="allowDrop(event)"
+                    <div class="tile" ondrop="drop(event, 'saved6'); droppedDest()" ondragover="allowDrop(event)"
                         onclick="showToolTip(6)">
                         <span class="tooltiptext" id="tip6"></span>
                         <canvas id="saved6"></canvas>
@@ -403,7 +405,7 @@
                 </div>
 
                 <div class="frame">
-                    <div class="tile" onclick="showToolTip(7)" ondrop="drop(event, 'saved7')"
+                    <div class="tile" onclick="showToolTip(7)" ondrop="drop(event, 'saved7'); droppedDest()"
                         ondragover="allowDrop(event)">
                         <span class="tooltiptext" id="tip7"></span>
                         <canvas id="saved7"></canvas>
@@ -417,7 +419,7 @@
                 </div>
 
                 <div class="frame">
-                    <div class="tile" onclick="showToolTip(8)" ondrop="drop(event, 'saved8')"
+                    <div class="tile" onclick="showToolTip(8)" ondrop="drop(event, 'saved8'); droppedDest()"
                         ondragover="allowDrop(event)">
                         <span class="tooltiptext" id="tip8"></span>
                         <canvas id="saved8"></canvas>
@@ -431,7 +433,7 @@
                 </div>
 
                 <div class="frame" id="hide3">
-                    <div class="tile" onclick="showToolTip(9)" ondrop="drop(event, 'saved9')"
+                    <div class="tile" onclick="showToolTip(9)" ondrop="drop(event, 'saved9'); droppedDest()"
                         ondragover="allowDrop(event)">
                         <span class="tooltiptext" id="tip9"></span>
                         <canvas id="saved9"></canvas>
@@ -445,7 +447,7 @@
                 </div>
 
                 <div class="frame" id="hide4">
-                    <div class="tile" onclick="showToolTip(10)" ondrop="drop(event, 'saved10')"
+                    <div class="tile" onclick="showToolTip(10)" ondrop="drop(event, 'saved10'); droppedDest()"
                         ondragover="allowDrop(event)">
                         <span class="tooltiptext" id="tip10"></span>
                         <canvas id="saved10"></canvas>

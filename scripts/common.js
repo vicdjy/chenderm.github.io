@@ -1339,6 +1339,7 @@ function sendData(n, savedNum) {
     if (notes == "") {
       hasNotes = 0;
     }
+    //getting called when we don't want to
     if (savedNum == "saved") {
       savedGraphNum = n;
     }
@@ -1386,7 +1387,24 @@ function sendData(n, savedNum) {
       alert('Error: ' + errorThrown); //error msg
     },
   });
-}
+
+
+  ydatabase = null;
+  locationname = null;
+  ranges = null;
+  rangestart = null;
+  rangesend = null;
+  gtypedata = null;
+  colordata = null;
+  drivingQuestion = null;
+  isDropDown = null;
+  hasNotes = null;
+  scriptSeen = null;
+  savedGraphNum = null;
+  exportNum = null;
+
+
+}//send data
 //make a new URL - embed PHP inside of a webpage
 //dump database.html <? php code > in the code
 //-loop to walk thru everything in the database, output to an html page using echo
