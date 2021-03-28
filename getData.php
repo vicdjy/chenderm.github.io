@@ -17,7 +17,7 @@
 try{
     $dsn = 'mysql:dbname=DV4L_schema; host=127.0.0.1';//local host
     $user = 'root';
-    $password = 'Abbeyhills1';//change
+    $password = 'DV4L@uofm9163';//change
 
     $dbh = new PDO($dsn, $user, $password);
     //echo $dbh;
@@ -30,31 +30,22 @@ try{
     //echo $result;
     
     echo "numrows: ";
-    echo $result -> num_rows;
+    var_dump($result -> rowCount());
     
     //echo $result -> num_rows;
-    $num_rows = mysql_num_rows($result);
-    echo $num_rows;
+//    $num_rows = mysql_num_rows($result);
+    
+    echo "rows: ";
     //error getting 0 rows going into else
     //if ($result -> num_rows >0){
-        while($row = $result->fetch_assoc()) {
-            //only works w fetch association
-            //can't say fetch_assoc() undefined method
-            //echo "sessionid: " . $row["sessionid"]."<br>";
+        while($row = $result->fetch()) {
             
+            var_dump($row);
             
-            print_r("printing");
         }//while
-    //}//if
-    /*else {
-        echo " no results";
-    }*/
-
-    //$dbh -> close();
-
-
-
-    $dbh -> close();
+   
+    
+    
 }catch(PDOException $ex){
     echo $ex;
     echo '{"status":0, "line":'.__LINE__.'}';
