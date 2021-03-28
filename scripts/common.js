@@ -204,7 +204,14 @@ $(document).ready(function () {
     prettify_enabled: false,
   });
 
+
   switchToDefault(); //load default view when the page first loads
+
+
+  sendData(200, -1);
+
+
+
 });
 
 //Display Modal when user clicks 'Custom'
@@ -1251,7 +1258,7 @@ function randomstring(length, chars) {
 }
 
 function sendData(n, savedNum) {
-  //alert("in send data");
+
   //Sessionid code
   var sessionid = rstring;
 
@@ -1270,94 +1277,80 @@ function sendData(n, savedNum) {
   var datestring = year + '-' + (month + 1) + '-' + date;
   var accesstime = datestring + ' ' + time;
 
+  var ydatabase = null;
+  var locationname = null;
+  var ranges = null;
+  var rangestart = null;
+  var rangesend = null;
+  var gtypedata = null;
+  var colordata = null;
+  var drivingQuestion = null;
+  var isDropDown = null;
+  var hasNotes = null;
+  var scriptSeen = null;
+  var savedGraphNum = null;
+  var exportNum = null;
 
-  var ydatabase = "";
-  var locationname = "";
-  var ranges = "";
-  var rangestart = "";
-  var rangesend = "";
-  var gtypedata = "";
-  var colordata = "";
-  var drivingQuestion = "";
-  var isDropDown = -1;
-  var hasNotes = -1;
-  var scriptSeen = -1; //default to -1, deleted graph
-
-  if (n==0){
+  //tooltip clicked to see json code
+  if (n == 0) {
     var data = document.getElementById('tip' + savedNum).textContent;
-    console.log(data);
-
-    //turn object into a string
-    var str_obj = String(data);
-    //console.log(typeof(str_obj))//check its a string
-
-    //get rid of characters we don't want
-    str_obj.replace(/(\r\n|\n|\r)/gm,"");//get rid of <br>, newlines
-    str_obj.replace(/&nbsp;/gm,"");//rid of nbsp
-    str_obj.replace(/\s/gm, "");//rid of empty space
-    console.log("got rid of line breaks");
-
-    //console.log(String(str_obj));
-
-    //console.log(data.Yaxis);
-    var mydata = JSON.parse(JSON.stringify(str_obj));
-    console.log(mydata);
-    console.log(mydata.DB);
-
-
-    alert("else stataemetn re");
-
-    //console.log("n==0");
-    var scriptSeen = 1;
+    data = data.replace(/\\n/g, "\\n")
+      .replace(/\\'/g, "\\'")
+      .replace(/\\"/g, '\\"')
+      .replace(/\\&/g, "\\&")
+      .replace(/\\r/g, "\\r")
+      .replace(/\\t/g, "\\t")
+      .replace(/\\b/g, "\\b")
+      .replace(/\\f/g, "\\f")
+      .replace(/\s/gm, '')
+      .replace(/[\u0000-\u0019]+/g, "")
+      .replace(/[\u0000-\u001F]+/g, "");
+    // remove non-printable and other non-valid JSON chars
+    var mydata = JSON.parse(data);
+    rangestart = mydata.lowDate;
+    rangesend = mydata.highDate;
+    ydatabase = mydata.DB;
+    gtypedata = mydata.gtype;
+    locationname = mydata.Yaxis;
+    scriptSeen = 1;
   }
-  // else if (n==-1){
-  //   scriptSeen = -1;
-  // }
 
   //Yaxis code
-  else if (n ==1 || n==2){ //not from showToolTip
-     ydatabase = document.getElementById('database' + n).value;
-      //Location code
-     locationname = document.getElementById('yaxis' + n).value;
+  else if (n == 1 || n == 2) { //not from showToolTip
+    //alert("hi erin");
+    ydatabase = document.getElementById('database' + n).value;
+    //Location code
+    locationname = document.getElementById('yaxis' + n).value;
 
     //Range code
-     ranges = document.getElementById('range' + n).value;
+    ranges = document.getElementById('range' + n).value;
     rangesarray = ranges.split(';');
-     rangestart = rangesarray[0];
-     var rangesend = rangesarray[1];
+    rangestart = rangesarray[0];
+    var rangesend = rangesarray[1];
 
-    //Graphtype code
-     gtypedata = document.getElementById('gtype' + n).value;
-
-    //Graphtype code
-     colordata = document.getElementById('colorButton' + n).value;
-
-     drivingQuestion = document.getElementById('textinput2').value;
-    //console.log(drivingQuestion);
-     isDropDown = 0;
-    if (drivingQuestion == ""){
-      isDropDown = 1;
-    }
+    gtypedata = document.getElementById('gtype' + n).value;
+    colordata = document.getElementById('colorButton' + n).value;
+    drivingQuestion = document.getElementById('textinput2').value;
+    isDropDown = 0;
+    if (drivingQuestion == "") { isDropDown = 1; }
     var notes = document.getElementById('notes').value;
-     hasNotes = 1;
-    if (notes == ""){
+    hasNotes = 1;// ?
+
+    if (notes == "") {
       hasNotes = 0;
-    
-     scriptSeen = 0;
-    console.log("submit graph n==1, 2");
+    }
+    //getting called when we don't want to
+    if (savedNum == "saved") {
+      savedGraphNum = n;
+    }
+    else if (savedNum == "export") {
+      exportNum = n;
+    }
+  }
+  else if (n == -1) {
+    scriptSeen = -1; //deleted graph
   }
 
-  //console.log("here");
-
-
-  //var drivingQuestion = document.getElementById('driving_question'+n).value;
-  //if ()
-// if (typeof drivingQuestion[database] === 'undefined')
-//   var dq = 'default driving question';
-// else dq = drivingQuestion[database];
-  }
-
-  
   var submitdata = {
     'sessionid': sessionid,
     'accesstime': accesstime,
@@ -1369,30 +1362,67 @@ function sendData(n, savedNum) {
     'color': colordata,
     'drivingQuestion': drivingQuestion,
     'isDropDown': isDropDown,
-    'hasNotes' : hasNotes,
-    'scriptSeen' : scriptSeen,
+    'hasNotes': hasNotes,
+    'scriptSeen': scriptSeen,
+    'savedGraphNum': savedGraphNum,
+    'exportNum': exportNum
   };
 
   logs.push(submitdata);
-  console.log(submitdata);
 
   //Send data to php code
-    var submitdatastr = JSON.stringify(submitdata);
-    // console.log(submitdatastr);
+  var submitdatastr = JSON.stringify(submitdata);
 
-    $.ajax({
-      url: '../data.php',
-      type: 'POST',
-      data: { submitdata: submitdatastr },
-      success: function (response) {
-        //do whatever.
-        alert('Its done!');
-        //alert(response.message);
-        console.log(response);
-      },
-      error: function (XMLHttpRequest, textStatus, errorThrown) {
-        alert('Status: ' + textStatus);
-        alert('Error: ' + errorThrown);
-      },
-    });
+  $.ajax({
+    url: '../data.php',
+    type: 'POST',
+    data: { submitdata: submitdatastr },
+    success: function (response) {
+      //alert('info sent to database');
+      //alert(response.message);
+      console.log(response);
+    },
+    error: function (XMLHttpRequest, textStatus, errorThrown) {
+      alert('Status: ' + textStatus);
+      alert('Error: ' + errorThrown); //error msg
+    },
+  });
+
+
+  ydatabase = null;
+  locationname = null;
+  ranges = null;
+  rangestart = null;
+  rangesend = null;
+  gtypedata = null;
+  colordata = null;
+  drivingQuestion = null;
+  isDropDown = null;
+  hasNotes = null;
+  scriptSeen = null;
+  savedGraphNum = null;
+  exportNum = null;
+
+
+}//send data
+//make a new URL - embed PHP inside of a webpage
+//dump database.html <? php code > in the code
+//-loop to walk thru everything in the database, output to an html page using echo
+
+function getData() {
+  $.ajax({
+    url: '../getData.php',
+    type: 'GET',
+    //data: { submitdata: submitdatastr },
+    success: function (response) {
+      //do whatever.
+      alert('Its done!');
+      //alert(response.message);
+      console.log(response);
+    },
+    error: function (XMLHttpRequest, textStatus, errorThrown) {
+      alert('Status: ' + textStatus);
+      alert('Error: ' + errorThrown); //error?
+    },
+  });
 }

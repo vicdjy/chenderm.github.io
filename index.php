@@ -18,16 +18,20 @@
 
 
     <!-- CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/css/ion.rangeSlider.min.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/css/ion.rangeSlider.min.css" />
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="style/common.css">
     <link rel="stylesheet" type="text/css" href="style/basic.css">
-    
+
 </head>
 
 <!-- HTML -->
+
 <body>
+
     <div class="container">
         <div class="col1">
             <img class="logo" src="img/HistoryInDatalogolight.png">
@@ -35,7 +39,8 @@
             <div style="width: 100%">
                 <h2 style="display: inline-block;">Data</h2>
                 <!-- <button id="clear" onclick="clearAllValues()" style="float: right; margin-left: 10px; margin-top: 30px;">CLEAR</button> -->
-                <button id="default" onclick="switchToDefault()" style="float: right; margin-left: 10px; margin-top: 30px;">DEFAULT</button>
+                <button id="default" onclick="switchToDefault()"
+                    style="float: right; margin-left: 10px; margin-top: 30px;">DEFAULT</button>
                 <!-- <button id="modal-btn" onclick="displayModal()" style="float: right; margin-left: 10px; margin-top: 30px;">CUSTOM</button> -->
                 <div class="modal">
                     <div class="modal-content">
@@ -51,51 +56,61 @@
                             <fieldset>
                                 <legend>Life, Death, Populations</legend>
                                 <input type="checkbox" name="database_selection" value="Populations"> Populations <br>
-                                <input type="checkbox" name="database_selection" value="Population Female Percentage"> 
-                                    Population Female % <br>
-                                <input type="checkbox" name="database_selection" value="Population Female Percentage at Birth">
-                                    Population Female % at Birth<br>
+                                <input type="checkbox" name="database_selection" value="Population Female Percentage">
+                                Population Female % <br>
+                                <input type="checkbox" name="database_selection"
+                                    value="Population Female Percentage at Birth">
+                                Population Female % at Birth<br>
                                 <input type="checkbox" name="database_selection" value="Life Expectancy - Continents">
-                                    Life Expectancy - Continents<br>
+                                Life Expectancy - Continents<br>
                                 <input type="checkbox" name="database_selection" value="Median Age">Median Age<br>
                                 <input type="checkbox" name="database_selection" value="Births">Births<br>
-                                <input type="checkbox" name="database_selection" value="Births Per Woman">Births Per Woman<br>
+                                <input type="checkbox" name="database_selection" value="Births Per Woman">Births Per
+                                Woman<br>
                                 <input type="checkbox" name="database_selection" value="Births Per 1000 People">
-                                    Births Per 1000 People<br>
+                                Births Per 1000 People<br>
                                 <input type="checkbox" name="database_selection" value="Child Deaths">Child Deaths<br>
-                                <input type="checkbox" name="database_selection" value="Child Mortality Rates">Child Mortality Rates<br>
+                                <input type="checkbox" name="database_selection" value="Child Mortality Rates">Child
+                                Mortality Rates<br>
                                 <input type="checkbox" name="database_selection" value="Survival Rate to Age 65 - Male">
-                                    Survival Rate to Age 65 - Male<br>
-                                <input type="checkbox" name="database_selection" value="Survival Rate to Age 65 - Female">
-                                    Survival Rate to Age 65 - Female<br>
+                                Survival Rate to Age 65 - Male<br>
+                                <input type="checkbox" name="database_selection"
+                                    value="Survival Rate to Age 65 - Female">
+                                Survival Rate to Age 65 - Female<br>
                             </fieldset>
                             <fieldset>
                                 <legend>Military</legend>
-                                <input type="checkbox" name="database_selection" value="Military Personnel">Military Personnel<br>
-                                <input type="checkbox" name="database_selection" value="Military Personnel Percent of Population">
-                                    Military Personnel % Population<br>
-                                <input type="checkbox" name="database_selection" value="Military Spending">Military Spending<br>
-                                <input type="checkbox" name="database_selection" value="Military Spending Percent of GDP">
-                                    Military Spending % GDP<br>
+                                <input type="checkbox" name="database_selection" value="Military Personnel">Military
+                                Personnel<br>
+                                <input type="checkbox" name="database_selection"
+                                    value="Military Personnel Percent of Population">
+                                Military Personnel % Population<br>
+                                <input type="checkbox" name="database_selection" value="Military Spending">Military
+                                Spending<br>
+                                <input type="checkbox" name="database_selection"
+                                    value="Military Spending Percent of GDP">
+                                Military Spending % GDP<br>
                             </fieldset>
                             <fieldset>
                                 <legend>Economies</legend>
                                 <input type="checkbox" name="database_selection" value="GDP">GDP<br>
-                                <input type="checkbox" name="database_selection" value="GDP Per Capita">GDP Per Capita<br>
+                                <input type="checkbox" name="database_selection" value="GDP Per Capita">GDP Per
+                                Capita<br>
                                 <input type="checkbox" name="database_selection" value="Economic Freedom Scores">
-                                    Economic Freedom Scores<br>
+                                Economic Freedom Scores<br>
                             </fieldset>
                             <fieldset>
                                 <legend>Environment</legend>
                                 <input type="checkbox" name="database_selection" value="CO2 Emissions">CO2 Emissions<br>
                                 <input type="checkbox" name="database_selection" value="CO2 Emissions Per Capita">
-                                    CO2 Emissions Per Capita<br>
+                                CO2 Emissions Per Capita<br>
                                 <input type="checkbox" name="database_selection" value="CO2 Emissions Percentages">
-                                    CO2 Emissions %<br>
+                                CO2 Emissions %<br>
                                 <input type="checkbox" name="database_selection" value="CO2 Emissions Cumulative">
-                                    CO2 Emissions Cumulative<br>
-                                <input type="checkbox" name="database_selection" value="CO2 Emissions Cumulative Percentages">
-                                    CO2 Emissions Cumulative %<br>
+                                CO2 Emissions Cumulative<br>
+                                <input type="checkbox" name="database_selection"
+                                    value="CO2 Emissions Cumulative Percentages">
+                                CO2 Emissions Cumulative %<br>
                             </fieldset>
                             <input type="submit" value="Submit" style="color: black"><br>
                         </form>
@@ -113,22 +128,29 @@
                     <option value="Question 5">
                     <option value="Question 6">
                 </datalist> -->
-                
+
                 <form onSubmit="return false;">
                     <label for="dqs">Choose a Driving Question:</label><br>
-                    <select style = "width:350px" id="textinput"  onchange="addDrivingQuestion()">
+                    <select style="width:350px" id="textinput" onchange="addDrivingQuestion()">
                         <option value="" disabled selected>Select Driving Question</option>
-                        <option>How do rates of population growth among countries in the same region/continent compare? What explains observed differences?</option>
-                        <option>What accounts for sharp increases or decreases in military spending? Do increases in military spending seem to be cause, consequence, or deterrent of violent conflict? </option>
-                        <option>Is there a consistent relationship between child mortality rates and births per women? What explains consistencies and inconsistencies in this relationship across countries? </option>
-                        <option>How do CO2 emissions per capita compare among countries? What are the implications of similarities/differences for national/international policymaking?</option>
+                        <option>How do rates of population growth among countries in the same region/continent compare?
+                            What explains observed differences?</option>
+                        <option>What accounts for sharp increases or decreases in military spending? Do increases in
+                            military spending seem to be cause, consequence, or deterrent of violent conflict? </option>
+                        <option>Is there a consistent relationship between child mortality rates and births per women?
+                            What explains consistencies and inconsistencies in this relationship across countries?
+                        </option>
+                        <option>How do CO2 emissions per capita compare among countries? What are the implications of
+                            similarities/differences for national/international policymaking?</option>
 
                     </select>
                     <br>OR<br>
-                    <input style="width:350px" placeholder="Enter Driving Question here" id="textinput2" name = "textinput2" value = "" onkeypress="addDrivingQuestion2()"></input>
+                    <input style="width:350px" placeholder="Enter Driving Question here" id="textinput2"
+                        name="textinput2" value="" onkeypress="addDrivingQuestion2()"></input>
                 </form>
                 <div>
-                    <h3>Driving Question:</h3><p id="textEntered"></p>
+                    <h3>Driving Question:</h3>
+                    <p id="textEntered"></p>
                 </div>
             </div>
             <br>
@@ -138,7 +160,7 @@
 
                 <form>
                     Database (y-axis):
-                    <select name = "db" class="select" id="database1" onchange="verifyDB(1)">
+                    <select name="db" class="select" id="database1" onchange="verifyDB(1)">
                     </select>
                 </form>
 
@@ -151,13 +173,13 @@
                     <option value="" selected></option>
                 </select>
                 <p></p>
-                
+
                 Year Range (x-axis):
                 <div style="margin-left: 7px; width: 75%; display: inline-block;">
-                    <input  type="text" class="js-range-slider" id="range1" value=""/>
+                    <input type="text" class="js-range-slider" id="range1" value="" />
                 </div>
                 <p></p>
-                
+
                 <div style="display: inline-block; position: relative;">
                     Graph type:
                     <select name="gty" class="select" id="gtype1" onchange="verifyOptions(1)">
@@ -188,7 +210,7 @@
                         </div>
                     </div>
                 </div>
-                <p></p>         
+                <p></p>
 
                 <button class="submit" id="submit1" onclick="submitGraphData(1)">SUBMIT</button>
             </div>
@@ -214,7 +236,7 @@
                     <input type="text" class="js-range-slider" id="range2" value="" />
                 </div>
                 <p></p>
-                
+
                 <div style="display: inline-block; position: relative;">
                     Graph type:
                     <select class="select" id="gtype2" onchange="verifyOptions(2)">
@@ -246,12 +268,13 @@
                     </div>
                 </div>
                 <p></p>
-              
+
                 <button class="submit" id="submit2" onclick="submitGraphData(2)">SUBMIT</button>
             </div>
             <div id="themeToggle" style="margin-top: 5px;">
                 <c style="font-size: 12px;">Light</c>
-                OR<input type="checkbox" unchecked data-toggle="toggle" data-onstyle="primary" data-on=" " data-offstyle="info" data-off=" " data-size="sm" onchange="changeColorTheme(this)">
+                OR<input type="checkbox" unchecked data-toggle="toggle" data-onstyle="primary" data-on=" "
+                    data-offstyle="info" data-off=" " data-size="sm" onchange="changeColorTheme(this)">
                 <c style="font-size: 12px;">Dark</c>
             </div>
         </div>
@@ -260,20 +283,23 @@
             <h2>Graphs</h2>
             <div id="driving_question" style="font-size: 14px"></div>
 
-        
-
-
-            <div class="graphRegion" ondrop="drop(event, 'graph1')" ondragover="allowDrop(event)">
+            <div class="graphRegion" ondrop="drop(event, 'graph1'); dropEnd()" ondragover="
+                allowDrop(event)" ondragend="sendData(1, 'saved')">
                 <canvas id="canvas1"></canvas>
-                <button class="saveButton" id="save1" draggable="true" ondragstart="drag(event, 'graph1')">SAVE GRAPH 1 (drag & drop)</button>
+                <button class="saveButton" id="save1" draggable="true"
+                    ondragstart="drag(event, 'graph1'); dragstart('1')">SAVE GRAPH 1
+                    (drag & drop)</button>
                 <button class="export" id="export1" onclick="exportGraph(1);">EXPORT</button>
 
             </div>
 
             <br><br>
-            <div class="graphRegion" ondrop="drop(event, 'graph2')" ondragover="allowDrop(event)">
+            <div class="graphRegion" ondrop="drop(event, 'graph2'); dropEnd()" ondragover="allowDrop(event)"
+                ondragend="sendData(1, 'saved')">
                 <canvas id="canvas2"></canvas>
-                <button class="saveButton" id="save2" draggable="true" ondragstart="drag(event, 'graph2')">SAVE GRAPH 2 (drag & drop)</button>
+                <button class="saveButton" id="save2" draggable="true"
+                    ondragstart="drag(event, 'graph2'); dragstart('2')">SAVE GRAPH 2
+                    (drag & drop)</button>
                 <button class="export" id="export2" onclick="exportGraph(2);">EXPORT</button>
 
             </div>
@@ -284,7 +310,8 @@
                 <h2>Saved</h2>
                 <p align="right">
                     <c style="font-size: 20px;text-align:right">Add Notes</c>
-                    <input type="checkbox" unchecked data-toggle="toggle" data-onstyle="primary" data-on=" " data-offstyle="info" data-off=" " data-size="sm" onchange="addNotes(this)">
+                    <input type="checkbox" unchecked data-toggle="toggle" data-onstyle="primary" data-on=" "
+                        data-offstyle="info" data-off=" " data-size="sm" onchange="addNotes(this)">
                 </p>
             </div>
 
@@ -292,11 +319,12 @@
             <div class="pillar">
 
                 <div class="frame" id="frame1">
-                    <div class="tile"  ondrop="drop(event, 'saved1')" ondragover="allowDrop(event)" onclick="showToolTip(1)">
-                        <div class="tooltiptext"  id="tip1"></div>
+                    <div class="tile" ondrop="drop(event, 'saved1'); droppedDest()" ondragover="allowDrop(event)"
+                        onclick="showToolTip(1)">
+                        <div class="tooltiptext" id="tip1"></div>
                         <canvas id="saved1"></canvas>
-                        
-                        <a id="exit1" class="exit" onclick="deleteGraph(1)">x
+
+                        <a id="exit1" class="exit" onclick="changeBool(1)">x
                             <div class="hoverTip">delete</div>
                         </a>
                         <a id="swap1" class="swap" draggable="true" ondragstart="drag(event, 'saved1')">&#x21c4;
@@ -306,10 +334,11 @@
                 </div>
 
                 <div class="frame">
-                    <div class="tile" ondrop="drop(event, 'saved2')" ondragover="allowDrop(event)" onclick="showToolTip(2)" >
+                    <div class="tile" ondrop="drop(event, 'saved2'); droppedDest()" ondragover="allowDrop(event)"
+                        onclick="showToolTip(2)">
                         <span class="tooltiptext" id="tip2"></span>
                         <canvas id="saved2"></canvas>
-                        <a id="exit2" class="exit" onclick="deleteGraph(2)">x
+                        <a id="exit2" class="exit" onclick="changeBool(2)">x
                             <div class="hoverTip">delete</div>
                         </a>
                         <a id="swap2" class="swap" draggable="true" ondragstart="drag(event, 'saved2')">&#x21c4;
@@ -319,10 +348,11 @@
                 </div>
 
                 <div class="frame">
-                    <div class="tile"  ondrop="drop(event, 'saved3')" ondragover="allowDrop(event)" onclick="showToolTip(3)" >
+                    <div class="tile" ondrop="drop(event, 'saved3'); droppedDest()" ondragover="allowDrop(event)"
+                        onclick="showToolTip(3)">
                         <span class="tooltiptext" id="tip3"></span>
                         <canvas id="saved3"></canvas>
-                        <a id="exit3" class="exit" onclick="deleteGraph(3)">x
+                        <a id="exit3" class="exit" onclick="changeBool(3)">x
                             <div class="hoverTip">delete</div>
                         </a>
                         <a id="swap3" class="swap" draggable="true" ondragstart="drag(event, 'saved3')">&#x21c4;
@@ -331,11 +361,12 @@
                     </div>
                 </div>
 
-                <div class="frame" id="hide1" >
-                    <div class="tile"  ondrop="drop(event, 'saved4')" ondragover="allowDrop(event)" onclick="showToolTip(4)">
-                        <span class="tooltiptext"  id="tip4"></span>
+                <div class="frame" id="hide1">
+                    <div class="tile" ondrop="drop(event, 'saved4'); droppedDest()" ondragover="allowDrop(event)"
+                        onclick="showToolTip(4)">
+                        <span class="tooltiptext" id="tip4"></span>
                         <canvas id="saved4"></canvas>
-                        <a id="exit4" class="exit" onclick="deleteGraph(4)">x
+                        <a id="exit4" class="exit" onclick="changeBool(4)">x
                             <div class="hoverTip">delete</div>
                         </a>
                         <a id="swap4" class="swap" draggable="true" ondragstart="drag(event, 'saved4')">&#x21c4;
@@ -344,11 +375,12 @@
                     </div>
                 </div>
 
-                <div class="frame" id="hide2" >
-                    <div class="tile"  ondrop="drop(event, 'saved5')" ondragover="allowDrop(event)" onclick="showToolTip(5)" >
+                <div class="frame" id="hide2">
+                    <div class="tile" ondrop="drop(event, 'saved5'); droppedDest()" ondragover="allowDrop(event)"
+                        onclick="showToolTip(5)">
                         <span class="tooltiptext" id="tip5"></span>
                         <canvas id="saved5"></canvas>
-                        <a id="exit5" class="exit" onclick="deleteGraph(5)">x
+                        <a id="exit5" class="exit" onclick="changeBool(5)">x
                             <div class="hoverTip">delete</div>
                         </a>
                         <a id="swap5" class="swap" draggable="true" ondragstart="drag(event, 'saved5')">&#x21c4;
@@ -359,10 +391,11 @@
             </div>
             <div class="pillar">
                 <div class="frame">
-                    <div class="tile"  ondrop="drop(event, 'saved6')" ondragover="allowDrop(event)" onclick="showToolTip(6)" >
+                    <div class="tile" ondrop="drop(event, 'saved6'); droppedDest()" ondragover="allowDrop(event)"
+                        onclick="showToolTip(6)">
                         <span class="tooltiptext" id="tip6"></span>
                         <canvas id="saved6"></canvas>
-                        <a id="exit6" class="exit" onclick="deleteGraph(6)">x
+                        <a id="exit6" class="exit" onclick="changeBool(6)">x
                             <div class="hoverTip">delete</div>
                         </a>
                         <a id="swap6" class="swap" draggable="true" ondragstart="drag(event, 'saved6')">&#x21c4;
@@ -372,10 +405,11 @@
                 </div>
 
                 <div class="frame">
-                    <div class="tile" onclick="showToolTip(7)" ondrop="drop(event, 'saved7')" ondragover="allowDrop(event)">
+                    <div class="tile" onclick="showToolTip(7)" ondrop="drop(event, 'saved7'); droppedDest()"
+                        ondragover="allowDrop(event)">
                         <span class="tooltiptext" id="tip7"></span>
                         <canvas id="saved7"></canvas>
-                        <a id="exit7" class="exit" onclick="deleteGraph(7)">x
+                        <a id="exit7" class="exit" onclick="changeBool(7)">x
                             <div class="hoverTip">delete</div>
                         </a>
                         <a id="swap7" class="swap" draggable="true" ondragstart="drag(event, 'saved7')">&#x21c4;
@@ -385,10 +419,11 @@
                 </div>
 
                 <div class="frame">
-                    <div class="tile" onclick="showToolTip(8)" ondrop="drop(event, 'saved8')" ondragover="allowDrop(event)">
+                    <div class="tile" onclick="showToolTip(8)" ondrop="drop(event, 'saved8'); droppedDest()"
+                        ondragover="allowDrop(event)">
                         <span class="tooltiptext" id="tip8"></span>
                         <canvas id="saved8"></canvas>
-                        <a id="exit8" class="exit" onclick="deleteGraph(8)">x
+                        <a id="exit8" class="exit" onclick="changeBool(8)">x
                             <div class="hoverTip">delete</div>
                         </a>
                         <a id="swap8" class="swap" draggable="true" ondragstart="drag(event, 'saved8')">&#x21c4;
@@ -398,10 +433,11 @@
                 </div>
 
                 <div class="frame" id="hide3">
-                    <div class="tile" onclick="showToolTip(9)" ondrop="drop(event, 'saved9')" ondragover="allowDrop(event)">
+                    <div class="tile" onclick="showToolTip(9)" ondrop="drop(event, 'saved9'); droppedDest()"
+                        ondragover="allowDrop(event)">
                         <span class="tooltiptext" id="tip9"></span>
                         <canvas id="saved9"></canvas>
-                        <a id="exit9" class="exit" onclick="deleteGraph(9)">x
+                        <a id="exit9" class="exit" onclick="changeBool(9)">x
                             <div class="hoverTip">delete</div>
                         </a>
                         <a id="swap9" class="swap" draggable="true" ondragstart="drag(event, 'saved9')">&#x21c4;
@@ -411,10 +447,11 @@
                 </div>
 
                 <div class="frame" id="hide4">
-                    <div class="tile" onclick="showToolTip(10)" ondrop="drop(event, 'saved10')" ondragover="allowDrop(event)">
+                    <div class="tile" onclick="showToolTip(10)" ondrop="drop(event, 'saved10'); droppedDest()"
+                        ondragover="allowDrop(event)">
                         <span class="tooltiptext" id="tip10"></span>
                         <canvas id="saved10"></canvas>
-                        <a id="exit10" class="exit" onclick="deleteGraph(10)">x
+                        <a id="exit10" class="exit" onclick="changeBool(10)">x
                             <div class="hoverTip">delete</div>
                         </a>
                         <a id="swap10" class="swap" draggable="true" ondragstart="drag(event, 'saved10')">&#x21c4;
@@ -429,11 +466,14 @@
                 <h2>Notes</h2>
                 <textarea id="notes" rows="10" cols="40" value=""></textarea>
                 <br><br>
-            <button class="export"  onclick="exportNotes()">EXPORT NOTE</button>
+                <button class="export" onclick="exportNotes()">EXPORT NOTE</button>
             </div>
 
         </div>
     </div>
-</body>
+    <div class="button" onclick="getData()">
+        button
+    </div>
 
+</body>
 </html>

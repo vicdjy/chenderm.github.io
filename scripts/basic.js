@@ -1,8 +1,10 @@
 var savedGraphs = [];
 var savedGraphColor = undefined;
+var isDeleted = [false, false, false, false, false, false, false, false, false, false];
+var dragging = [false, false];
 
 //When the page first loads.
-$(document).ready( function() {
+$(document).ready(function () {
     for (var i = 0; i < 10; i++) {
         savedGraphs.push(undefined);
     }
@@ -133,7 +135,7 @@ function swap(savedNum, graphNum) {
     var savedColor = savedGraph.color;
 
     saveGraph(savedNum, graphNum, false);
-    
+
     //update menus on the left side and graph data
     setOptions(savedDB, savedY, savedX, savedType, savedLowDate, savedHighDate, savedMinDate, savedMaxDate, graphNum, savedColor, true);
 }
@@ -174,14 +176,14 @@ function relocate(prevSave, nextSave) {
             type: prevGraphType,
             options: {
                 scales: {
-                    xAxes: [{display: false}],
-                    yAxes: [{display: false}],
+                    xAxes: [{ display: false }],
+                    yAxes: [{ display: false }],
                 },
-                legend: {display: false},
+                legend: { display: false },
                 responsive: true,
                 maintainAspectRatio: false,
                 tooltips: false,
-                animation: {duration: 0}
+                animation: { duration: 0 }
             },
             data: {
                 labels: prevLabelsArr,
@@ -273,14 +275,14 @@ function relocate(prevSave, nextSave) {
             type: graphType1,
             options: {
                 scales: {
-                    xAxes: [{display: false}],
-                    yAxes: [{display: false}],
+                    xAxes: [{ display: false }],
+                    yAxes: [{ display: false }],
                 },
-                legend: {display: false},
+                legend: { display: false },
                 responsive: true,
                 maintainAspectRatio: false,
                 tooltips: false,
-                animation: {duration: 0}
+                animation: { duration: 0 }
             },
             data: {
                 labels: labelsArr1,
@@ -325,14 +327,14 @@ function relocate(prevSave, nextSave) {
             type: graphType2,
             options: {
                 scales: {
-                    xAxes: [{display: false}],
-                    yAxes: [{display: false}],
+                    xAxes: [{ display: false }],
+                    yAxes: [{ display: false }],
                 },
-                legend: {display: false},
+                legend: { display: false },
                 responsive: true,
                 maintainAspectRatio: false,
                 tooltips: false,
-                animation: {duration: 0}
+                animation: { duration: 0 }
             },
             data: {
                 labels: labelsArr2,
@@ -371,7 +373,10 @@ function relocate(prevSave, nextSave) {
         document.getElementById("swap" + prevSave).style.visibility = "visible";
     }
 }
-
+//changes bool to true if we are deleting the saved graph
+function changeBool(num) {
+    isDeleted[num - 1] = true;
+}
 //Removes a graph from the saved section
 //Runs when the user clicks the x next to a saved region
 function deleteGraph(savedNum) {
@@ -389,8 +394,8 @@ function deleteGraph(savedNum) {
     //clears exit and swap buttons
     document.getElementById("exit" + savedNum).style.visibility = "hidden";
     document.getElementById("swap" + savedNum).style.visibility = "hidden";
-    
-    sendData(-1);
+    isDeleted[savedNum - 1] = false;
+    sendData(-1, -100);//second param is a dummy val
 }
 
 //Shows tooltip over saved graph
@@ -398,16 +403,45 @@ function deleteGraph(savedNum) {
 function showToolTip(savedNum) {
     //alert("in show tool tip");
     var tip = document.getElementById("tip" + savedNum);
-    if (tip.style.visibility != "visible"){//hidden turn visible
+    if (isDeleted[savedNum - 1]) {
+        deleteGraph(savedNum);
+        return;
+    }
+    if (tip.style.visibility != "visible") {//hidden turn visible
         tip.style.visibility = "visible";
         //var scriptSeen = 1;
         sendData(0, savedNum);
-        console.log("data sent - shown tool tip");
+        //console.log("data sent - shown tool tip");
     }
     else
         tip.style.visibility = "hidden";
 }
 
+//set to false wheter it makes its destination or not
+function dropEnd() {
+    setTimeout(function () {
+        dragging[0] = false;
+        dragging[1] = false;
+    }, 10);
+
+}
+
+//todo
+//if graph makes the destination, we sendData, set to false
+function droppedDest() {
+    if (dragging[0] == true) {
+        sendData(1, "saved");
+        dragging[0] = false;
+    }
+    else if (dragging[1] == true) {
+        sendData(2, "saved");
+        dragging[1] = false;
+    }
+
+}
+function dragstart(graphNum) {
+    dragging[graphNum - 1] = true;
+}
 //Runs when dragging to save a graph into a saved region
 //It's mostly syntax
 function drag(ev, graph) {
@@ -417,17 +451,21 @@ function drag(ev, graph) {
 //Runs when dropping a graph over a saved region
 function drop(ev, destination) {
     ev.preventDefault();
-    
+
     var data = ev.dataTransfer.getData("text");
     if (data.startsWith("graph")) { //drag from regular view
-        if (destination.startsWith("graph")) {  //drag from regular view to regular view
-            //do nothing
-        }
-        else if (destination.startsWith("saved")) { //drag from regular view to saved region
+        //if (destination.startsWith("graph")) {  //drag from regular view to regular view
+        //do nothing
+        //}
+        //else 
+        if (destination.startsWith("saved")) { //drag from regular view to saved region
             var graphNum = data.substring(5);
             var saveNum = destination.substring(5);
-            if (savedGraphs[saveNum - 1] == undefined || savedGraphs[saveNum - 1] == null)  //second saved region is empty
-                saveGraph(saveNum, graphNum, false)
+            if (savedGraphs[saveNum - 1] == undefined || savedGraphs[saveNum - 1] == null) { //second saved region is empty
+                saveGraph(saveNum, graphNum, false);
+                sendData(destination, 0);
+                //alert(destination);
+            }
             else    //second saved region has a graph already
                 swap(saveNum, graphNum);
         }
@@ -535,7 +573,7 @@ function changeColorTheme(element) {
     else {  //light theme chosen
         //change color for graph text
         Chart.defaults.global.defaultFontColor = "#524636";
-        
+
         //redraw graphs 1 and 2
         regraph(1);
         regraph(2);
@@ -580,7 +618,7 @@ function changeColorTheme(element) {
         //change color of saved region boxes
         x = document.getElementsByClassName("tile");
         for (var y = 0; y < x.length; y++) {
-            x[y].style.border= "1px solid #524636";
+            x[y].style.border = "1px solid #524636";
         }
 
         //change color of delete buttons for saved graphs
@@ -620,7 +658,7 @@ function resave(saveNum) {
     else if (savedGraph != null)
         savedGraph.destroy();
     savedGraph[saveNum - 1] = undefined;
-    
+
     //temporarily store values
     var labelsArr = savedGraph.config.data.labels;
     var dataArr = savedGraph.config.data.datasets[0].data;
@@ -693,10 +731,14 @@ function resave(saveNum) {
 //This runs when the export button is clicked
 function exportGraph(n) {
     var tempGraph = undefined;
-    if (n == 1)
+    if (n == 1) {
         tempGraph = graph1;
-    else if (n == 2)
+        sendData(1, "export");
+    }
+    else if (n == 2) {
         tempGraph = graph2;
+        sendData(2, "export");
+    }
 
     sessionStorage.setItem("labelsArr", tempGraph.config.data.labels);
     sessionStorage.setItem("dataArr", tempGraph.config.data.datasets[0].data);
@@ -713,7 +755,7 @@ function exportGraph(n) {
     window.open("/export.html", "_blank");
 }
 
-function exportNotes(){
+function exportNotes() {
     var txt = document.getElementById('notes').value;
     txt = txt.replace(/\r?\n/g, '<br />');
     sessionStorage.setItem("notesarea", txt);
@@ -727,7 +769,7 @@ function addNotes(element) {
     var c = document.getElementById("hide3");
     var d = document.getElementById("hide4");
 
-    if (element.checked) { 
+    if (element.checked) {
         x.style.display = "block";
         a.style.display = "none"
         b.style.display = "none"
@@ -742,14 +784,14 @@ function addNotes(element) {
     }
 }
 
-function addDrivingQuestion(){
+function addDrivingQuestion() {
     var input = document.getElementById('textinput')
-    var div = document.getElementById('textEntered');        
+    var div = document.getElementById('textEntered');
     div.innerHTML = input.value;
 }
 
-function addDrivingQuestion2(){
+function addDrivingQuestion2() {
     var input = document.getElementById('textinput2')
-    var div = document.getElementById('textEntered');        
+    var div = document.getElementById('textEntered');
     div.innerHTML = input.value;
 }

@@ -13,20 +13,17 @@ $decoded = json_decode($submitdata, true);
 //echo $decoded['graphtype'];
 
 try{
-    //$db = new PDO('sqlite:logdata.db');
-    //change to this  from ^ to use mySQL from sqlLite
-
     $dsn = 'mysql:dbname=DV4L_schema; host=127.0.0.1';//local host
     $user = 'root';
-    $password = 'password';//dchange
+    $password = 'DV4L@uofm9163';//change
     $dbh = new PDO($dsn, $user, $password);
 
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $dbh->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
     $statement = $dbh->prepare("INSERT INTO export
-    (sessionid,accesstime,yaxis,locationdata,lowdate,highdate,graphtype,color,drivingQuestion, isDropDown, hasNotes, scriptSeen)
+    (sessionid,accesstime,yaxis,locationdata,lowdate,highdate,graphtype,color,drivingQuestion, isDropDown, hasNotes, scriptSeen, savedGraphNum, exportNum)
 VALUES
-    (:sessionid, :accestime, :yaxis, :locationdata, :lowdate, :highdate, :graphtype, :color, :drivingQuestion, :isDropDown, :hasNotes, :scriptSeen)");
+    (:sessionid, :accestime, :yaxis, :locationdata, :lowdate, :highdate, :graphtype, :color, :drivingQuestion, :isDropDown, :hasNotes, :scriptSeen, :savedGraphNum, :exportNum)");
 
     $statement->bindValue(':sessionid', $decoded['sessionid']);
     $statement->bindValue(':accestime', $decoded['accesstime']);
@@ -40,7 +37,8 @@ VALUES
     $statement->bindValue(':isDropDown', $decoded['isDropDown']);
     $statement->bindValue(':hasNotes', $decoded['hasNotes']);
     $statement->bindValue(':scriptSeen', $decoded['scriptSeen']);
-
+    $statement->bindValue(':savedGraphNum', $decoded['savedGraphNum']);
+    $statement->bindValue(':exportNum', $decoded['exportNum']);
     $statement->execute();
    
 }catch(PDOException $ex){
