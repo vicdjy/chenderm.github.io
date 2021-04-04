@@ -27,6 +27,7 @@ try{
         echo $row["sessionid"], ", ";
         echo $row["accesstime"], ", ";
         echo $row["yaxis"], ", ";
+        echo $row["locationdata"], ", ";
         echo $row["lowDate"], ", ";
         echo $row["highDate"], ", ";
         echo $row["graphType"], ", ";
