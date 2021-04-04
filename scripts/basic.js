@@ -463,7 +463,7 @@ function drop(ev, destination) {
             var saveNum = destination.substring(5);
             if (savedGraphs[saveNum - 1] == undefined || savedGraphs[saveNum - 1] == null) { //second saved region is empty
                 saveGraph(saveNum, graphNum, false);
-                sendData(destination, 0);
+//                sendData(destination, 0);
                 //alert(destination);
             }
             else    //second saved region has a graph already

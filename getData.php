@@ -1,23 +1,8 @@
 <?php
-    /*
-    $q = $_GET['q'];
-    $con = mysqli_connect("127.0.0.1", "root", "Abbeyhills1", "DV4L_schema");
-    if (!$con){
-        die('Could not connect: ' . mysqli_error($con));
-    }
-
-    //get the
-    mysqli_select_db($con,"DV4L_schema");
-    $sql = "SELECT * FROM export";
-    $result = mysqli_query($con,$sql);
-    while ($row = $result->fetch_assoc()) {
-        echo $row['classtype'];
-    }
-    */
 try{
     $dsn = 'mysql:dbname=DV4L_schema; host=127.0.0.1';//local host
     $user = 'root';
-    $password = 'DV4L@uofm9163';//change
+    $password = 'Abbeyhills1';//change
 
     $dbh = new PDO($dsn, $user, $password);
     //echo $dbh;
@@ -27,10 +12,9 @@ try{
     $result = $dbh->prepare("SELECT * FROM export");//error here
     $result -> execute();
 
-    //echo $result;
-    
     echo "numrows: ";
     var_dump($result -> rowCount());
+<<<<<<< HEAD
     echo "<br>";
     //echo $result -> num_rows;
 //    $num_rows = mysql_num_rows($result);
@@ -49,6 +33,36 @@ try{
             echo "<br>";
         }//while
    
+=======
+    echo "<br><br>";
+    echo "sessionid, accesstime, yaxis, location, lowDate, 
+    highDate, graphType, Color, DrivingQuestion, isDropDown, 
+    hasNotes, scriptSeen, savedGraphNum, exportGraphNum ";
+    echo "<br><br>";
+
+
+    //error getting 0 rows going into else
+    //if ($result -> num_rows >0){
+    while($row = $result->fetch()) {
+        echo $row["sessionid"], ", ";
+        echo $row["accesstime"], ", ";
+        echo $row["yaxis"], ", ";
+        echo $row["locationdata"], ", ";
+        echo $row["lowDate"], ", ";
+        echo $row["highDate"], ", ";
+        echo $row["graphType"], ", ";
+        echo $row["Color"], ", ";
+        echo $row["DrivingQuestion"], ", ";
+        echo $row["isDropDown"], ", ";
+        echo $row["hasNotes"], ", ";
+        echo $row["scriptSeen"], ", ";
+        echo $row["savedGraphNum"], ", ";
+        echo $row["exportGraphNum"];
+
+        //var_dump($row);
+        echo "<br>";
+    }//while
+>>>>>>> 38412407019575089fa612d8c78764c07df3e541
     
     
 }catch(PDOException $ex){

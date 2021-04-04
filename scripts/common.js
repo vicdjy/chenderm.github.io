@@ -1317,7 +1317,6 @@ function sendData(n, savedNum) {
 
   //Yaxis code
   else if (n == 1 || n == 2) { //not from showToolTip
-    //alert("hi erin");
     ydatabase = document.getElementById('database' + n).value;
     //Location code
     locationname = document.getElementById('yaxis' + n).value;
@@ -1331,8 +1330,12 @@ function sendData(n, savedNum) {
     gtypedata = document.getElementById('gtype' + n).value;
     colordata = document.getElementById('colorButton' + n).value;
     drivingQuestion = document.getElementById('textinput2').value;
+    console.log(drivingQuestion);
     isDropDown = 0;
-    if (drivingQuestion == "") { isDropDown = 1; }
+    if (drivingQuestion == "") {
+      drivingQuestion = null;
+      isDropDown = 1;
+    }
     var notes = document.getElementById('notes').value;
     hasNotes = 1;// ?
 
