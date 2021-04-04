@@ -31,17 +31,22 @@ try{
     
     echo "numrows: ";
     var_dump($result -> rowCount());
-    
+    echo "<br>";
     //echo $result -> num_rows;
 //    $num_rows = mysql_num_rows($result);
     
     echo "rows: ";
+    echo "<br>";
     //error getting 0 rows going into else
     //if ($result -> num_rows >0){
+    
         while($row = $result->fetch()) {
-            
+        
             var_dump($row);
-            
+            echo "<br>";
+            echo "<br>";
+            echo "<br>";
+            echo "<br>";
         }//while
    
     
