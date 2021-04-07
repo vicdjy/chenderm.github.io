@@ -51,6 +51,7 @@ function saveGraph(saveNum, graphNum, swap) {
     for (var i = 0; i < savedGraphs.length; i++) {
         if (savedGraphs[i] != undefined && hoverText == savedGraphs[i].description) {
             if (!swap) {
+                dragging[i] = false;
                 alert("Graph " + graphNum + " is already saved at box #" + (i + 1));
             }
             document.getElementById("exit" + saveNum).style.visibility = "hidden";
@@ -422,23 +423,24 @@ function dropEnd() {
     setTimeout(function () {
         dragging[0] = false;
         dragging[1] = false;
-    }, 10);
+    }, 5);
 
 }
 
-//todo
 //if graph makes the destination, we sendData, set to false
 function droppedDest() {
-    if (dragging[0] == true) {
-        sendData(1, "saved");
-        dragging[0] = false;
-    }
-    else if (dragging[1] == true) {
-        sendData(2, "saved");
-        dragging[1] = false;
-    }
-
+    window.setTimeout(function () {
+        if (dragging[0] == true) {
+            sendData(1, "saved");
+            dragging[0] = false;
+        }
+        else if (dragging[1] == true) {
+            sendData(2, "saved");
+            dragging[1] = false;
+        }
+    }, 10);
 }
+
 function dragstart(graphNum) {
     dragging[graphNum - 1] = true;
 }
@@ -463,7 +465,7 @@ function drop(ev, destination) {
             var saveNum = destination.substring(5);
             if (savedGraphs[saveNum - 1] == undefined || savedGraphs[saveNum - 1] == null) { //second saved region is empty
                 saveGraph(saveNum, graphNum, false);
-                sendData(destination, 0);
+                //sendData(destination, 0);
                 //alert(destination);
             }
             else    //second saved region has a graph already
