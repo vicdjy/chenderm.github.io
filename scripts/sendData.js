@@ -1,10 +1,18 @@
+var logs = [];
+
 var rstring = randomstring(
     32,
     '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
 );
 
+function randomstring(length, chars) {
+    var result = '';
+    for (var i = length; i > 0; --i)
+        result += chars[Math.floor(Math.random() * chars.length)];
+    return result;
+}
+
 function sendData(n, savedNum) {
-    //alert("in send data");
     //Sessionid code
     var sessionid = rstring;
 
@@ -30,9 +38,8 @@ function sendData(n, savedNum) {
     var rangestart = null
     var gtypedata = null
     var colordata = null
-    var downloadGraphNum = null;
-    var changedJSON = null;
     var graphNum = null;
+    var actionItem = null;
 
 
     if (savedNum == 'submit') {
@@ -54,6 +61,7 @@ function sendData(n, savedNum) {
 
         colordata = document.getElementById("colorButton" + n).value;
         graphNum = n;
+        actionItem = "submit";
     }
     else if (savedNum == 'setOptions') {
         var el = document.getElementById("database" + n);
@@ -74,7 +82,7 @@ function sendData(n, savedNum) {
 
         colordata = document.getElementById("colorButton" + n).value;
         graphNum = n;
-        changedJSON = 1;
+        actionItem = "changedJSON";
     }
     else if (savedNum == 'download') {
         var el = document.getElementById("database" + n);
@@ -95,7 +103,7 @@ function sendData(n, savedNum) {
 
         colordata = document.getElementById("colorButton" + n).value;
         graphNum = n;
-        downloadGraphNum = n;
+        actionItem = "downloadGraph";
     }
 
 
@@ -112,8 +120,8 @@ function sendData(n, savedNum) {
         'highdate': rangesend,
         'graphtype': gtypedata,
         'color': colordata,
-        'downloadGraphNum': downloadGraphNum,
-        'changedJSON': changedJSON
+        'graphNum': graphNum,
+        'actionItem': actionItem
     };
 
     logs.push(submitdata);
@@ -131,7 +139,7 @@ function sendData(n, savedNum) {
             //do whatever.
             alert('Its done!');
             //alert(response.message);
-            console.log(response);
+            //console.log(response);
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
             alert('Status: ' + textStatus);

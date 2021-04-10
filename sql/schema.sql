@@ -8,9 +8,8 @@ CREATE TABLE script
     highdate VARCHAR(20),
     graphtype VARCHAR(20),
     color VARCHAR(20),
-    downloadGraphNum INTEGER,
-    changedJSON INTEGER,
-    graphNum INTEGER
+    graphNum INTEGER,
+    actionItem VARCHAR(20)
 );
 
 --scriptSeen is 1 if saved graph is clicked to see JSON
