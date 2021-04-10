@@ -6,7 +6,9 @@ var dragging = [false, false];
 //When the page first loads.
 $(document).ready(function () {
     for (var i = 0; i < 10; i++) {
+        
         savedGraphs.push(undefined);
+        
     }
     savedGraphColor = "#524636";
 });
