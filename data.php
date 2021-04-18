@@ -7,9 +7,9 @@ $submitdata = $_POST['submitdata'];
 $decoded = json_decode($submitdata, true);
 
 try{
-    $dsn = 'mysql:dbname=DV4L_schema; host=127.0.0.1';//local host
-    $user = 'root';
-    $password = 'Abbeyhills1';//change
+    $dsn = 'mysql:dbname=DV4L; host=localhost';//local host
+    $user = 'DV4Luser';
+    $password = 'DV4Lpassword';//change
 
     $dbh = new PDO($dsn, $user, $password);
 

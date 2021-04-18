@@ -13,6 +13,7 @@ function randomstring(length, chars) {
 }
 
 function sendData(n, savedNum) {
+    console.log(savedNum);
     //Sessionid code
     var sessionid = rstring;
 
@@ -33,10 +34,11 @@ function sendData(n, savedNum) {
 
 
     var ydatabase = null;
-    var locationname = null
-    var rangestart = null
-    var gtypedata = null
-    var colordata = null
+    var locationname = null;
+    var rangestart = null;
+    var rangesend = null;
+    var gtypedata = null;
+    var colordata = null;
     var graphNum = null;
     var actionItem = null;
 
