@@ -34,7 +34,6 @@ function sendData(n, savedNum) {
 
     var ydatabase = null;
     var locationname = null
-    var ranges = null
     var rangestart = null
     var gtypedata = null
     var colordata = null
@@ -45,8 +44,6 @@ function sendData(n, savedNum) {
     if (savedNum == 'submit') {
         var el = document.getElementById("database" + n);
         var ydatabase = el.options[el.selectedIndex].value;
-
-        //var xOption = "Year";
 
         el = document.getElementById("yaxis" + n);
         locationname = el.options[el.selectedIndex].value;
@@ -66,9 +63,6 @@ function sendData(n, savedNum) {
     else if (savedNum == 'setOptions') {
         var el = document.getElementById("database" + n);
         var ydatabase = el.options[el.selectedIndex].value;
-
-        //var xOption = "Year";
-
         el = document.getElementById("yaxis" + n);
         locationname = el.options[el.selectedIndex].value;
 
@@ -88,8 +82,6 @@ function sendData(n, savedNum) {
         var el = document.getElementById("database" + n);
         var ydatabase = el.options[el.selectedIndex].value;
 
-        //var xOption = "Year";
-
         el = document.getElementById("yaxis" + n);
         locationname = el.options[el.selectedIndex].value;
 
@@ -105,10 +97,6 @@ function sendData(n, savedNum) {
         graphNum = n;
         actionItem = "downloadGraph";
     }
-
-
-
-
 
 
     var submitdata = {
