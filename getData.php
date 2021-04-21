@@ -21,23 +21,23 @@ try{
     var_dump($result -> rowCount());
     echo "<br><br>";
     
-    echo "sessionid, \t\t\taccesstime, \tyaxis, \tlocation, \tlowDate, 
-    \thighDate, \tgraphType, \tColor, \tgraphNum, \tActionItem ";
+    echo "sessionid, accesstime, yaxis, location, lowDate, 
+    highDate, graphType, Color, graphNum, ActionItem ";
     echo "<br><br>";
 
 
     //error getting 0 rows going into else
     //if ($result -> num_rows >0){
     while($row = $result->fetch()) {
-        echo $row["sessionid"], ",\t";
-        echo $row["accesstime"], ",\t";
-        echo $row["yaxis"], ",\t";
-        echo $row["locationdata"], ",\t";
-        echo $row["lowDate"], ",\t";
-        echo $row["highDate"], ",\t";
-        echo $row["graphType"], ",\t";
-        echo $row["color"], ",\t";
-        echo $row["graphNum"], ",\t";
+        echo $row["sessionid"], ", ";
+        echo $row["accesstime"], ", ";
+        echo $row["yaxis"], ", ";
+        echo $row["locationdata"], ", ";
+        echo $row["lowDate"], ", ";
+        echo $row["highDate"], ", ";
+        echo $row["graphType"], ", ";
+        echo $row["color"], ", ";
+        echo $row["graphNum"], ", ";
         echo $row["actionItem"];
         
         echo "<br>";
