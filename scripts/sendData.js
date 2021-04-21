@@ -40,7 +40,7 @@ function sendData(n, savedNum) {
     var gtypedata = null;
     var colordata = null;
     var graphNum = null;
-    var actionItem = null;
+    var actionItem = "loadPage";
 
 
     if (savedNum == 'submit') {
@@ -110,7 +110,7 @@ function sendData(n, savedNum) {
         'highdate': rangesend,
         'graphtype': gtypedata,
         'color': colordata,
-        'graphNum': graphNum,
+        'graphNum': graphNum + 1,
         'actionItem': actionItem
     };
 
@@ -129,7 +129,7 @@ function sendData(n, savedNum) {
             //do whatever.
             alert('Its done!');
             //alert(response.message);
-            //console.log(response);
+            console.log(response);
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
             alert('Status: ' + textStatus);
