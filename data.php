@@ -18,7 +18,7 @@ try{
 
     $dsn = 'mysql:dbname=DV4L_schema; host=127.0.0.1';//local host
     $user = 'root';
-    $password = 'Abbeyhills1';//change
+    $password = 'DV4L@uofm9163';//change
 
     $dbh = new PDO($dsn, $user, $password);
 
@@ -27,8 +27,8 @@ try{
     $statement = $dbh->prepare("INSERT INTO scripts
     (sessionid,accesstime,yaxis,locationdata,lowdate,highdate,graphtype,color,  graphNum, actionItem)
 VALUES
-    (:sessionid, :accestime, :yaxis, :locationdata, :lowdate, :highdate, :graphtype, :color, :graphNum, :actionItem)");
-
+    (:sessionid, :accesstime, :yaxis, :locationdata, :lowdate, :highdate, :graphtype, :color, :graphNum, :actionItem)");
+        
     $statement->bindValue(':sessionid', $decoded['sessionid']);
     $statement->bindValue(':accesstime', $decoded['accesstime']);
     $statement->bindValue(':yaxis', $decoded['yaxis']);

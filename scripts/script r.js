@@ -528,8 +528,10 @@ function setOptions(databaseName, yaxis, xaxis, gtype, lowDate, highDate, n, col
             // console.log(textValue);
             document.getElementById("box" + i).value = textValue;
         }
+    } else {
+        sendData(n, 'setOptions');
     }
-    sendData(n, 'setOptions');
+    
 }
 
 //Runs when the user clicks the default button.

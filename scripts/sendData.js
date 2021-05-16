@@ -33,11 +33,12 @@ function sendData(n, savedNum) {
 
 
     var ydatabase = null;
-    var locationname = null
-    var ranges = null
-    var rangestart = null
-    var gtypedata = null
-    var colordata = null
+    var locationname = null;
+    var ranges = null;
+    var rangestart = null;
+    var rangesend = null;
+    var gtypedata = null;
+    var colordata = null;
     var graphNum = null;
     var actionItem = null;
 
@@ -139,7 +140,7 @@ function sendData(n, savedNum) {
             //do whatever.
             alert('Its done!');
             //alert(response.message);
-            //console.log(response);
+            console.log(response);
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
             alert('Status: ' + textStatus);
