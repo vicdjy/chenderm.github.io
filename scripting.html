@@ -17,14 +17,17 @@
     <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
 
     <!-- CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/css/ion.rangeSlider.min.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/css/ion.rangeSlider.min.css" />
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="style/common.css">
     <link rel="stylesheet" type="text/css" href="style/scripting.css">
 </head>
 
 <!-- HTML -->
+
 <body>
     <div class="container">
         <div class="col1">
@@ -34,11 +37,13 @@
                 <div>
                     <h2 style="display: inline-block;">Data</h2>
 
-                    <button id="modal-help" style="float: right; margin-left: 5px; margin-top: 30px;" onclick="displayHelp()">HELP</button>
+                    <button id="modal-help" style="float: right; margin-left: 5px; margin-top: 30px;"
+                        onclick="displayHelp()">HELP</button>
                     <div class="modal" id="help">
                         <div class="modal-content">
                             <span class="close-btn" onclick="closeHelp()">&times;</span>
-                            <input type="text" id="help_input" onkeyup="searchHelp()" placeholder="Search for keywords...">
+                            <input type="text" id="help_input" onkeyup="searchHelp()"
+                                placeholder="Search for keywords...">
                             <ul id="ul">
                                 <li><a href="#">Script</a></li>
                                 <li><a href="#">Test1</a></li>
@@ -48,17 +53,21 @@
                         </div>
                     </div>
 
-                    <button id="clear" onclick="clearAllValues()" style="float: right; margin-left: 5px; margin-top: 30px;">CLEAR</button>
+                    <button id="clear" onclick="clearAllValues()"
+                        style="float: right; margin-left: 5px; margin-top: 30px;">CLEAR</button>
 
-                    <button id="default" onclick="switchToDefault()" style="float: right; margin-left: 5px; margin-top: 30px;">DEFAULT</button>
+                    <button id="default" onclick="switchToDefault()"
+                        style="float: right; margin-left: 5px; margin-top: 30px;">DEFAULT</button>
 
-                    <button id="modal-btn" onclick="displayModal()" style="float: right; margin-left: 5px; margin-top: 30px;">UPLOAD SCRIPT</button>
+                    <button id="modal-btn" onclick="displayModal()"
+                        style="float: right; margin-left: 5px; margin-top: 30px;">UPLOAD SCRIPT</button>
                     <div class="modal" id="modal">
                         <div class="modal-content">
                             <span class="close-btn" onclick="closeModal()">&times;</span>
                             <form>
                                 <label for="script"><b>Script File</b></label>
-                                <input type="file" id="script_input" onchange="handleFiles(this.files)" accept=".json"> <br>
+                                <input type="file" id="script_input" onchange="handleFiles(this.files)" accept=".json">
+                                <br>
                             </form>
                         </div>
                     </div>
@@ -75,7 +84,8 @@
                         <optgroup label="Life, Death, Populations">
                             <option value="Populations" selected>Populations</option>
                             <option value="Population Female Percentage" selected>Population Female %</option>
-                            <option value="Population Female Percentage at Birth" selected>Population Female % at Birth</option>
+                            <option value="Population Female Percentage at Birth" selected>Population Female % at Birth
+                            </option>
                             <option value="Life Expectancy - Continents">Life Expectancy - Continents</option>
                             <option value="Median Age">Median Age</option>
                             <option value="Births">Births</option>
@@ -88,7 +98,8 @@
                         </optgroup>
                         <optgroup label="Military">
                             <option value="Military Personnel">Military Personnel</option>
-                            <option value="Military Personnel Percent of Population">Military Personnel % Population</option>
+                            <option value="Military Personnel Percent of Population">Military Personnel % Population
+                            </option>
                             <option value="Military Spending">Military Spending</option>
                             <option value="Military Spending Percent of GDP">Military Spending % GDP</option>
                         </optgroup>
@@ -152,9 +163,9 @@
 
                     <button class="submit" id="submit1" onclick="submitGraphData(1)">SUBMIT</button>
                 </div>
-                
+
                 <div style="height: 180px; width: 47%; float: right; margin-right: 5%; margin-top: 15px;">
-                    <textarea class="form-control" id="box1" onchange="submitText(1)" 
+                    <textarea class="form-control" id="box1" onchange="submitText(1)"
                         style="height: 100%; width: 100%; border: none" spellcheck="false"></textarea>
                 </div>
             </div>
@@ -170,7 +181,8 @@
                         <optgroup label="Life, Death, Populations">
                             <option value="Populations" selected>Populations</option>
                             <option value="Population Female Percentage" selected>Population Female %</option>
-                            <option value="Population Female Percentage at Birth" selected>Population Female % at Birth</option>
+                            <option value="Population Female Percentage at Birth" selected>Population Female % at Birth
+                            </option>
                             <option value="Life Expectancy - Continents">Life Expectancy - Continents</option>
                             <option value="Median Age">Median Age</option>
                             <option value="Births">Births</option>
@@ -183,7 +195,8 @@
                         </optgroup>
                         <optgroup label="Military">
                             <option value="Military Personnel">Military Personnel</option>
-                            <option value="Military Personnel Percent of Population">Military Personnel % Population</option>
+                            <option value="Military Personnel Percent of Population">Military Personnel % Population
+                            </option>
                             <option value="Military Spending">Military Spending</option>
                             <option value="Military Spending Percent of GDP">Military Spending % GDP</option>
                         </optgroup>
@@ -245,15 +258,16 @@
                     <p></p>
                     <button class="submit" id="submit2" onclick="submitGraphData(2)">SUBMIT</button>
                 </div>
-                
+
                 <div style="height: 180px; width: 47%; float: right; margin-right: 5%; margin-top: 15px;">
-                    <textarea class="form-control" id="box2" onchange="submitText(2)" 
-                            style="height: 100%; width: 100%; border: none" spellcheck="false"></textarea>
+                    <textarea class="form-control" id="box2" onchange="submitText(2)"
+                        style="height: 100%; width: 100%; border: none" spellcheck="false"></textarea>
                 </div>
             </div>
             <div id="themeToggle" style="margin-top: 5px;">
                 <c style="font-size: 12px;">Light</c>
-                <input type="checkbox" unchecked data-toggle="toggle" data-onstyle="primary" data-on=" " data-offstyle="info" data-off=" " data-size="sm" onchange="changeColorTheme(this)">
+                <input type="checkbox" unchecked data-toggle="toggle" data-onstyle="primary" data-on=" "
+                    data-offstyle="info" data-off=" " data-size="sm" onchange="changeColorTheme(this)">
                 <c style="font-size: 12px;">Dark</c>
             </div>
         </div>
@@ -267,10 +281,7 @@
                 <div class="graphRegion">
                     <canvas id="canvas1"></canvas>
                 </div>
-                <a id="download1"
-                    download="graph1.jpg"
-                    href=""
-                    onclick="downloadGraph(1)">
+                <a id="download1" download="graph1.jpg" href="" onclick="downloadGraph(1)">
                     <img class="downloadIcon" src="img/downloadIcon.png" alt="Download Graph">
                 </a>
             </div>
@@ -279,10 +290,7 @@
                 <div class="graphRegion">
                     <canvas id="canvas2"></canvas>
                 </div>
-                <a id="download2"
-                    download="graph2.jpg"
-                    href=""
-                    onclick="downloadGraph(2)">
+                <a id="download2" download="graph2.jpg" href="" onclick="downloadGraph(2)">
                     <img class="downloadIcon" src="img/downloadIcon.png" alt="Download Graph">
                 </a>
             </div>
