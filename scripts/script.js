@@ -40,11 +40,12 @@ var graph1 = undefined;
 var graph2 = undefined;
 
 //When the page first loads.
-$(document).ready( function() {
+$(document).ready(function () {
     console.log("Ready!");
     Chart.defaults.global.defaultFontColor = "white";
 
     switchToDefault();
+
 });
 
 //Graphs data for the first graph.
@@ -57,51 +58,51 @@ function graphData(database, xaxis, yaxis, n) {
     }
 
     d3.csv("/csv/" + database + ".csv")
-    .then(function(data) {
-        var labelsArr = [];
-        var dataArr = [];
-        for (var i = 0; i < data.length; i++) {
-            labelsArr.push(data[i][xaxis]);
-            dataArr.push(data[i][yaxis]);
-        }
+        .then(function (data) {
+            var labelsArr = [];
+            var dataArr = [];
+            for (var i = 0; i < data.length; i++) {
+                labelsArr.push(data[i][xaxis]);
+                dataArr.push(data[i][yaxis]);
+            }
 
-        //add driving question
-        var dq = document.getElementById("driving_question");
-        d3.csv("/csv/driving-questions.csv").then(function(q_data){
-            question = q_data[0][database];
-            dq.innerHTML=question;
+            //add driving question
+            var dq = document.getElementById("driving_question");
+            d3.csv("/csv/driving-questions.csv").then(function (q_data) {
+                question = q_data[0][database];
+                dq.innerHTML = question;
+            })
+
+            var ctx = document.getElementById("canvas" + n);
+            ctx.height = 175;
+            ctx = ctx.getContext("2d");
+            if (n == 1) {
+                graph1 = new Chart(ctx, {
+                    type: "line",
+                    data: {
+                        labels: labelsArr,
+                        datasets: [{
+                            label: yaxis,
+                            data: dataArr,
+                            backgroundColor: "rgba(188,230,255,1)",
+                        }]
+                    }
+                });
+            }
+            else if (n == 2) {
+                graph2 = new Chart(ctx, {
+                    type: "line",
+                    data: {
+                        labels: labelsArr,
+                        datasets: [{
+                            label: yaxis,
+                            data: dataArr,
+                            backgroundColor: "rgba(248,214,5,1)"
+                        }]
+                    }
+                });
+            }
         })
-        
-        var ctx = document.getElementById("canvas" + n);
-        ctx.height = 175;
-        ctx = ctx.getContext("2d");
-        if (n == 1) {
-            graph1 = new Chart(ctx, {
-                type: "line",
-                data: {
-                    labels: labelsArr,
-                    datasets: [{
-                        label: yaxis,
-                        data: dataArr,
-                        backgroundColor: "rgba(188,230,255,1)",
-                    }]
-                }
-            });
-        }
-        else if (n == 2) {
-            graph2 = new Chart(ctx, {
-                type: "line",
-                data: {
-                    labels: labelsArr,
-                    datasets: [{
-                        label: yaxis,
-                        data: dataArr,
-                        backgroundColor: "rgba(248,214,5,1)"
-                    }]
-                }
-            });
-        }
-    })
 }
 
 //Runs when user clicks the submit button.
@@ -138,39 +139,39 @@ function switchToDefault() {
 
     //read the csv file to get all keys
     d3.csv("/csv/" + defaultDatabase1 + ".csv")
-    .then(function(data) {
-        var keys = Object.keys(data[0]);
-        keys.sort();
-        var elX = document.getElementById("xaxis1");
-        var option = document.createElement("option");
-        console.log(keys);
-        option.appendChild(document.createTextNode(keys[11]));
-        option.value = keys[11];
-        elX.appendChild(option);
-        elX.selectedIndex = 1;
-        //add each key to x-axis and y-axis menu
-        for (var i = 0; i < keys.length-1; i++) {
-            var elY = document.getElementById("yaxis1");
-            option = document.createElement("option");
-            option.appendChild(document.createTextNode(keys[i]));
-            option.value = keys[i];
-            elY.appendChild(option);
-            if (keys[i] == defaultYAxis1) {
-                elY.selectedIndex = i + 1;
+        .then(function (data) {
+            var keys = Object.keys(data[0]);
+            keys.sort();
+            var elX = document.getElementById("xaxis1");
+            var option = document.createElement("option");
+            console.log(keys);
+            option.appendChild(document.createTextNode(keys[11]));
+            option.value = keys[11];
+            elX.appendChild(option);
+            elX.selectedIndex = 1;
+            //add each key to x-axis and y-axis menu
+            for (var i = 0; i < keys.length - 1; i++) {
+                var elY = document.getElementById("yaxis1");
+                option = document.createElement("option");
+                option.appendChild(document.createTextNode(keys[i]));
+                option.value = keys[i];
+                elY.appendChild(option);
+                if (keys[i] == defaultYAxis1) {
+                    elY.selectedIndex = i + 1;
+                }
             }
-        }
 
-        //enable the submit button
-        document.getElementById("submit1").disabled = false;
+            //enable the submit button
+            document.getElementById("submit1").disabled = false;
 
-        //graph data
-        graphData(defaultDatabase1, defaultXAxis1, defaultYAxis1, 1);
-    })
-    .catch(function(error) {
-        if (error.message === "404 Not Found") {
-            alert("File not found: " + database);
-        }
-    })
+            //graph data
+            graphData(defaultDatabase1, defaultXAxis1, defaultYAxis1, 1);
+        })
+        .catch(function (error) {
+            if (error.message === "404 Not Found") {
+                alert("File not found: " + database);
+            }
+        })
 
     //set database 2 to default
     el = document.getElementById("database2");
@@ -186,39 +187,39 @@ function switchToDefault() {
 
     //read the csv file to get all keys
     d3.csv("/csv/" + defaultDatabase2 + ".csv")
-    .then(function(data) {
-        var keys = Object.keys(data[0]);
-        keys.sort();
-        var elX = document.getElementById("xaxis2");
-        var option = document.createElement("option");
-        console.log(keys);
-        option.appendChild(document.createTextNode(keys[11]));
-        option.value = keys[11];
-        elX.appendChild(option);
-        elX.selectedIndex = 1;
-        //add each key to x-axis and y-axis menu
-        for (var i = 0; i < keys.length-1; i++) {
-            var elY = document.getElementById("yaxis2");
-            option = document.createElement("option");
-            option.appendChild(document.createTextNode(keys[i]));
-            option.value = keys[i];
-            elY.appendChild(option);
-            if (keys[i] == defaultYAxis2) {
-                elY.selectedIndex = i + 1;
+        .then(function (data) {
+            var keys = Object.keys(data[0]);
+            keys.sort();
+            var elX = document.getElementById("xaxis2");
+            var option = document.createElement("option");
+            console.log(keys);
+            option.appendChild(document.createTextNode(keys[11]));
+            option.value = keys[11];
+            elX.appendChild(option);
+            elX.selectedIndex = 1;
+            //add each key to x-axis and y-axis menu
+            for (var i = 0; i < keys.length - 1; i++) {
+                var elY = document.getElementById("yaxis2");
+                option = document.createElement("option");
+                option.appendChild(document.createTextNode(keys[i]));
+                option.value = keys[i];
+                elY.appendChild(option);
+                if (keys[i] == defaultYAxis2) {
+                    elY.selectedIndex = i + 1;
+                }
             }
-        }
 
-        //enable the submit button
-        document.getElementById("submit2").disabled = false;
+            //enable the submit button
+            document.getElementById("submit2").disabled = false;
 
-        //graph data
-        graphData(defaultDatabase2, defaultXAxis2, defaultYAxis2, 2);
-    })
-    .catch(function(error) {
-        if (error.message === "404 Not Found") {
-            alert("File not found: " + database);
-        }
-    })
+            //graph data
+            graphData(defaultDatabase2, defaultXAxis2, defaultYAxis2, 2);
+        })
+        .catch(function (error) {
+            if (error.message === "404 Not Found") {
+                alert("File not found: " + database);
+            }
+        })
 }
 
 //Runs when the user clicks the clear button.
@@ -235,7 +236,7 @@ function clearValues(n) {
     clearMenu("xaxis" + n, true);
     clearMenu("yaxis" + n, true);
     document.getElementById("submit" + n).disabled = true;
-    
+
     if (n == 1) {
         graph1.destroy();
     }
@@ -271,29 +272,29 @@ function verifyDB(n) {
 
         //load keys into x-axis, y-axis menus
         d3.csv("/csv/" + dbOption + ".csv")
-        .then(function(data) {
-            var keys = Object.keys(data[0]);
-            keys.sort();
-		    var elX = document.getElementById("xaxis" + n);
-		    var option = document.createElement("option");
-		    console.log(keys);
-		    option.appendChild(document.createTextNode(keys[11]));
-		    option.value = keys[11];
-		    elX.appendChild(option);
-		    elX.selectedIndex = 1;
-            for (var i = 0; i < keys.length-1; i++) {
-                var elY = document.getElementById("yaxis" + n);
-                option = document.createElement("option");
-                option.appendChild(document.createTextNode(keys[i]));
-                option.value = keys[i];
-                elY.appendChild(option);
-            }
-        })
-        .catch(function(error) {
-            if (error.message === "404 Not Found") {
-                alert("File not found: " + database);
-            }
-        })
+            .then(function (data) {
+                var keys = Object.keys(data[0]);
+                keys.sort();
+                var elX = document.getElementById("xaxis" + n);
+                var option = document.createElement("option");
+                console.log(keys);
+                option.appendChild(document.createTextNode(keys[11]));
+                option.value = keys[11];
+                elX.appendChild(option);
+                elX.selectedIndex = 1;
+                for (var i = 0; i < keys.length - 1; i++) {
+                    var elY = document.getElementById("yaxis" + n);
+                    option = document.createElement("option");
+                    option.appendChild(document.createTextNode(keys[i]));
+                    option.value = keys[i];
+                    elY.appendChild(option);
+                }
+            })
+            .catch(function (error) {
+                if (error.message === "404 Not Found") {
+                    alert("File not found: " + database);
+                }
+            })
     }
 }
 

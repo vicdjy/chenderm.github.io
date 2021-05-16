@@ -135,6 +135,7 @@ $(document).ready(function () {
     });
 
     switchToDefault();
+    sendData(-1, 200);
 });
 
 function displayModal() {
@@ -332,7 +333,7 @@ function graphData(database, xaxis, yaxis, n, lowDate, highDate, minDate, maxDat
                                     speed: 3000,
                                 }
                             },
-                            colorschemes: {scheme: colorSchemeValues[color]}
+                            colorschemes: { scheme: colorSchemeValues[color] }
                         }
                     }
                 });
@@ -384,7 +385,7 @@ function graphData(database, xaxis, yaxis, n, lowDate, highDate, minDate, maxDat
                                     speed: 3000,
                                 }
                             },
-                            colorschemes: {scheme: colorSchemeValues[color]}
+                            colorschemes: { scheme: colorSchemeValues[color] }
                         }
                     }
                 });
@@ -414,6 +415,7 @@ function updateScript(Id, DB, Yaxis, lowDate, highDate, gtype, color) {
     textValue = JSON.stringify(newTextValue, null, 2);
     // console.log(textValue)
     document.getElementById("box" + Id).value = textValue;
+    //console.log(" updateScript");
 }
 
 //Runs when user clicks the submit button.
@@ -440,6 +442,8 @@ function submitGraphData(n) {
 
     graphData(dbOption, xOption, yOption, n, lowDate, highDate, minDate, maxDate, gtype, color);
     updateScript(n, dbOption, yOption, lowDate, highDate, gtype, color);
+
+    sendData(n, 'submit')
 }
 
 /* setOption does the following two things:
@@ -448,6 +452,8 @@ function submitGraphData(n) {
    2. plot graphs based on input. 
 */
 function setOptions(databaseName, yaxis, xaxis, gtype, lowDate, highDate, n, color) {
+
+
     var el = document.getElementById("database" + n);
     for (var i = 0; i < el.options.length; i++) {
         if (el.options[i].text === databaseName) {
@@ -503,7 +509,7 @@ function setOptions(databaseName, yaxis, xaxis, gtype, lowDate, highDate, n, col
             document.getElementById("submit" + n).disabled = false;
 
             //graph data
-            graphData(databaseName, xaxis, yaxis, n, lowDate, highDate, years[0], years[years.length - 1], gtype, color);        
+            graphData(databaseName, xaxis, yaxis, n, lowDate, highDate, years[0], years[years.length - 1], gtype, color);
         })
         .catch(function (error) {
             if (error.message === "404 Not Found") {
@@ -523,6 +529,7 @@ function setOptions(databaseName, yaxis, xaxis, gtype, lowDate, highDate, n, col
             document.getElementById("box" + i).value = textValue;
         }
     }
+    sendData(n, 'setOptions');
 }
 
 //Runs when the user clicks the default button.
@@ -597,7 +604,7 @@ function verifyDB(n) {
 
         //clear and disable date range slider
         clearSlider(n);
-        
+
         //"clear" and disable graph type menu
         var el = document.getElementById("gtype" + n);
         el.selectedIndex = 0;
@@ -619,46 +626,46 @@ function verifyDB(n) {
         var previousGTypeMenu = document.getElementById("gtype" + n);
         var previousGTypeValue = previousGTypeMenu.options[previousGTypeMenu.selectedIndex].value;
         var previousColor = document.getElementById("colorButton" + n).value;
-        
+
         //clear and enable y-axis menu
         clearMenu("yaxis" + n, false);
 
         //load keys into y-axis menu
         d3.csv("/csv/" + dbOption + ".csv")
-        .then(function(data) {
-            var keys = Object.keys(data[0]);
-            keys.sort();
+            .then(function (data) {
+                var keys = Object.keys(data[0]);
+                keys.sort();
 
-            //add each key to y-axis menu
-            for (var i = 0; i < keys.length; i++) {
-                if (keys[i] == "Year")
-                    continue;
-    
-                var elY = document.getElementById("yaxis" + n);
-                var option = document.createElement("option");
-                option.appendChild(document.createTextNode(keys[i]));
-                option.value = keys[i];
-                elY.appendChild(option);
-                if (keys[i] == previousYAxisValue)
-                    elY.selectedIndex = i + 1;
-            }
+                //add each key to y-axis menu
+                for (var i = 0; i < keys.length; i++) {
+                    if (keys[i] == "Year")
+                        continue;
 
-            //update date range slider values
-            var years = [];
-            for (var i = 0; i < data.length; i++) {
-                years.push(data[i]["Year"]);
-            }
-            if (years[0] > previousLowDate || years[years.length - 1] < previousHighDate)
-                updateSlider(n, years[0], years[years.length - 1]);
-            else
-                updateSliderOnlyRange(n, years[0], years[years.length - 1], previousLowDate, previousHighDate);
-        })
-        .catch(function(error) {
-            if (error.message === "404 Not Found") {
-                alert("Database not found: " + database);
-            }
-        })
-        
+                    var elY = document.getElementById("yaxis" + n);
+                    var option = document.createElement("option");
+                    option.appendChild(document.createTextNode(keys[i]));
+                    option.value = keys[i];
+                    elY.appendChild(option);
+                    if (keys[i] == previousYAxisValue)
+                        elY.selectedIndex = i + 1;
+                }
+
+                //update date range slider values
+                var years = [];
+                for (var i = 0; i < data.length; i++) {
+                    years.push(data[i]["Year"]);
+                }
+                if (years[0] > previousLowDate || years[years.length - 1] < previousHighDate)
+                    updateSlider(n, years[0], years[years.length - 1]);
+                else
+                    updateSliderOnlyRange(n, years[0], years[years.length - 1], previousLowDate, previousHighDate);
+            })
+            .catch(function (error) {
+                if (error.message === "404 Not Found") {
+                    alert("Database not found: " + database);
+                }
+            })
+
         //enable graph type menu
         var el = document.getElementById("gtype" + n);
         el.disabled = false;
@@ -666,7 +673,7 @@ function verifyDB(n) {
             el.selectedIndex = 1;
         if (previousGTypeValue == "bar")
             el.selectedIndex = 2;
-        
+
         //enable color button
         changeColorButton(n, previousColor);
         document.getElementById("colorButton" + n).disabled = false;
@@ -770,6 +777,7 @@ function downloadGraph(n) {
     var url_base64jp = document.getElementById("canvas" + n).toDataURL("image/jpg");
     var a = document.getElementById("download" + n);
     a.href = url_base64jp;
+    sendData(n, 'download');
 }
 
 //Changes site color theme
