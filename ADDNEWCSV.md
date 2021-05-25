@@ -1,11 +1,11 @@
-#  HOW TO ADD A NEW DATABASE TO DV4L
+#  HOW TO ADD A NEW DATABASE INTO DV4L
 
 
 ### STEP 1
-*  Add new database into common.js database dictionary. source
+*  Add new database into common.js database dictionary. [source](https://github.com/vicdjy/chenderm.github.io/blob/2959fdf79c482c23f1d7fc6de8c24739ba221657/scripts/common.js#L133)
 
 ### STEP 2
-* Add new database into the dropdown menu div in index.html. source
+* Add new database into the dropdown menu div in index.html. [source](https://github.com/vicdjy/chenderm.github.io/blob/2959fdf79c482c23f1d7fc6de8c24739ba221657/index.html#L49)
 * Make sure that the name used in step 1 is the same and that the category of the new db matches in both common.js and index.html
 
 ### STEP 3
@@ -14,8 +14,9 @@
 
 ### STEP 4
 * Ensure that the pathname is correct in common.js so that the right csv folder is searched
-* source, look in '/dv4l/csv/' so that it searches the right csv folder
+* [source](https://github.com/vicdjy/chenderm.github.io/blob/2959fdf79c482c23f1d7fc6de8c24739ba221657/scripts/common.js#L467), look in '/dv4l/csv/' so that it searches the right csv folder
 * when running locally '/csv/' is the correct path name
 
 ### Trail Run 
-* To practice entering a new database into DV4L there is test.csv in both cpanel and the github repo 
+* To practice entering a new database into DV4L there is test.csv in both cpanel and the github repo. Use this valid format csv to create a new database
+
