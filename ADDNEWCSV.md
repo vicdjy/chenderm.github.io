@@ -16,3 +16,6 @@
 * Ensure that the pathname is correct in common.js so that the right csv folder is searched
 * source, look in '/dv4l/csv/' so that it searches the right csv folder
 * when running locally '/csv/' is the correct path name
+
+### Trail Run 
+* To practice entering a new database into DV4L there is test.csv in both cpanel and the github repo 
