@@ -1,15 +1,15 @@
 .col1 {
-	width: 30%;
+	width: 33.3%;
 }
 
 .col2 {
-	width: 32%;
+	width: 33.3%;
 }
 
 .col3 {
 	float: left;
 	height: 100%;
-	width: 30%;
+	width: 33.4%;
 	padding-right: 10px;
 	padding-bottom: 10px;
 	padding-left: 20px;

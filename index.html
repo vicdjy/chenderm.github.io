@@ -132,9 +132,13 @@
                     <option value="Question 6">
                 </datalist> -->
 
+                <div class="input">
                 <form onSubmit="return false;">
-                    <label for="dqs">Choose a Driving Question:</label><br>
-                    <select style="width:350px" id="textinput" onchange="addDrivingQuestion()">
+                    
+                    <label style="font-size: 30px"  for="dqs"> Select or Enter a Driving Question:</label><br>
+                    
+                    <label for="dqs">Select a Driving Question:</label><br>
+                    <select style="width:200px" id="textinput" onchange="addDrivingQuestion()">
                         <option value="" disabled selected>Select Driving Question</option>
                         <option>How do rates of population growth among countries in the same region/continent compare?
                             What explains observed differences?</option>
@@ -147,29 +151,55 @@
                             similarities/differences for national/international policymaking?</option>
 
                     </select>
+                    
                     <br>OR<br>
-                    <input style="width:350px" placeholder="Enter Driving Question here" id="textinput2"
-                        name="textinput2" value="" onkeypress="addDrivingQuestion2()"></input>
+                    
+                    <label for="customDQ">Enter a Custom Driving Question:</label><br>
+                    <input style="width:200px" placeholder="Enter Driving Question here" id="textinput2"
+                        name="textinput2" value="" onchange="addDrivingQuestion2()"></input>
+                    <!-- make different from onchange ^^                    -->
+                    
+                    <br><br>
+                    
+                    <label for="suggestedDB">Suggested Databases:</label><br>
+                    <select style="width:200px" id="suggestedDBs" onchange="">
+                        <option value="" disabled selected>Choose a Database</option>
+                    </select>
+                    
+                    <br><br>
+                    
+                    <button  id="default" type="button" class=""  onclick="useSuggestedDatabase()"
+                        style="width:200px">Use Suggested Database</button>
+                    
+                    
+                    
                 </form>
+                
                 <div>
                     <h3>Driving Question:</h3>
                     <p id="textEntered"></p>
                 </div>
             </div>
-            <br>
+           
+           </div>
+          
+          
+          <br>
+            
             <div class="row">
-                <h3 style="margin-top: 10px;">Graph 1:</h3>
+                <h3 style="margin-top: 10px;font-size:30px;font-weight: bold;">Graph 1:</h3>
 
 
                 <form>
                     Database (y-axis):
-                    <select name="db" class="select" id="database1" onchange="verifyDB(1)">
+                    <select style="width:200px" name="db" class="select" id="database1" onchange="verifyDB(1)" >
                     </select>
                 </form>
 
                 <!-- <button id ="modal-btn" onclick="displayModal()" style="font-size:11px; line-height:180%;float: right; margin-left: 0px; margin-top: 0px;">CUSTOM</button> -->
 
                 <p></p>
+                
 
                 Location:
                 <select name="loc" class="select" id="yaxis1" onchange="verifyOptions(1)">
@@ -218,11 +248,12 @@
                 <button class="submit" id="submit1" onclick="submitGraphData(1)">SUBMIT</button>
             </div>
             <p></p>
+            
             <div class="row">
-                <h3 style="margin-top: 10px;">Graph 2:</h3>
+                <h3 style="margin-top: 10px;font-weight: bold;font-size:30px">Graph 2:</h3>
 
                 Database (y-axis):
-                <select class="select" id="database2" onchange="verifyDB(2)">
+                <select style="width:200px" class="select" id="database2" onchange="verifyDB(2)" >
                 </select>
                 <!-- <button id ="modal-btn" onclick="displayModal()" style="font-size:11px; line-height:180%;float: right; margin-left: 0px; margin-top: 0px;">CUSTOM</button> -->
 
@@ -276,7 +307,7 @@
             </div>
             <div id="themeToggle" style="margin-top: 5px;">
                 <c style="font-size: 12px;">Light</c>
-                OR<input type="checkbox" unchecked data-toggle="toggle" data-onstyle="primary" data-on=" "
+                <input type="checkbox" unchecked data-toggle="toggle" data-onstyle="primary" data-on=" "
                     data-offstyle="info" data-off=" " data-size="sm" onchange="changeColorTheme(this)">
                 <c style="font-size: 12px;">Dark</c>
             </div>
@@ -308,7 +339,7 @@
 
         <div class="col3">
             <div id="themeToggle" style="margin-top: 5px;">
-                <h2>Saved</h2>
+                <h2>Saved Graphs</h2>
                 <p align="right">
                     <c style="font-size: 20px;text-align:right">Add Notes</c>
                     <input type="checkbox" unchecked data-toggle="toggle" data-onstyle="primary" data-on=" "
@@ -472,9 +503,7 @@
 
         </div>
     </div>
-    <div class="button" onclick="getData()">
-        button
-    </div>
+    
 
 </body>
 

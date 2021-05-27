@@ -2,6 +2,15 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:style/basic.css">
+   </FileRef>
+   <FileRef
+      location = "group:style/common.css">
+   </FileRef>
+   <FileRef
+      location = "group:style/scripting.css">
+   </FileRef>
+   <FileRef
       location = "group:data.php">
    </FileRef>
    <FileRef

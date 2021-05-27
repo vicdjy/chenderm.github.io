@@ -796,10 +796,485 @@ function addDrivingQuestion() {
     var input = document.getElementById('textinput')
     var div = document.getElementById('textEntered');
     div.innerHTML = input.value;
+    suggestDatabases(input.value);
 }
 
 function addDrivingQuestion2() {
     var input = document.getElementById('textinput2')
     var div = document.getElementById('textEntered');
     div.innerHTML = input.value;
+    suggestDatabases(input.value);
 }
+
+//finds the most relevant databases to return
+function suggestDatabases(query){
+    
+    var suggestedMenu = document.getElementById("suggestedDBs");
+    
+    suggestedMenu.innerHTML = '';
+
+    //cleaned Query will become a list of words in the query
+    var cleanedQuery = parseAndClean(query);
+    
+    //database_dict is defined in common.js, it contains the default databases
+    
+    //keyword_dict is defined at the end of this file, it contains the keyword mappings for the databases
+    
+    //holds the scores of different databases
+    var databaseScores = {
+        
+        
+          'Populations':0,
+          'Population Female Percentage':0,
+          'Population Female Percentage at Birth':0,
+          'Life Expectancy - Continents':0,
+          'Median Age':0,
+          'Births':0,
+          'Births Per Woman':0,
+          'Births Per 1000 People':0,
+          'Child Deaths':0,
+          'Child Mortality Rates':0,
+          'Survival Rate to Age 65 - Male':0,
+          'Survival Rate to Age 65 - Female':0,
+        
+       
+          'Military Personnel':0,
+          'Military Personnel Percent of Population':0,
+          'Military Spending':0,
+          'Military Spending Percent of GDP':0,
+          'Military Spending in thousands of US dollars':0,
+       
+        'GDP':0,
+            'GDP Per Capita':0,
+            'Economic Freedom Scores':0,
+                    
+          
+        
+          'CO2 Emissions':0,
+          'CO2 Emissions Per Capita':0,
+          'CO2 Emissions Percentages':0,
+          'CO2 Emissions Cumulative':0,
+          'CO2 Emissions Cumulative Percentages':0,
+        
+    };
+    
+
+    
+    
+    //go through the cleaned query and assign each database a score based on keywords
+    for(var word in cleanedQuery){
+
+        for(var key in keyword_dict){
+
+            for(var i = 0; i < keyword_dict[key].length; i++){
+
+                if(cleanedQuery[word] == keyword_dict[key][i]){
+
+                    databaseScores[key]++;
+                    
+                }
+                
+            }
+
+        }
+
+    }
+    
+    
+  
+    var sorted = sortScores(databaseScores);
+    
+    
+    
+    //list of suggested databases
+    var suggestions = [];
+    
+    //populate with all non zero score databases
+    for(var i = 0; i < sorted.length; i++){
+        if(sorted[i][1] == 0){
+            break;
+        }
+        suggestions.push(sorted[i][0]);
+    }
+    
+    
+    //populate the suggested drop down menu
+   
+    
+    for(var i = 0; i < suggestions.length; i++){
+        
+        var option = document.createElement("OPTION");
+        var database = document.createTextNode(suggestions[i]);
+        option.appendChild(database);
+        suggestedMenu.insertBefore(option, suggestedMenu.lastChild);
+        
+    }
+    
+    //in the case nothing is found
+    if(suggestedMenu.innerHTML == ''){
+        var option = document.createElement("OPTION");
+        var message = document.createTextNode("No Suggested Databases");
+        option.appendChild(message);
+        suggestedMenu.insertBefore(option, suggestedMenu.lastChild);
+    }
+
+    
+}
+
+
+
+function sortScores(obj)
+{
+  // convert object into array
+    var sortable=[];
+    for(var key in obj)
+        if(obj.hasOwnProperty(key))
+            sortable.push([key, obj[key]]);
+    
+    // sort items by value
+    sortable.sort(function(a, b)
+    {
+      return b[1]-a[1];
+    });
+    return sortable; // array in format [ [ key1, val1 ], [ key2, val2 ], ... ]
+}
+
+//seperates query into list of words, removes punctuation, uppercase, and stop words
+function parseAndClean(query){
+    
+    query = query.toLowerCase();
+
+    //splits string into list of words
+    var cleanedQuery = query.trim().split(" ");
+    
+    //removes punctuation from words
+    
+    for(var i = 0; i < cleanedQuery.length; i++){
+        var orig = cleanedQuery[i];
+        var temp = orig.replace(/[.,\/#!?$%\^&\*;:{}=\-_~()]/g,"");
+        cleanedQuery[i] = temp.replace(/\s{2,}/g," ");
+    }
+                                  
+      
+    return cleanedQuery;
+    
+    
+}
+
+
+function useSuggestedDatabase(){
+    
+    var database = document.getElementById('suggestedDBs');
+    
+    if(database.value == "No Suggested Databases"){
+        return;
+    }
+    
+    var graph1Menu = document.getElementById('database1');
+    
+    for(var i = 0; i < graph1Menu.options.length; i++){
+        
+        if(graph1Menu.options[i].value == database.value){
+            graph1Menu.options[i].selected = true;
+        }
+        
+    }
+    
+    
+    submitGraphData(1);
+    
+    
+}
+
+
+
+//defining the keywords for each database
+var keyword_dict = {
+    'Populations': [
+                    'population',
+                    'populations',
+                    'populated',
+                    'populus' ,
+                    'industrial',
+                    ],
+    'Population Female Percentage': [
+                    'population',
+                    'populations',
+                    'populated',
+                    'female',
+                    'females',
+                    'women',
+                    'girl',
+                    'girls',
+                    ],
+    'Population Female Percentage at Birth': [
+                    'population',
+                    'populations',
+                    'populated',
+                    'female',
+                    'females',
+                    'women',
+                    'girl',
+                    'girls',
+                    'birth',
+                    'child',
+                    'infant',
+                    'pastoral',
+                    ],
+
+    'Life Expectancy - Continents': [
+                     'life',
+                     'expectancy',
+                     'continents',
+                     'mortality',
+                     'death',
+                     'dying',
+                     'living',
+                     'test',
+                      'pastoral',
+                                     
+                     ],
+    'Median Age': [
+                     'population',
+                     'median',
+                     'age',
+                     'population',
+                   
+                     ],
+    'Births': [
+                     'birth',
+                     'expectancy',
+                     'population',
+                     'death',
+                     'dying',
+                
+                                     
+                     ],
+    
+    'Births Per Woman': [
+                     'birth',
+                     'births',
+                     'per',
+                     'expectancy',
+                     'continents',
+                     'population',
+                     'death',
+                     'dying',
+                    'woman',
+                    'women',
+                                                       
+                     ],
+    
+    'Births Per 1000 People': [
+                     'birth',
+                     'expectancy',
+                     'continents',
+                     'population',
+                     '1000',
+                     'people',
+                                     
+                     ],
+    
+    'Child Deaths': [
+                     
+                     'child',
+                     'deaths',
+                     'population',
+                     
+                     ],
+    
+    'Child Mortality Rates': [
+                     'child',
+                     'mortality',
+                     'rates',
+                     'birth',
+                                     
+                     ],
+    'Survival Rate to Age 65 - Male': [
+                     'survival',
+                     'rate',
+                     'age',
+                     '65',
+                     'male',
+                     'sixty',
+                   'five',
+                   'sixty-five',
+                     ],
+    
+    'Survival Rate to Age 65 - Female': [
+                     'survival',
+                     'rate',
+                     'age',
+                     '65',
+                   'to',
+                     'female',
+                     'sixty',
+                   'five',
+                   'sixty-five',
+                     ],
+    
+    'Military Personnel': [
+                     'military',
+                     'personnel',
+                     'soldiers',
+                    
+                     ],
+    
+    'Military Personnel Percent of Population': [
+                                                 
+                     'military',
+                     'personnel',
+                     'percent',
+                     'of',
+                     'population'
+                    
+                   
+                     ],
+    
+    'Military Spending': [
+                                                 
+                     'military',
+                     'spending',
+                     'army',
+                     'cost',
+                     'expense',
+                     'budget',
+                    'economy'
+                    
+                   
+                     ],
+    
+    'Military Spending Percent of GDP': [
+                                                 
+                     'military',
+                     'spending',
+                     'army',
+                     'cost',
+                     'expense',
+                     'budget',
+                    'GDP',
+                    
+                   
+                     ],
+    
+    'Military Spending in thousands of US dollars': [
+                                                 
+                     'military',
+                     'spending',
+                     'army',
+                     'cost',
+                     'expense',
+                     'budget',
+                     'in',
+                     'thousands',
+                     'of',
+                     'US',
+                     'dollars',
+                    
+                   
+                     ],
+    
+    'GDP': [
+                                                 
+                     'gdp',
+                     'gross',
+                     'domestic',
+                     'product',
+                     'spending',
+                     'budget',
+                     'dollars',
+                    'money',
+                    'economy',
+                    
+                   
+                     ],
+    
+    'GDP Per Capita': [
+                                                 
+                     'gdp',
+                     'gross',
+                     'domestic',
+                     'product',
+                     'spending',
+                     'budget',
+                     'dollars',
+                    'money',
+                    'economy',
+                    'per',
+                    'capita',
+                    
+                   
+                     ],
+    
+    'Economic Freedom Scores': [
+                                                 
+                     'economic',
+                     'freedom',
+                     'scores',
+                     'economy',
+                     'spend',
+                     'spending',
+                    
+                   
+                     ],
+    
+    'CO2 Emissions': [
+                                                 
+                     'CO2',
+                     'emissions',
+                     'carbon',
+                     'emission',
+                     'dioxide',
+                    
+                   
+                     ],
+    
+    'CO2 Emissions Per Capita': [
+                                                 
+                     'CO2',
+                     'emissions',
+                     'carbon',
+                     'emission',
+                     'dioxide',
+                      'per',
+                      'capita',
+                    
+                   
+                     ],
+    
+    'CO2 Emissions Percentages': [
+                                                 
+                     'CO2',
+                     'emissions',
+                     'carbon',
+                     'emission',
+                     'dioxide',
+                    'percentages',
+                   
+                     ],
+    
+    'CO2 Emissions Cumulative': [
+                                                 
+                     'CO2',
+                     'emissions',
+                     'carbon',
+                     'emission',
+                     'dioxide',
+                    'cumulative',
+                   
+                     ],
+    
+    'CO2 Emissions Cumulative Percentages': [
+                                                 
+                     'CO2',
+                     'emissions',
+                     'carbon',
+                     'emission',
+                     'dioxide',
+                    'cumulative',
+                     'percentages',
+                   
+                     ],
+    
+    
+};

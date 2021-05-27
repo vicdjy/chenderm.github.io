@@ -152,7 +152,11 @@ var database_dict = {
     'Military Spending Percent of GDP',
     'Military Spending in thousands of US dollars',
   ],
-  Economies: ['GDP', 'GDP Per Capita', 'Economic Freedom Scores'],
+  Economies: ['GDP',
+              'GDP Per Capita',
+              'Economic Freedom Scores'
+              ],
+    
   Environment: [
     'CO2 Emissions',
     'CO2 Emissions Per Capita',
@@ -1331,7 +1335,7 @@ function sendData(n, savedNum) {
     gtypedata = document.getElementById('gtype' + n).value;
     colordata = document.getElementById('colorButton' + n).value;
     drivingQuestion = document.getElementById('textinput2').value;
-    console.log(drivingQuestion);
+//    console.log(drivingQuestion);
     isDropDown = 0;
     if (drivingQuestion == "") {
       drivingQuestion = null;
