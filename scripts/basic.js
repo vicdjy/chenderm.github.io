@@ -890,23 +890,24 @@ function suggestDatabases(query){
     var suggestions = [];
     
     //populate with all non zero score databases
-    for(var i = 0; i < sorted.length; i++){
-        if(sorted[i][1] == 0){
-            break;
-        }
+    for(var i = sorted.length - 1; i >= 0 ; i--){
+        if(sorted[i][1] > 1){
         suggestions.push(sorted[i][0]);
+        }
     }
     
+    console.log(suggestions);
     
     //populate the suggested drop down menu
-   
-    
     for(var i = 0; i < suggestions.length; i++){
+        
+        console.log(suggestions[i]);
         
         var option = document.createElement("OPTION");
         var database = document.createTextNode(suggestions[i]);
         option.appendChild(database);
-        suggestedMenu.insertBefore(option, suggestedMenu.lastChild);
+        option.setAttribute("value", suggestions[i]);
+        suggestedMenu.insertBefore(option, suggestedMenu.firstChild);
         
     }
     
@@ -936,6 +937,10 @@ function sortScores(obj)
     {
       return b[1]-a[1];
     });
+    
+    
+    console.log(sortable);
+    
     return sortable; // array in format [ [ key1, val1 ], [ key2, val2 ], ... ]
 }
 
@@ -989,48 +994,51 @@ function useSuggestedDatabase(){
 
 
 //defining the keywords for each database
+//there may be some repeated words in the dictionary because some words carry extra value
 var keyword_dict = {
     'Populations': [
-                    'population',
-                    'populations',
-                    'populated',
+                    'population','population','population',
+                    'populations','populations','populations','populations',
+                    'populated','populated',
                     'populus' ,
                     'industrial',
                     ],
     'Population Female Percentage': [
-                    'population',
-                    'populations',
-                    'populated',
-                    'female',
+                    'population', 'population','population',
+                    'populations','populations',
+                    'populated','populated',
+                    'female','female',
                     'females',
                     'women',
                     'girl',
                     'girls',
+                    'percentage'
                     ],
     'Population Female Percentage at Birth': [
-                    'population',
-                    'populations',
-                    'populated',
-                    'female',
-                    'females',
-                    'women',
-                    'girl',
-                    'girls',
-                    'birth',
+                      'population', 'population',
+                      'populations',
+                      'populated',
+                      'female','female',
+                      'females',
+                      'women',
+                      'girl',
+                      'girls',
+                  'percentage',
+                    'birth','birth',
                     'child',
                     'infant',
                     'pastoral',
                     ],
 
     'Life Expectancy - Continents': [
-                     'life',
-                     'expectancy',
-                     'continents',
+                     'life','life','life',
+                     'expectancy','expectancy','expectancy',
+                     'continents','continents','continents',
                      'mortality',
                      'death',
                      'dying',
-                     'living',
-                     'test',
+                     'living','living',
+                     
                       'pastoral',
                                      
                      ],
@@ -1038,11 +1046,13 @@ var keyword_dict = {
                      'population',
                      'median',
                      'age',
-                     'population',
+                   'median',
+                   'age',
                    
                      ],
     'Births': [
-                     'birth',
+                     'birth','birth',
+                    'births', 'births',
                      'expectancy',
                      'population',
                      'death',
@@ -1053,25 +1063,27 @@ var keyword_dict = {
     
     'Births Per Woman': [
                      'birth',
-                     'births',
-                     'per',
+                     'births','births',
                      'expectancy',
                      'continents',
                      'population',
                      'death',
                      'dying',
-                    'woman',
+                    'woman','woman',
                     'women',
                                                        
                      ],
     
     'Births Per 1000 People': [
                      'birth',
+                   'births','births',
                      'expectancy',
                      'continents',
                      'population',
                      '1000',
                      'people',
+                               '1000',
+                               'people',
                                      
                      ],
     
@@ -1079,45 +1091,65 @@ var keyword_dict = {
                      
                      'child',
                      'deaths',
+                     'child',
+                     'deaths',
                      'population',
                      
                      ],
     
     'Child Mortality Rates': [
-                     'child',
-                     'mortality',
-                     'rates',
+                              
+                     'child', 'child',
+                     'mortality', 'mortality',
+                     'rates', 'rates',
                      'birth',
                                      
                      ],
     'Survival Rate to Age 65 - Male': [
+                                       
+                                       
                      'survival',
                      'rate',
                      'age',
                      '65',
                      'male',
+                                       'survival',
+                                       'rate',
+                                       'age',
+                                       '65',
+                                       'male',
                      'sixty',
                    'five',
                    'sixty-five',
+                                       
                      ],
     
+    
     'Survival Rate to Age 65 - Female': [
+                                         
                      'survival',
                      'rate',
                      'age',
                      '65',
-                   'to',
                      'female',
+                                         'survival',
+                                         'rate',
+                                         'age',
+                                         '65',
+                                         'female',
                      'sixty',
                    'five',
                    'sixty-five',
+                    
                      ],
     
     'Military Personnel': [
                      'military',
                      'personnel',
+                   'military',
+                   'personnel',
                      'soldiers',
-                    
+                           
                      ],
     
     'Military Personnel Percent of Population': [
@@ -1125,8 +1157,11 @@ var keyword_dict = {
                      'military',
                      'personnel',
                      'percent',
-                     'of',
-                     'population'
+                     'population',
+                                                 'military',
+                                                 'personnel',
+                                                 'percent',
+                                                 'population'
                     
                    
                      ],
@@ -1135,6 +1170,8 @@ var keyword_dict = {
                                                  
                      'military',
                      'spending',
+                          'military',
+                          'spending',
                      'army',
                      'cost',
                      'expense',
@@ -1152,7 +1189,9 @@ var keyword_dict = {
                      'cost',
                      'expense',
                      'budget',
-                    'GDP',
+                    'gdp',
+                 'percent',
+                     
                     
                    
                      ],
@@ -1176,32 +1215,31 @@ var keyword_dict = {
     
     'GDP': [
                                                  
-                     'gdp',
+                     'gdp','gdp','gdp','gdp',
                      'gross',
                      'domestic',
                      'product',
                      'spending',
-                     'budget',
+                     'budget','budget',
                      'dollars',
                     'money',
-                    'economy',
+                    'economy','economy',
                     
                    
                      ],
     
     'GDP Per Capita': [
                                                  
-                     'gdp',
-                     'gross',
-                     'domestic',
-                     'product',
-                     'spending',
-                     'budget',
-                     'dollars',
-                    'money',
-                    'economy',
-                    'per',
-                    'capita',
+                       'gdp','gdp','gdp','gdp',
+                       'gross',
+                       'domestic',
+                       'product',
+                       'spending',
+                       'budget','budget',
+                       'dollars',
+                      'money',
+                      'economy','economy',
+                    'capita'
                     
                    
                      ],
@@ -1211,7 +1249,7 @@ var keyword_dict = {
                      'economic',
                      'freedom',
                      'scores',
-                     'economy',
+                     'economy','economy',
                      'spend',
                      'spending',
                     
@@ -1220,8 +1258,8 @@ var keyword_dict = {
     
     'CO2 Emissions': [
                                                  
-                     'CO2',
-                     'emissions',
+                     'CO2','CO2',
+                     'emissions','emissions',
                      'carbon',
                      'emission',
                      'dioxide',
@@ -1231,8 +1269,8 @@ var keyword_dict = {
     
     'CO2 Emissions Per Capita': [
                                                  
-                     'CO2',
-                     'emissions',
+                                 'CO2','CO2',
+                                 'emissions','emissions',
                      'carbon',
                      'emission',
                      'dioxide',
@@ -1244,8 +1282,8 @@ var keyword_dict = {
     
     'CO2 Emissions Percentages': [
                                                  
-                     'CO2',
-                     'emissions',
+                                  'CO2','CO2',
+                                  'emissions','emissions',
                      'carbon',
                      'emission',
                      'dioxide',
@@ -1255,8 +1293,8 @@ var keyword_dict = {
     
     'CO2 Emissions Cumulative': [
                                                  
-                     'CO2',
-                     'emissions',
+                     'CO2','CO2',
+                     'emissions','emissions',
                      'carbon',
                      'emission',
                      'dioxide',
@@ -1266,8 +1304,8 @@ var keyword_dict = {
     
     'CO2 Emissions Cumulative Percentages': [
                                                  
-                     'CO2',
-                     'emissions',
+                     'CO2','CO2',
+                 'emissions','emissions',
                      'carbon',
                      'emission',
                      'dioxide',
