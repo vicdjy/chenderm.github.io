@@ -38,143 +38,101 @@
 
             <div style="width: 100%">
                 <h2 style="display: inline-block;">Data</h2>
-                <!-- <button id="clear" onclick="clearAllValues()" style="float: right; margin-left: 10px; margin-top: 30px;">CLEAR</button> -->
+<!--                 <button id="clear" onclick="clearAllValues()" style="float: right; margin-left: 10px; margin-top: 30px;">CLEAR</button>-->
                 <button id="default" onclick="switchToDefault()"
                     style="float: right; margin-left: 10px; margin-top: 30px;">DEFAULT</button>
-                <!-- <button id="modal-btn" onclick="displayModal()" style="float: right; margin-left: 10px; margin-top: 30px;">CUSTOM</button> -->
-                <div class="modal">
-                    <div class="modal-content">
+                
+                 <button id="modal-btn" onclick="displayModal()" style="float: right; margin-left: 10px; margin-top: 30px;">ENTER DRIVING QUESTION</button>
+              
+              
+              <div class="modal" id="modalbox">
+                    
+                    
+                    
+                    
+                    <div class="modal-content" id="content">
                         <span class="close-btn" onclick="closeModal()">&times;</span>
-                        <!-- <b>Database URL</b><input type="text" id="data_url"><button onclick="handleDataURL()">SUBMIT</button> -->
-                        <br>
-                        <form onsubmit="submitDrivingQuestions();return false">
-                            <!-- <label for="question"><b>Driving Question</b></label>
-                            <input type="file" id="driving_question_input" onchange="handleDrivingQuestionFiles(this.files)" accept=".csv"> -->
-                            <br>
-                            Select datasets this driving question applies to:
-                            <br>
-                            <fieldset>
-                                <legend>Life, Death, Populations</legend>
-                                <input type="checkbox" name="database_selection" value="Populations"> Populations <br>
-                                <input type="checkbox" name="database_selection" value="Population Female Percentage">
-                                Population Female % <br>
-                                <input type="checkbox" name="database_selection"
-                                    value="Population Female Percentage at Birth">
-                                Population Female % at Birth<br>
-                                <input type="checkbox" name="database_selection" value="Life Expectancy - Continents">
-                                Life Expectancy - Continents<br>
-                                <input type="checkbox" name="database_selection" value="Median Age">Median Age<br>
-                                <input type="checkbox" name="database_selection" value="Births">Births<br>
-                                <input type="checkbox" name="database_selection" value="Births Per Woman">Births Per
-                                Woman<br>
-                                <input type="checkbox" name="database_selection" value="Births Per 1000 People">
-                                Births Per 1000 People<br>
-                                <input type="checkbox" name="database_selection" value="Child Deaths">Child Deaths<br>
-                                <input type="checkbox" name="database_selection" value="Child Mortality Rates">Child
-                                Mortality Rates<br>
-                                <input type="checkbox" name="database_selection" value="Survival Rate to Age 65 - Male">
-                                Survival Rate to Age 65 - Male<br>
-                                <input type="checkbox" name="database_selection"
-                                    value="Survival Rate to Age 65 - Female">
-                                Survival Rate to Age 65 - Female<br>
-                            </fieldset>
-                            <fieldset>
-                                <legend>Military</legend>
-                                <input type="checkbox" name="database_selection" value="Military Personnel">Military
-                                Personnel<br>
-                                <input type="checkbox" name="database_selection"
-                                    value="Military Personnel Percent of Population">
-                                Military Personnel % Population<br>
-                                <input type="checkbox" name="database_selection" value="Military Spending">Military
-                                Spending<br>
-                                <input type="checkbox" name="database_selection"
-                                    value="Military Spending Percent of GDP">
-                                Military Spending % GDP<br>
-                                <input type="checkbox" name="database_selection"
-                                    value="Military Spending in thousands of US dollars">
-                                Military Spending in thousands of US dollars<br>
-                            </fieldset>
-                            <fieldset>
-                                <legend>Economies</legend>
-                                <input type="checkbox" name="database_selection" value="GDP">GDP<br>
-                                <input type="checkbox" name="database_selection" value="GDP Per Capita">GDP Per
-                                Capita<br>
-                                <input type="checkbox" name="database_selection" value="Economic Freedom Scores">
-                                Economic Freedom Scores<br>
-                            </fieldset>
-                            <fieldset>
-                                <legend>Environment</legend>
-                                <input type="checkbox" name="database_selection" value="CO2 Emissions">CO2 Emissions<br>
-                                <input type="checkbox" name="database_selection" value="CO2 Emissions Per Capita">
-                                CO2 Emissions Per Capita<br>
-                                <input type="checkbox" name="database_selection" value="CO2 Emissions Percentages">
-                                CO2 Emissions %<br>
-                                <input type="checkbox" name="database_selection" value="CO2 Emissions Cumulative">
-                                CO2 Emissions Cumulative<br>
-                                <input type="checkbox" name="database_selection"
-                                    value="CO2 Emissions Cumulative Percentages">
-                                CO2 Emissions Cumulative %<br>
-                            </fieldset>
-                            <input type="submit" value="Submit" style="color: black"><br>
-                        </form>
+                       
+                       <div id="text">
+                       <label style="font-size: 30px"  for="dqs"> Select or Enter a Driving Question:</label><br>
+                       
+                       <label for="dqs">Select a Driving Question:</label><br>
+                       <select style="width: 75%" id="textinput" onchange="addDrivingQuestion()">
+                           <option value="" disabled selected>Select Driving Question</option>
+                           <option>How do rates of population growth among countries in the same region/continent compare?
+                               What explains observed differences?</option>
+                           <option>What accounts for sharp increases or decreases in military spending? Do increases in
+                               military spending seem to be cause, consequence, or deterrent of violent conflict? </option>
+                           <option>Is there a consistent relationship between child mortality rates and births per women?
+                               What explains consistencies and inconsistencies in this relationship across countries?
+                           </option>
+                           <option>How do CO2 emissions per capita compare among countries? What are the implications of
+                               similarities/differences for national/international policymaking?</option>
+
+                       </select>
+                       
+                       <br>OR<br>
+                       
+                       <label for="customDQ">Enter a Custom Driving Question:</label><br>
+                       <input style="width: 75%" placeholder="Enter Driving Question here" id="textinput2"
+                           name="textinput2" value="" onkeyup="addDrivingQuestion2()"></input>
+                       <!-- make different from onchange ^^                    -->
+                       
+<!--                       <br><br>-->
+<!--                       -->
+<!--                       <label for="suggestedDB">Suggested Databases:</label><br>-->
+<!--                       <select style="width:75%" id="suggestedDBs" onchange="">-->
+<!--                           <option value="" disabled selected>Choose a Database</option>-->
+<!--                       </select>-->
+<!--                       -->
+<!--                       <br><br>-->
+<!--                       -->
+<!--                       <button  id="default" type="button" class=""  onclick="useSuggestedDatabase()"-->
+<!--                           style="width:75%">Use Suggested Database</button>-->
+                       
+                       <br><br>
+                       
+                       <label id="checkboxLabel"> All Databases: </label><br>
+                       
+                       
+                       <center>
+                           
+                       <div id="checkboxlist">
+                           
+                           <label>
+                           <input type="checkbox" /> This is checkbox <br />
+                           </label>
+                           
+                               <input type="checkbox" /> This is checkbox <br />
+                               <input type="checkbox" /> This is checkbox <br />
+                               <input type="checkbox" /> This is checkbox <br />
+                               <input type="checkbox" /> This is checkbox <br />
+                               <input type="checkbox" /> This is checkbox <br />
+                               <input type="checkbox" /> This is checkbox <br />
+                               <input type="checkbox" /> This is checkbox <br />
+                       </div>
+                       
+                       
+                       <br><br>
+                       
+                       <button  id="default" type="button" class=""  onclick="useSuggestedDatabase()"                                                style="width:200px"> Use These Databases</button>
+                       
+                       <br><br>
+                       </center>
+                   </form>
+                   
+                   
                     </div>
+                       
+                    </div>
+                    
+                    
+                    
                 </div>
-                <!-- Driving Question Code: DG -->
-                <!-- <label><h4>Choose or Enter a Driving Question</h4>
-                    <input style="width:450px;" list="dq" name="myDq" />
-                </label> -->
-                <!-- <datalist style="width:700px" id="dq">
-                    <option>How do rates of population growth among countries in the same <p> region/continent compare? What explains observed differences?</p></option>
-                    <option value="Question 2"
-                    <option value="Question 3">
-                    <option value="Question 4">
-                    <option value="Question 5">
-                    <option value="Question 6">
-                </datalist> -->
+
 
                 <div class="input">
-                <form onSubmit="return false;">
                     
-                    <label style="font-size: 30px"  for="dqs"> Select or Enter a Driving Question:</label><br>
-                    
-                    <label for="dqs">Select a Driving Question:</label><br>
-                    <select style="width:200px" id="textinput" onchange="addDrivingQuestion()">
-                        <option value="" disabled selected>Select Driving Question</option>
-                        <option>How do rates of population growth among countries in the same region/continent compare?
-                            What explains observed differences?</option>
-                        <option>What accounts for sharp increases or decreases in military spending? Do increases in
-                            military spending seem to be cause, consequence, or deterrent of violent conflict? </option>
-                        <option>Is there a consistent relationship between child mortality rates and births per women?
-                            What explains consistencies and inconsistencies in this relationship across countries?
-                        </option>
-                        <option>How do CO2 emissions per capita compare among countries? What are the implications of
-                            similarities/differences for national/international policymaking?</option>
-
-                    </select>
-                    
-                    <br>OR<br>
-                    
-                    <label for="customDQ">Enter a Custom Driving Question:</label><br>
-                    <input style="width:200px" placeholder="Enter Driving Question here" id="textinput2"
-                        name="textinput2" value="" onchange="addDrivingQuestion2()"></input>
-                    <!-- make different from onchange ^^                    -->
-                    
-                    <br><br>
-                    
-                    <label for="suggestedDB">Suggested Databases:</label><br>
-                    <select style="width:200px" id="suggestedDBs" onchange="">
-                        <option value="" disabled selected>Choose a Database</option>
-                    </select>
-                    
-                    <br><br>
-                    
-                    <button  id="default" type="button" class=""  onclick="useSuggestedDatabase()"
-                        style="width:200px">Use Suggested Database</button>
-                    
-                    
-                    
-                </form>
-                
                 <div>
                     <h3>Driving Question:</h3>
                     <p id="textEntered">Not Selected</p>
@@ -196,7 +154,7 @@
                     </select>
                 </form>
 
-                <!-- <button id ="modal-btn" onclick="displayModal()" style="font-size:11px; line-height:180%;float: right; margin-left: 0px; margin-top: 0px;">CUSTOM</button> -->
+              
 
                 <p></p>
                 
@@ -255,8 +213,7 @@
                 Database (y-axis):
                 <select style="width:200px" class="select" id="database2" onchange="verifyDB(2)" >
                 </select>
-                <!-- <button id ="modal-btn" onclick="displayModal()" style="font-size:11px; line-height:180%;float: right; margin-left: 0px; margin-top: 0px;">CUSTOM</button> -->
-
+                
                 <p></p>
 
                 Location:

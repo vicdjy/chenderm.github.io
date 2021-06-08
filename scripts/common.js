@@ -223,21 +223,26 @@ $(document).ready(function () {
 //Opens a new popup from the browser to allow users
 //to upload a files from local computer
 function displayModal() {
-  let modal = document.querySelector('.modal');
-  modal.style.display = 'block';
+  var modal = document.getElementById('modalbox');
+    
+//  modal.style.display = 'block';
+    modal.classList.add("show");
+    populateCheckboxList();
 }
 
 //When the user clicks on (x), close the modal
 function closeModal() {
   let modal = document.querySelector('.modal');
-  modal.style.display = 'none';
+//  modal.style.display = 'none';
+    modal.classList.remove("show");
 }
 
 //Close modal when user clicks anywhere outside of it.
 window.onclick = function (e) {
   let modal = document.querySelector('.modal');
   if (e.target == modal) {
-    modal.style.display = 'none';
+//    modal.style.display = 'none';
+      modal.classList.remove("show");
   }
 };
 

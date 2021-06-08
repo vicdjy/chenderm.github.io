@@ -800,18 +800,24 @@ function addDrivingQuestion() {
 }
 
 function addDrivingQuestion2() {
+    
     var input = document.getElementById('textinput2')
     var div = document.getElementById('textEntered');
     div.innerHTML = input.value;
+    console.log("test");
+    
+    if(div.innerHTML == ""){
+        div.innerHTML = "Not Selected";
+    }
+    
     suggestDatabases(input.value);
+    
+    
+    
 }
 
-//finds the most relevant databases to return
+//finds the most relevant databases to return, and populates the checkboxlist
 function suggestDatabases(query){
-    
-    var suggestedMenu = document.getElementById("suggestedDBs");
-    
-    suggestedMenu.innerHTML = '';
 
     //cleaned Query will become a list of words in the query
     var cleanedQuery = parseAndClean(query);
@@ -890,34 +896,15 @@ function suggestDatabases(query){
     var suggestions = [];
     
     //populate with all non zero score databases
-    for(var i = sorted.length - 1; i >= 0 ; i--){
+    for(var i = 0; i <sorted.length ; i++){
         if(sorted[i][1] > 1){
         suggestions.push(sorted[i][0]);
         }
     }
     
-    console.log(suggestions);
+//    console.log(suggestions);
     
-    //populate the suggested drop down menu
-    for(var i = 0; i < suggestions.length; i++){
-        
-        console.log(suggestions[i]);
-        
-        var option = document.createElement("OPTION");
-        var database = document.createTextNode(suggestions[i]);
-        option.appendChild(database);
-        option.setAttribute("value", suggestions[i]);
-        suggestedMenu.insertBefore(option, suggestedMenu.firstChild);
-        
-    }
-    
-    //in the case nothing is found
-    if(suggestedMenu.innerHTML == ''){
-        var option = document.createElement("OPTION");
-        var message = document.createTextNode("No Suggested Databases");
-        option.appendChild(message);
-        suggestedMenu.insertBefore(option, suggestedMenu.lastChild);
-    }
+    populateCheckboxList(suggestions);
 
     
 }
@@ -988,6 +975,82 @@ function useSuggestedDatabase(){
     
     submitGraphData(1);
     
+    
+}
+
+function populateCheckboxList(suggestedDatabases){
+    
+    var div = document.getElementById('textEntered');
+    var checkboxList = document.getElementById('checkboxlist');
+    var label = document.getElementById('checkboxLabel');
+    
+    //have to clear previous options first
+    checkboxList.innerHTML = "";
+    
+    //populate checklist with all databases, if there is a driving question suggest DBs
+    if(div.innerHTML == "Not Selected"){
+        
+        
+        label.innerHTML = "All Databases:";
+        
+        
+        
+        for (var key in database_dict) {
+          var value = database_dict[key];
+            
+          for (var index = 0; index < value.length; index++) {
+            var option = document.createElement('option');
+            var title = document.createElement("label");
+            var description = document.createTextNode("  "+ value[index]);
+            var checkbox = document.createElement("input");
+              
+              checkbox.type = "checkbox";
+              checkbox.name = index;
+//              checkbox.value = "hello";
+
+              title.appendChild(checkbox);
+              title.appendChild(description);
+              checkboxList.appendChild(title);
+              
+          }
+          
+            
+        }
+        
+    } else {
+        //populate checkboxlist with suggested databases
+        
+        label.innerHTML = "Suggested Databases:";
+        
+        for(var i = 0; i < suggestedDatabases.length; i++){
+            
+            var option = document.createElement('option');
+            var title = document.createElement("label");
+            var description = document.createTextNode("  "+ suggestedDatabases[i]);
+            var checkbox = document.createElement("input");
+              
+              checkbox.type = "checkbox";
+              checkbox.name = index;
+
+              
+              title.appendChild(checkbox);
+              title.appendChild(description);
+              checkboxList.appendChild(title);
+            
+        }
+        
+        if(checkboxList.innerHTML == ""){
+        
+            checkboxList.innerHTML = "No Suggested Databases";
+            
+            
+            
+        }
+        
+        
+        
+        
+    }
     
 }
 
@@ -1204,9 +1267,7 @@ var keyword_dict = {
                      'cost',
                      'expense',
                      'budget',
-                     'in',
                      'thousands',
-                     'of',
                      'US',
                      'dollars',
                     
@@ -1274,7 +1335,7 @@ var keyword_dict = {
                      'carbon',
                      'emission',
                      'dioxide',
-                      'per',
+                      
                       'capita',
                     
                    

@@ -1,5 +1,6 @@
 body {
 	background-color:#c2edce;
+    
 }
 
 * {
@@ -109,41 +110,46 @@ body {
 }
 
 .modal {
-	display: none;
-	position: fixed; 
-	padding-top: 30px;
-	left: 0; 
-	top: 0;
-	width: 100%; 
-	background-color: rgba(0, 0, 0, 0.5);
-	height:100%;
-	overflow: scroll;
+    display: none;
+    position: fixed;
+    padding-top: 30px;
+
+    left: 0;
+    top: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    height:100%;
+    overflow: scroll;
+    
 }
 
 #modal-btn {
-	background-color: #E2953D;
-	color: white;
-	z-index: 2;
-	display: inline-block;
+    background-color: #E2953D;
+    color: white;
+    z-index: 2;
+    display: inline-block;
 }
 
 .modal-content {
-	position: relative; 
-	background-color: white;
-	color: black;
-	padding: 20px; 
-	margin: auto; 
-	width: 75%;  
-	-webkit-animation-name: animatetop;
-	-webkit-animation-duration: 0.4s;
-	animation-name: animatetop;
-	animation-duration: 0.4s;
+    position: relative;
+    background-color:#92bbbd;
+    color: black;
+    padding: 20px;
+    margin: auto;
+    width:33%;
+    text-align:center;
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s;
 }
 
+
+
 .close-btn {
-	float: right; 
-	color: lightgray; 
-	font-size: 24px; 
+	float: right;
+	color: lightgray;
+	font-size: 24px;
 	font-weight: bold;
 }
 
@@ -152,9 +158,13 @@ body {
 	cursor: pointer;
 }
 
+
 @-webkit-keyframes animatetop {
-	from {top:-300px; opacity:0} 
-	to {top:0; opacity:1}
+	from {top:-300px; opacity:0}
+	to {top:0; opacity:1};
+     
+    
+    
 }
 
 @keyframes animatetop {
@@ -168,4 +178,26 @@ body {
 .php {
 	z-index: 40;
 	font-size: 40px;
+}
+
+#checkboxlist
+{
+    border:10px solid #ccc;
+    width:300px;
+    float: center;
+    height: 10%;
+    overflow-y: scroll;
+    text-align:left;
+/*    padding-left: 10px;*/
+
+    
+}
+
+#checkboxlist label {
+  display: block;
+font-weight: normal;
+}
+
+#checkboxlist label:hover {
+  background-color: #1e90ff;
 }
