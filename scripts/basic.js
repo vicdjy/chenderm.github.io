@@ -795,8 +795,23 @@ function addNotes(element) {
 function addDrivingQuestion() {
     var input = document.getElementById('textinput')
     var div = document.getElementById('textEntered');
-    div.innerHTML = input.value;
-    suggestDatabases(input.value);
+    
+    console.log(input.value);
+    if(input.value == "Select Driving Question"){
+        
+        console.log("hello");
+        div.innerHTML = "Not Selected";
+        suggestDatabases("Not Selected");
+        
+    } else {
+        
+        div.innerHTML = input.value;
+        suggestDatabases(input.value);
+        
+    }
+    
+    
+    
 }
 
 function addDrivingQuestion2() {
@@ -804,7 +819,7 @@ function addDrivingQuestion2() {
     var input = document.getElementById('textinput2')
     var div = document.getElementById('textEntered');
     div.innerHTML = input.value;
-    console.log("test");
+    
     
     if(div.innerHTML == ""){
         div.innerHTML = "Not Selected";
@@ -926,7 +941,7 @@ function sortScores(obj)
     });
     
     
-    console.log(sortable);
+//    console.log(sortable);
     
     return sortable; // array in format [ [ key1, val1 ], [ key2, val2 ], ... ]
 }
@@ -954,104 +969,296 @@ function parseAndClean(query){
 }
 
 
-function useSuggestedDatabase(){
-    
-    var database = document.getElementById('suggestedDBs');
-    
-    if(database.value == "No Suggested Databases"){
-        return;
-    }
-    
-    var graph1Menu = document.getElementById('database1');
-    
-    for(var i = 0; i < graph1Menu.options.length; i++){
-        
-        if(graph1Menu.options[i].value == database.value){
-            graph1Menu.options[i].selected = true;
-        }
-        
-    }
-    
-    
-    submitGraphData(1);
-    
-    
-}
+////populate database dropdown menus with the selected databases
+//function useSuggestedDatabase(){
+//
+//    var database = document.getElementById('suggestedDBs');
+//
+//    if(database.value == "No Suggested Databases"){
+//        return;
+//    }
+//
+//    var graph1Menu = document.getElementById('database1');
+//
+//    for(var i = 0; i < graph1Menu.options.length; i++){
+//
+//        if(graph1Menu.options[i].value == database.value){
+//            graph1Menu.options[i].selected = true;
+//        }
+//
+//    }
+//
+//
+//    submitGraphData(1);
+//
+//
+//}
+
+//global var to keep track of the selected databases
+var selected = [];
 
 function populateCheckboxList(suggestedDatabases){
     
     var div = document.getElementById('textEntered');
     var checkboxList = document.getElementById('checkboxlist');
     var label = document.getElementById('checkboxLabel');
-    
+
+
+
+
     //have to clear previous options first
     checkboxList.innerHTML = "";
-    
+
     //populate checklist with all databases, if there is a driving question suggest DBs
-    if(div.innerHTML == "Not Selected"){
-        
-        
+    if(div.innerHTML == "Not Selected" || suggestedDatabases == null){
+
+
         label.innerHTML = "All Databases:";
-        
-        
-        
+
+
+
         for (var key in database_dict) {
           var value = database_dict[key];
-            
+
           for (var index = 0; index < value.length; index++) {
             var option = document.createElement('option');
             var title = document.createElement("label");
-            var description = document.createTextNode("  "+ value[index]);
+            var description = document.createTextNode(value[index]);
             var checkbox = document.createElement("input");
-              
+
               checkbox.type = "checkbox";
               checkbox.name = index;
-//              checkbox.value = "hello";
+              checkbox.addEventListener("click", updateSelected);
+              title.className = "checkTitle";
+              checkbox.className = "check";
+
+              
+              
+              for(var i = 0; i < selected.length; i++){
+                  
+                  if(selected[i] == value[index]){
+                      checkbox.checked = true;
+                  }
+                  
+              }
 
               title.appendChild(checkbox);
               title.appendChild(description);
               checkboxList.appendChild(title);
-              
+
           }
-          
-            
+
+
         }
-        
+
     } else {
         //populate checkboxlist with suggested databases
-        
+
         label.innerHTML = "Suggested Databases:";
-        
+
+
         for(var i = 0; i < suggestedDatabases.length; i++){
-            
+
             var option = document.createElement('option');
             var title = document.createElement("label");
-            var description = document.createTextNode("  "+ suggestedDatabases[i]);
+            var description = document.createTextNode(suggestedDatabases[i]);
             var checkbox = document.createElement("input");
-              
+
               checkbox.type = "checkbox";
               checkbox.name = index;
+            checkbox.addEventListener("click", updateSelected);
+            title.className = "checkTitle";
+            checkbox.className = "check";
 
-              
+            
+            
+            
+          
+            for(var j = 0; j < selected.length; j++){
+                if(selected[j] == suggestedDatabases[index]){
+                    checkbox.checked = true;
+                }
+            }
+
+
               title.appendChild(checkbox);
               title.appendChild(description);
               checkboxList.appendChild(title);
-            
+
         }
-        
+
         if(checkboxList.innerHTML == ""){
-        
+
             checkboxList.innerHTML = "No Suggested Databases";
+
+
+
+        }
+
+
+
+
+    }
+    
+}
+
+
+
+
+//updates the list of selected databases to be used from the driving question popup
+function updateSelected(){
+
+    
+    
+    var checks = document.getElementsByClassName("check");
+    var checkTitle = document.getElementsByClassName("checkTitle");
+    
+
+    
+    //go through the checkboxes and make a list of the selected ones
+    for(var i = 0; i < checks.length; i++){
+        
+        
+        //if checked ensure that it is in the selected list
+        if(checks[i].checked === true){
+            var add = 1;
+            for(var j = 0; j < selected.length; j++){
+                
+                if(selected[j] == checkTitle[i].outerText){
+                    add = 0;
+                }
+                
+            }
             
+            if(add){
+                selected.push(checkTitle[i].outerText);
+            }
             
+        } else {
+        
+            //if unchecked ensure that it is not in the selected list
+            
+            for(var j = 0; j < selected.length; j++){
+                
+                if(selected[j] == checkTitle[i].outerText){
+                    
+                    selected.splice(j, 1);
+                }
+                
+            }
             
         }
-        
-        
         
         
     }
     
+    //update the content of the "selected databases" div
+    populateSelected(selected);
+   
+    
+}
+
+function populateSelected(databaseList){
+    var selectedList = document.getElementById("selectedList");
+    selectedList.innerHTML='';
+
+    for(var i = 0; i < databaseList.length; i++){
+        
+        
+        var title = document.createElement("label");
+        var description = document.createTextNode(databaseList[i]);
+        
+        var name = databaseList[i];
+        
+//        title.addEventListener("click", function(){
+//           deleteSelected(name);
+//        }, false);
+        
+        title.addEventListener("click",deleteSelected, false);
+          
+          title.appendChild(description);
+          selectedList.appendChild(title);
+
+        
+
+}
+    
+    if(selectedList.innerHTML ==  ''){
+        selectedList.innerHTML= 'No Selected Databases';
+    }
+    
+}
+
+function deleteSelected(){
+    
+    console.log(this.innerHTML);
+    
+    var dbName = this.innerHTML;
+    
+    var index = selected.indexOf(dbName);
+
+    if(index > -1){
+        selected.splice(index, 1);
+    }
+
+    populateSelected(selected);
+    var div = document.getElementById('textEntered');
+    console.log(div.innerHTML);
+    console.log(selected);
+    suggestDatabases(div.innerHTML);
+
+}
+
+
+//populate database dropdown menus with the selected databases
+function useSelected(){
+    
+    var dbMenu1 = document.getElementById('database1');
+    var dbMenu2 = document.getElementById('database2');
+    
+    
+    dbMenu1.innerHTML = "";
+    dbMenu2.innerHTML = "";
+    
+    //have both database menus state that they are using a custom list
+    var option = document.createElement('option');
+    
+    option.appendChild(document.createTextNode("Custom Selected Databases"));
+    option.value = "Custom Selected Databases";
+    option.selected = true;
+    option.disabled = true;
+    dbMenu1.appendChild(option);
+    
+    option = document.createElement('option');
+    
+    option.appendChild(document.createTextNode("Custom Selected Databases"));
+    option.value = "Custom Selected Databases";
+    option.selected = true;
+    option.disabled = true;
+    dbMenu2.appendChild(option);
+   
+    
+    //populate the drop down menus
+    for(var i = 0; i < selected.length; i++){
+        
+        var option = document.createElement('option');
+        
+        option.appendChild(document.createTextNode(selected[i]));
+        option.value = selected[i];
+        dbMenu1.appendChild(option);
+        
+        option = document.createElement("option");
+        option.appendChild(document.createTextNode(selected[i]));
+        option.value = selected[i];
+        
+        
+       
+        dbMenu2.appendChild(option);
+   
+    }
+    
+    //close the popup
+    closeModal();
 }
 
 

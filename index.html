@@ -58,7 +58,7 @@
                        
                        <label for="dqs">Select a Driving Question:</label><br>
                        <select style="width: 75%" id="textinput" onchange="addDrivingQuestion()">
-                           <option value="" disabled selected>Select Driving Question</option>
+                           <option disabled selected>Select Driving Question</option>
                            <option>How do rates of population growth among countries in the same region/continent compare?
                                What explains observed differences?</option>
                            <option>What accounts for sharp increases or decreases in military spending? Do increases in
@@ -95,9 +95,10 @@
                        <label id="checkboxLabel"> All Databases: </label><br>
                        
                        
-                       <center>
+                       <center >
                            
-                       <div id="checkboxlist">
+                           
+                       <div id="checkboxlist" >
                            
                            <label>
                            <input type="checkbox" /> This is checkbox <br />
@@ -115,7 +116,24 @@
                        
                        <br><br>
                        
-                       <button  id="default" type="button" class=""  onclick="useSuggestedDatabase()"                                                style="width:200px"> Use These Databases</button>
+                       <label id="selectedDatabases"> Selected Databases: </label><br>
+                       
+                       
+                       <center>
+                           
+                       <div id="selectedList" >
+                           
+<!--                          this is the selected list div-->
+                        <label>
+                            No Selected Databases
+                        </label>
+                          
+                       </div>
+                       
+                       
+                       <br><br>
+                       
+                       <button  id="default" type="button" class=""  onclick="useSelected()"                                                style="width:200px"> Use These Databases</button>
                        
                        <br><br>
                        </center>
@@ -134,7 +152,7 @@
                 <div class="input">
                     
                 <div>
-                    <h3>Driving Question:</h3>
+                    <h3 style="margin-top: 10px;font-size:30px;font-weight: bold;">Driving Question:</h3>
                     <p id="textEntered">Not Selected</p>
                 </div>
             </div>

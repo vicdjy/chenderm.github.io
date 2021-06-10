@@ -34,9 +34,10 @@ body {
 	line-height: 1%;
     margin-left: auto;
     margin-right: auto;
-    text-align:center;
+    text-align:left;
 	background-color:#92bbbd;
     padding-bottom: 10px;
+    padding-left: 10px;
 }
 
 .input{
@@ -44,10 +45,11 @@ body {
     font-size: 12px;
     margin-left: auto;
     margin-right: auto;
-    text-align:center;
+    text-align:left;
     padding-bottom: 10px;
     padding-top: 10px;
     background-color:#92bbbd;
+    padding-left: 10px;
 }
 
 .select {
@@ -185,7 +187,7 @@ body {
     border:10px solid #ccc;
     width:300px;
     float: center;
-    height: 10%;
+    height: 15%;
     overflow-y: scroll;
     text-align:left;
 /*    padding-left: 10px;*/
@@ -201,3 +203,27 @@ font-weight: normal;
 #checkboxlist label:hover {
   background-color: #1e90ff;
 }
+
+#selectedList
+{
+    border:10px solid #ccc;
+    width:300px;
+    float: center;
+    height: 15%;
+    overflow-y: scroll;
+    text-align:left;
+/*    padding-left: 10px;*/
+
+    
+}
+
+#selectedList label {
+  display: block;
+font-weight: normal;
+}
+
+#selectedList label:hover {
+  background-color: #1e90ff;
+  text-decoration: line-through;
+}
+
