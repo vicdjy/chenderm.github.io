@@ -876,6 +876,10 @@ function suggestDatabases(query){
           'CO2 Emissions Percentages':0,
           'CO2 Emissions Cumulative':0,
           'CO2 Emissions Cumulative Percentages':0,
+            'Battle Related Deaths in State Based Conflicts': 0,
+        'Nuclear Warhead Inventory in Nuclear Powers': 0,
+        'Registered Mobile Money Accounts': 0,
+        
         
     };
     
@@ -1265,6 +1269,7 @@ function useSelected(){
 
 //defining the keywords for each database
 //there may be some repeated words in the dictionary because some words carry extra value
+//note: all keywords should be entered in lowercase
 var keyword_dict = {
     'Populations': [
                     'population','population','population',
@@ -1383,11 +1388,11 @@ var keyword_dict = {
                      'age',
                      '65',
                      'male',
-                                       'survival',
-                                       'rate',
-                                       'age',
-                                       '65',
-                                       'male',
+                   'survival',
+                   'rate',
+                   'age',
+                   '65',
+                   'male',
                      'sixty',
                    'five',
                    'sixty-five',
@@ -1582,5 +1587,46 @@ var keyword_dict = {
                    
                      ],
     
+    
+    'Battle Related Deaths in State Based Conflicts': [
+                                                     
+                    'conflicts','conflicts',
+                    'conflict','conflict',
+                    'battle', 'battle',
+                    'related',
+                    'death',
+                    'deaths',
+                    'state',
+                                
+                                                       
+                                                    ],
+    
+    'Nuclear Warhead Inventory in Nuclear Powers': [
+    
+                    'nuclear', 'nuclear',
+                    'warhead', 'warhead',
+                    'nuke', 'nukes',
+                    'power', 'powers',
+                    'superpower',
+                                                    
+                                                    
+                                                    
+                                                    ],
+    
+    'Registered Mobile Money Accounts' :[
+                                         
+                 'registered',
+                'mobile',
+                'money', 'money',
+                'account','account',
+                 'accounts','accounts',
+                                         
+                                         ],
+    
+    
+                                                    
+                                                       
+                                                    
+                                                   
     
 };

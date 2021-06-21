@@ -144,6 +144,7 @@ var database_dict = {
     'Child Mortality Rates',
     'Survival Rate to Age 65 - Male',
     'Survival Rate to Age 65 - Female',
+    'Projected Race & Hispanic Origin',
   ],
   Military: [
     'Military Personnel',
@@ -151,10 +152,14 @@ var database_dict = {
     'Military Spending',
     'Military Spending Percent of GDP',
     'Military Spending in thousands of US dollars',
+    'Battle Related Deaths in State Based Conflicts',
+    'Nuclear Warhead Inventory in Nuclear Powers',
   ],
   Economies: ['GDP',
               'GDP Per Capita',
-              'Economic Freedom Scores'
+              'Economic Freedom Scores',
+              'Poverty Threshold',
+              'Registered Mobile Money Accounts',
               ],
     
   Environment: [
