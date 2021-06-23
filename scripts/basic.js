@@ -1079,7 +1079,7 @@ function populateCheckboxList(suggestedDatabases){
             
           
             for(var j = 0; j < selected.length; j++){
-                if(selected[j] == suggestedDatabases[index]){
+                if(selected[j] == suggestedDatabases[i]){
                     checkbox.checked = true;
                 }
             }
