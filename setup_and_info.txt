@@ -1,0 +1,38 @@
+Written by Derek Chen. If you have any questions, feel free to email me at umdchen@umich.edu or derekc1297@gmail.com, or call/text at 412-519-5727. Email is recommended.
+
+Disclaimer, this project was originally started by 4 students who weren't too familiar with web development. If you find better ways to run the app, or find a framework that makes things a lot easier, feel free to change the app as much as you need.
+
+This app was originally named Data Visualization For Literacy in Fall 2019 and was kind of rebranded to History In Data in Winter 2020. It's still referred to as DV4L.
+
+To run the app, it needs to be hosted on localhost. Open this folder in a terminal. I'm programming on Windows, using Visual Studio Code, and the terminal inside the editor works fine. Git Bash and Git CMD also work.
+Make sure npm is installed (if not, you may have to search Google for a way that works with your machine. I'm an amateur when it comes to tools like Node or npm so I'm not quite sure how to get it from scratch right off the top of my head).
+Type:
+npm install
+And hit enter. Then type:
+npm install http-server -g
+And hit enter. Then type:
+http-server -p 4200 -c-1
+And hit enter. http-server is a tool that starts a localhost so you can view your web page. -p 4200 starts a localhost on port 4200. The number can be replaced by any other 4 digit number. -c-1 (that's a number one, not a lower case L or upper case i) allows the cache to clear on page refreshes.
+Open localhost:4200/index.html to see your page. This is the basic view of DV4L.
+If you open localhost:4200/scripting.html you can see the scripting version.
+Inside the terminal, typing ctrl + C will stop http-server.
+
+The scripting version of the app used to be in a separate branch in the repository. It was then moved to the main branch for a separate HTML page. This makes it easier to make edits, without needing to switch branches every time.
+
+To recap, there are 3 main Javascript files, 3 main CSS files, and 2 main HTML files. common.js and common.css hold information that's relevant to both HTML pages. basic.js and basic.css are used by basic.html and have functions and other things that only basic.html needs. scripting.js and scripting.css are used by scripting.html and have functions and other things that only scripting.html needs. If you want to add a feature to both the basic and scripting versions of the app, it's probably a better idea to add it to common.js and common.css.
+
+The scripting version used to refer to the graphs as graph0 and graph1. This was changed to graph1 and graph2 to match the basic version to make it easier to write common.js. If there are any remnants of graph0, please change it.
+
+A lot of documentation has been added to the code. If there's anything confusing or if you have questions, feel free to email me. My email is at the top of this file.
+
+If you haven't already, you should add this repository to someone else's GitHub. GitHub can host web pages, so you can use a public URL to use for demos.
+
+Recently we have tried hosting the app with UMich. There were problems that we managed to fix but it isn't clean. The steps are below:
+Go to https://www.eecs.umich.edu/dco/services/hosting.php
+Try to ssh into web.eecs.umich.edu (I'm not sure if the port number matters but 22 hasn't ever failed me). You may need to contact them to request an account, as it doesn't seem like everyone has one by default.
+If you would rather avoid using a terminal for this (you may need to edit files later, and editing files through the terminal is difficult), I downloaded WinSCP: https://winscp.net/eng/index.php
+After you ssh, you should see a folder named public_html. I recommend creating another folder named DV4L inside public_html. Copy and paste the entire DV4L repository into this DV4L folder.
+Then go to http://www.eecs.umich.edu/~<your username>/DV4L/.
+If there are errors on the page, it might be because d3 (the library used inside the code that reads files) is looking in the wrong folder. In the past, Mark and I had this problem and I got around it by manually changing the directory where d3 was looking. So, instead of d3.csv("/csv/"...), I changed it to d3.csv("/DV4L/csv/"...) for every instance of it. Yes, this was a tacky fix. If you know of a cleaner way to fix it, please feel free to use it. This was where WinSCP came in handy, as it had a GUI for editing files.
+
+There are a lot of "To do"s marked inside the code. There are areas I'm pretty sure need some looking at, but they're not the only places that need revisions or fixing. The last time I met with Mark, we came up with ideas for some future steps. We thought about having storing sessions so that users could save their work and come back to it later, or if a teacher wanted to load some graphs in and send a template to students, we could save an entire session using a randomly generated string, and then adding that string to the URL to bring up that stored session. Speaking of saving sessions, we thought it would be useful to have logins for teachers and students, and teachers would view a slightly different page compared to students. Details on that were never really discussed but it was just something to keep in mind.

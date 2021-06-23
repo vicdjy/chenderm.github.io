@@ -1,0 +1,23 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "C057E4817DD90B66EDB83F11AE46B8B5A4C06261",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "C057E4817DD90B66EDB83F11AE46B8B5A4C06261" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "1DD2059D-6C06-4632-8DBD-B3709494C4E8",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "C057E4817DD90B66EDB83F11AE46B8B5A4C06261" : "chenderm.github.io\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "chenderm",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "chenderm.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/vicdjy\/chenderm.github.io.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "C057E4817DD90B66EDB83F11AE46B8B5A4C06261"
+    }
+  ]
+}

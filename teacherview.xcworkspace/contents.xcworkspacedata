@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:style/basic.css">
+   </FileRef>
+   <FileRef
+      location = "group:style/common.css">
+   </FileRef>
+   <FileRef
+      location = "group:style/scripting.css">
+   </FileRef>
+   <FileRef
+      location = "group:scripts/basic.js">
+   </FileRef>
+   <FileRef
+      location = "group:scripts/common.js">
+   </FileRef>
+   <FileRef
+      location = "group:index.html">
+   </FileRef>
+</Workspace>

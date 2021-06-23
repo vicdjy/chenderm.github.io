@@ -1,0 +1,23 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "C057E4817DD90B66EDB83F11AE46B8B5A4C06261",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "C057E4817DD90B66EDB83F11AE46B8B5A4C06261" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "1FAFB7A5-58D3-4CF7-8608-74814EAECD43",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "C057E4817DD90B66EDB83F11AE46B8B5A4C06261" : "teacherview\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "teacherview",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "teacherview.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/vicdjy\/chenderm.github.io.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "C057E4817DD90B66EDB83F11AE46B8B5A4C06261"
+    }
+  ]
+}

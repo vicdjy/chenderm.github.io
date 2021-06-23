@@ -1,0 +1,220 @@
+<html>
+
+<head>
+    <title>Data Visualization For Literacy</title>
+
+    <!-- JS -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="scripts/common.js"></script>
+    <script src="scripts/basic.js"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.1"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@0.7.4"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/js/ion.rangeSlider.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-colorschemes"></script>
+    <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+
+
+    <!-- CSS -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/css/ion.rangeSlider.min.css" />
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="style/common.css">
+    <link rel="stylesheet" type="text/css" href="style/basic.css">
+
+</head>
+
+<!-- HTML -->
+
+<body>
+
+    
+        <div class="col1">
+            <img class="logo" src="img/HistoryInDatalogolight.png">
+                
+                <br><br>
+                
+                <div class="row">
+                <h2 style="font-weight: bold;">Instructor Portal </h2>
+                
+                <h4> Name: </h4>
+                <br>
+                
+                
+                <select style="width: 13%" id="textinput" onchange="">
+                    <option disabled selected>Prefix</option>
+                    
+                    <option>Mr.</option>
+                    <option>Mrs. </option>
+                    <option>Ms.  </option>
+                    <option>Mx.</option>
+
+                </select>
+                
+                <input style="width: 83%" placeholder="Last Name" id="lastname"
+                     value=""></input>
+                
+                </div>
+                
+                <br><br>
+                
+                <div class="row">
+                
+                <h3 style="font-weight: bold;"> Select Databases: </h3>
+                
+                <label>
+                <input id="defaultDatabase" type="checkbox" onclick="updateDatabaseList()" /> Use Default Databases
+                </label>
+                
+                </div>
+                
+                
+                <br>
+                
+                
+                
+
+                
+
+                    
+                    <label id="checkboxLabel"> Databases: </label><br>
+                    
+                <div id="checkboxlist" >
+                    
+                    <label>
+                    <input type="checkbox" /> This is checkbox <br />
+                    </label>
+                    
+                        <input type="checkbox" /> This is checkbox <br />
+                        <input type="checkbox" /> This is checkbox <br />
+                        <input type="checkbox" /> This is checkbox <br />
+                        <input type="checkbox" /> This is checkbox <br />
+                        <input type="checkbox" /> This is checkbox <br />
+                        <input type="checkbox" /> This is checkbox <br />
+                        <input type="checkbox" /> This is checkbox <br />
+                </div>
+                
+                
+                <br><br>
+                
+                <label id=""> Selected: </label><br>
+                
+                <div id="selectedList" >
+                    
+    <!--                          this is the selected list div-->
+                 <label>
+                     No Selected Databases
+                 </label>
+                   
+                </div>
+                
+                
+                <br><br>
+                
+        </div>
+
+        <div class="col2" >
+            <br><br>
+           
+           <div class="row">
+           
+           <h3 style="font-weight: bold;"> Select Driving Questions: </h3>
+           
+           <label>
+           <input id="defaultDatabase" type="checkbox" onclick="updateDatabaseList()" /> Use Default Driving Questions
+           </label>
+           
+           
+           
+           </div>
+           
+           <br><br>
+           
+           <div class="row">
+           
+           <h4>Enter a Custom Driving Question:</h4><br>
+           <input style="width: 75%; height:5%;  border:10px solid #ccc;" placeholder="Enter Driving Question here" id=""
+                value="" onkeyup=""></input>
+           
+           <button  id="default" type="button" class=""  onclick="useSelected()" style="width:10%; height:5%;"> Add </button>
+            
+           </div>
+            
+            <br><br>
+            <label id="checkboxLabel"> Driving Questions: </label><br>
+            
+        <div id="checkboxlist" >
+            
+            <label>
+            <input type="checkbox" /> How do rates of population growth among countries in the same region/continent compare?
+            What explains observed differences?
+            </label>
+            
+            <br>
+            
+            <label>
+            <input type="checkbox" /> What accounts for sharp increases or decreases in military spending? Do increases in
+            military spending seem to be cause, consequence, or deterrent of violent conflict?<br />
+            </label>
+            
+            <br>
+            
+            <label>
+            <input type="checkbox" /> What accounts for sharp increases or decreases in military spending? Do increases in
+            military spending seem to be cause, consequence, or deterrent of violent conflict?<br />
+            </label>
+            
+            <br>
+            
+            <label>
+            <input type="checkbox" /> Is there a consistent relationship between child mortality rates and births per women? What explains consistencies and inconsistencies in this relationship across countries?<br />
+            </label>
+              
+              <br>
+              
+              <label>
+              <input type="checkbox" /> How do CO2 emissions per capita compare among countries? What are the implications of
+              similarities/differences for national/international policymaking?<br />
+              </label>
+                
+                <br>
+                
+              
+        </div>
+        
+        <br><br>
+            
+            
+            
+            
+            <button  id="default" type="button" class=""  onclick="useSelected()" style="width:100%"> Generate Link </button>
+            
+            
+            <br><br>
+            
+            <label id="selectedDatabases"> Custom Link: </label><br>
+            
+            <div id="link" >
+                
+
+             <label>
+                 Select Databases
+             </label>
+               
+            </div>
+           
+        </div>
+
+        <div class="col3">
+            <img class="logo" src="img/HistoryInDatalogolight.png">
+    </div>
+    
+
+</body>
+
+</html>
+

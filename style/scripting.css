@@ -1,0 +1,72 @@
+.col1 {
+    width: 60%;
+}
+
+.col2 {
+    width: 40%;
+}
+
+.graphRegion {
+    width: 90%;
+    float: left;
+    display: block;
+}
+
+#modal-help {
+    background-color: white;
+    color: black;
+    display: inline-block;
+}
+
+#help {
+    display: none;
+    position: fixed;
+    padding-top: 30px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.5);
+    height: 100%;
+    overflow: auto;
+}
+
+#help_input {
+    background-image: url('/img/searchIcon.png');
+    background-size: 30px 30px;
+    background-position: 10px 10px;
+    background-repeat: no-repeat;
+    width: 100%;
+    font-size: 16px;
+    padding: 12px 20px 12px 40px;
+    border: 1px solid #ddd;
+    margin-bottom: 12px;
+}
+
+#ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+#ul li a {
+    border: 1px solid #ddd;
+    margin-top: -1px;
+    background-color: #f6f6f6;
+    padding: 12px;
+    text-decoration: none;
+    font-size: 18px;
+    color: black;
+    display: block
+}
+
+#ul li a:hover:not(.header) {
+    background-color: #eee;
+}
+
+.downloadIcon {
+    margin-top: 10%;
+    margin-left: 5px;
+    height: 30px;
+    width: 30px;
+}
