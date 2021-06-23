@@ -1079,7 +1079,7 @@ function populateCheckboxList(suggestedDatabases){
             
           
             for(var j = 0; j < selected.length; j++){
-                if(selected[j] == suggestedDatabases[index]){
+                if(selected[j] == suggestedDatabases[i]){
                     checkbox.checked = true;
                 }
             }
@@ -1100,7 +1100,7 @@ function populateCheckboxList(suggestedDatabases){
         }
 
 
-
+        
 
     }
     
@@ -1178,7 +1178,7 @@ function populateSelected(databaseList){
 //           deleteSelected(name);
 //        }, false);
         
-        title.addEventListener("click",deleteSelected, false);
+        title.addEventListener("click", deleteSelected, false);
           
           title.appendChild(description);
           selectedList.appendChild(title);
@@ -1206,9 +1206,11 @@ function deleteSelected(){
     }
 
     populateSelected(selected);
+    
     var div = document.getElementById('textEntered');
     console.log(div.innerHTML);
     console.log(selected);
+    
     suggestDatabases(div.innerHTML);
 
 }

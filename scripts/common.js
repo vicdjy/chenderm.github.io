@@ -221,7 +221,6 @@ $(document).ready(function () {
   sendData(200, -1);
 
 
-
 });
 
 //Display Modal when user clicks 'Custom'
