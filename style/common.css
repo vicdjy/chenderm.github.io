@@ -38,7 +38,9 @@ body {
     text-align:left;
 	background-color:#92bbbd;
     padding-bottom: 10px;
+/*    padding-top: 10px;*/
     padding-left: 10px;
+    border:10px solid #ccc;
 }
 
 .input{
@@ -183,7 +185,7 @@ body {
 	font-size: 40px;
 }
 
-#checkboxlist
+.checkboxlist
 {
     border:10px solid #ccc;
     width:100%;
@@ -193,6 +195,8 @@ body {
     text-align:left;
     background-color:#92bbbd;
     
+    
+    
 /*    filter: brightness(50%);*/
 /*    pointer-events:none;*/
 /*    padding-left: 10px;*/
@@ -200,12 +204,12 @@ body {
     
 }
 
-#checkboxlist label {
+.checkboxlist label {
   display: block;
 font-weight: normal;
 }
 
-#checkboxlist label:hover {
+.checkboxlist label:hover {
   background-color: #1e90ff;
 }
 

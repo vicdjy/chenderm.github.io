@@ -83,7 +83,7 @@
                     
                     <label id="checkboxLabel"> Databases: </label><br>
                     
-                <div id="checkboxlist" >
+                <div id="checkboxlist" class="checkboxlist" >
                     
                     <label>
                     <input type="checkbox" /> This is checkbox <br />
@@ -101,7 +101,7 @@
                 
                 <br><br>
                 
-                <label id=""> Selected: </label><br>
+                <label id=""> Selected Databases: </label><br>
                 
                 <div id="selectedList" >
                     
@@ -118,14 +118,14 @@
         </div>
 
         <div class="col2" >
-            <br><br>
+            
            
            <div class="row">
            
            <h3 style="font-weight: bold;"> Select Driving Questions: </h3>
            
            <label>
-           <input id="defaultDatabase" type="checkbox" onclick="updateDatabaseList()" /> Use Default Driving Questions
+           <input id="defaultDQs" type="checkbox" onclick="updateDQList()" /> Use Default Driving Questions
            </label>
            
            
@@ -134,50 +134,50 @@
            
            <br><br>
            
-           <div class="row">
+           <label style="font-weight:bold">Enter a Custom Driving Question:</label>
            
-           <h4>Enter a Custom Driving Question:</h4><br>
-           <input style="width: 75%; height:5%;  border:10px solid #ccc;" placeholder="Enter Driving Question here" id=""
+           <div id="customDQ" class="row" style="padding-top: 10px">
+           <input style="width: 75%; height:5%;  border:10px solid #ccc;" placeholder="Enter Driving Question here" id="customQuestion"
                 value="" onkeyup=""></input>
            
-           <button  id="default" type="button" class=""  onclick="useSelected()" style="width:10%; height:5%;"> Add </button>
+           <button id="default" type="button" class=""  onclick="addCustomQuestion()" style="width:10%; height:5%;"> Add </button>
             
            </div>
             
-            <br><br>
-            <label id="checkboxLabel"> Driving Questions: </label><br>
+            <br>
+            <label id=""> Driving Questions: </label><br>
             
-        <div id="checkboxlist" >
+        <div id="DQList" class="checkboxlist" style = "height:55%" >
             
             <label>
-            <input type="checkbox" /> How do rates of population growth among countries in the same region/continent compare?
+            <input class="DQCheck" type="checkbox" /> How do rates of population growth among countries in the same region/continent compare?
             What explains observed differences?
             </label>
             
             <br>
             
             <label>
-            <input type="checkbox" /> What accounts for sharp increases or decreases in military spending? Do increases in
+            <input class="DQCheck" type="checkbox" /> What accounts for sharp increases or decreases in military spending? Do increases in
             military spending seem to be cause, consequence, or deterrent of violent conflict?<br />
             </label>
             
             <br>
             
             <label>
-            <input type="checkbox" /> What accounts for sharp increases or decreases in military spending? Do increases in
+            <input class="DQCheck" type="checkbox" /> What accounts for sharp increases or decreases in military spending? Do increases in
             military spending seem to be cause, consequence, or deterrent of violent conflict?<br />
             </label>
             
             <br>
             
             <label>
-            <input type="checkbox" /> Is there a consistent relationship between child mortality rates and births per women? What explains consistencies and inconsistencies in this relationship across countries?<br />
+            <input class="DQCheck" type="checkbox" /> Is there a consistent relationship between child mortality rates and births per women? What explains consistencies and inconsistencies in this relationship across countries?<br />
             </label>
               
               <br>
               
               <label>
-              <input type="checkbox" /> How do CO2 emissions per capita compare among countries? What are the implications of
+              <input class="DQCheck" type="checkbox" /> How do CO2 emissions per capita compare among countries? What are the implications of
               similarities/differences for national/international policymaking?<br />
               </label>
                 
@@ -191,26 +191,45 @@
             
             
             
-            <button  id="default" type="button" class=""  onclick="useSelected()" style="width:100%"> Generate Link </button>
             
-            
-            <br><br>
-            
-            <label id="selectedDatabases"> Custom Link: </label><br>
-            
-            <div id="link" >
-                
-
-             <label>
-                 Select Databases
-             </label>
-               
-            </div>
            
         </div>
 
         <div class="col3">
             <img class="logo" src="img/HistoryInDatalogolight.png">
+                <br><br><br>
+                <label id=""> Selected Driving Questions: </label><br>
+                
+                <div id="selectedList" >
+                    
+    <!--                          this is the selected list div-->
+                 <label>
+                     No Driving Questions
+                 </label>
+                   
+                   
+        </div>
+                
+                <br><br>
+                    
+                    
+                    
+                    
+                    <button  id="default" type="button" class=""  onclick="useSelected()" style="width:100%"> Generate Link </button>
+                    
+                    
+                    <br><br>
+                    
+                    <label id="selectedDatabases"> Custom Link: </label><br>
+                    
+                    <div id="link" >
+                        
+
+                     <label id="customLink">
+                         Select Databases
+                     </label>
+                     
+                     </div>
     </div>
     
 

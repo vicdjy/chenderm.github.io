@@ -67,7 +67,7 @@ function populateCheckboxList(){
               checkbox.type = "checkbox";
               checkbox.name = index;
               checkbox.addEventListener("click", updateSelected);
-              title.className = "checkTitle";
+              
               checkbox.className = "check";
 
               
@@ -288,10 +288,19 @@ function updateDatabaseList(){
     
     if(checkbox.checked){
         
-        databaselist.style.filter = "brightness(35%)";
+        databaselist.style.filter = "brightness(55%)";
         databaselist.style.pointerEvents = "none";
-        selectedList.style.filter = "brightness(35%)";
+        selectedList.style.filter = "brightness(55%)";
         selectedList.style.pointerEvents = "none";
+        
+        //check all of the boxes in the list
+        var check = document.getElementsByClassName("check");
+        
+        for(var i = 0; i < check.length; i++){
+            
+            check[i].checked = true;
+            
+        }
     
     }
     else {
@@ -300,8 +309,66 @@ function updateDatabaseList(){
         databaselist.style.pointerEvents = "all";
         selectedList.style.filter = "brightness(100%)";
         selectedList.style.pointerEvents = "all";
+        
+        //uncheck all of the boxes in the list
+        var check = document.getElementsByClassName("check");
+        
+        for(var i = 0; i < check.length; i++){
+            
+            check[i].checked = false;
+            
+        }
    
     }
+    
+   
+
+}
+
+//grays out and removes functionality of databaselist if default checkbox selected
+function updateDQList(){
+    
+    
+    var checkbox = document.getElementById("defaultDQs");
+    var DQList = document.getElementById("DQList");
+    var customDQ = document.getElementById("customDQ");
+    
+    if(checkbox.checked){
+        
+        DQList.style.filter = "brightness(35%)";
+        DQList.style.pointerEvents = "none";
+        customDQ.style.filter = "brightness(35%)";
+        customDQ.style.pointerEvents = "none";
+        
+        //check all of the boxes in the list
+        var check = document.getElementsByClassName("DQcheck");
+        
+        for(var i = 0; i < check.length; i++){
+            
+            check[i].checked = true;
+            
+        }
+    
+    }
+    else {
+        
+        DQList.style.filter = "brightness(100%)";
+        DQList.style.pointerEvents = "all";
+        customDQ.style.filter = "brightness(100%)";
+        customDQ.style.pointerEvents = "all";
+        
+        //uncheck all of the boxes in the list
+        var check = document.getElementsByClassName("DQcheck");
+        
+        for(var i = 0; i < check.length; i++){
+            
+            check[i].checked = false;
+            
+        }
+   
+    }
+    
+    
     
 }
 
@@ -311,6 +378,44 @@ function updateDatabaseList(){
 function copy(){
     
     alert("Copied to Clipboard");
+    
+}
+
+
+//add the custom driving question to the DQList and selected list
+function addCustomQuestion(){
+    
+    var question = document.getElementById("customQuestion");
+    
+    var DQList = document.getElementById("DQList");
+    
+    
+    var option = document.createElement('option');
+    var title = document.createElement("label");
+    var description = document.createTextNode(" " + question.value);
+    var checkbox = document.createElement("input");
+
+      checkbox.type = "checkbox";
+      checkbox.name = question.value;
+    
+    //add an event listener
+//      checkbox.addEventListener("click", updateSelected);
+    
+      title.className = "dqcheckTitle";
+      checkbox.className = "DQcheck";
+
+        
+    checkbox.checked = true;
+    
+
+      title.appendChild(checkbox);
+      title.appendChild(description);
+    DQList.appendChild(title);
+    
+    
+    var linebreak = document.createElement("br");
+    DQList.appendChild(linebreak);
+    
     
 }
 
