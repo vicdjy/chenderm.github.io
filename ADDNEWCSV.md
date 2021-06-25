@@ -13,7 +13,7 @@
 
 ### STEP 3
 * Ensure that the pathname is correct in common.js so that the right csv folder is searched
-* [[source]](https://github.com/vicdjy/chenderm.github.io/blob/2959fdf79c482c23f1d7fc6de8c24739ba221657/scripts/common.js#L467), look in '/dv4l/csv/' so that it searches the right csv folder
+* [[source]](https://github.com/vicdjy/chenderm.github.io/blob/2959fdf79c482c23f1d7fc6de8c24739ba221657/scripts/common.js#L467) and [[source]](https://github.com/vicdjy/chenderm.github.io/blob/2959fdf79c482c23f1d7fc6de8c24739ba221657/scripts/common.js#L926), look in '/dv4l/csv/' so that it searches the right csv folder
 * when running locally '/csv/' is the correct path name
 
 ### Trail Run 
