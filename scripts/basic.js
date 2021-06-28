@@ -67,7 +67,7 @@ function populateCheckboxList(){
               checkbox.type = "checkbox";
               checkbox.name = index;
               checkbox.addEventListener("click", updateSelected);
-              
+              title.className = "checkTitle";
               checkbox.className = "check";
 
               
@@ -97,7 +97,7 @@ function populateCheckboxList(){
 
 
 
-//updates the list of selected databases to be used from the driving question popup
+//updates the list of selected databases to be used
 function updateSelected(){
 
     
@@ -105,7 +105,8 @@ function updateSelected(){
     var checks = document.getElementsByClassName("check");
     var checkTitle = document.getElementsByClassName("checkTitle");
     
-
+    console.log(checks.length);
+    console.log(checkTitle.length);
     
     //go through the checkboxes and make a list of the selected ones
     for(var i = 0; i < checks.length; i++){
@@ -256,18 +257,21 @@ function updateChecks(){
 }
 
 
-//populate database dropdown menus with the selected databases
+//generate the link
 function useSelected(){
     
     var linkDiv = document.getElementById("link");
+    var lastName = document.getElementById("lastname");
+    
     
     linkDiv.innerHTML = '' ;
     
     //temporary value, will be replaced with a custom link
     
+    var link = "historyindata.org/dv4l/" + lastName.value;
     
     var title = document.createElement("label");
-    var description = document.createTextNode('historyindata.org/dv4l/aban');
+    var description = document.createTextNode(link);
     
     title.addEventListener("click",copy, false);
     
@@ -333,12 +337,14 @@ function updateDQList(){
     var DQList = document.getElementById("DQList");
     var customDQ = document.getElementById("customDQ");
     
+    
     if(checkbox.checked){
         
         DQList.style.filter = "brightness(35%)";
         DQList.style.pointerEvents = "none";
         customDQ.style.filter = "brightness(35%)";
         customDQ.style.pointerEvents = "none";
+         
         
         //check all of the boxes in the list
         var check = document.getElementsByClassName("DQcheck");
@@ -356,6 +362,7 @@ function updateDQList(){
         DQList.style.pointerEvents = "all";
         customDQ.style.filter = "brightness(100%)";
         customDQ.style.pointerEvents = "all";
+         
         
         //uncheck all of the boxes in the list
         var check = document.getElementsByClassName("DQcheck");

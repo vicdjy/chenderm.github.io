@@ -58,9 +58,19 @@
                 <input style="width: 83%" placeholder="Last Name" id="lastname"
                      value=""></input>
                 
+                
+                <br>
+                
+                <h4> Custom Link(Optional): </h4>
+                
+                <br>
+                <input style="width: 96%" placeholder="link" id=""
+                     value=""></input>
+                
+                
                 </div>
                 
-                <br><br>
+                <br>
                 
                 <div class="row">
                 
@@ -83,7 +93,7 @@
                     
                     <label id="checkboxLabel"> Databases: </label><br>
                     
-                <div id="checkboxlist" class="checkboxlist" >
+                <div id="checkboxlist" class="checkboxlist" style="height:20%">
                     
                     <label>
                     <input type="checkbox" /> This is checkbox <br />
@@ -99,11 +109,11 @@
                 </div>
                 
                 
-                <br><br>
+                <br>
                 
                 <label id=""> Selected Databases: </label><br>
                 
-                <div id="selectedList" >
+                <div id="selectedList" class="selectedList" >
                     
     <!--                          this is the selected list div-->
                  <label>
@@ -132,7 +142,7 @@
            
            </div>
            
-           <br><br>
+           <br>
            
            <label style="font-weight:bold">Enter a Custom Driving Question:</label>
            
@@ -147,7 +157,7 @@
             <br>
             <label id=""> Driving Questions: </label><br>
             
-        <div id="DQList" class="checkboxlist" style = "height:55%" >
+        <div id="DQList" class="checkboxlist" style = "height:45%" >
             
             <label>
             <input class="DQCheck" type="checkbox" /> How do rates of population growth among countries in the same region/continent compare?
@@ -185,10 +195,27 @@
                 
               
         </div>
-        
-        <br><br>
             
-            
+            <br><br>
+                
+                
+                
+                
+                <button  id="default" type="button" class=""  onclick="useSelected()" style="width:100%"> Generate Link </button>
+                
+                
+                <br><br>
+                
+                <label id="selectedDatabases"> Custom Link: </label><br>
+                
+                <div id="link" >
+                    
+
+                 <label id="customLink">
+                     Configure DV4L
+                 </label>
+                 
+                 </div>
             
             
             
@@ -198,38 +225,19 @@
         <div class="col3">
             <img class="logo" src="img/HistoryInDatalogolight.png">
                 <br><br><br>
-                <label id=""> Selected Driving Questions: </label><br>
+                <label id=""> Student Data:</label><br>
                 
-                <div id="selectedList" >
+                <div id="" class="selectedList" style="height:55%">
                     
     <!--                          this is the selected list div-->
                  <label>
-                     No Driving Questions
+                     Enter custom link to view student data
                  </label>
                    
                    
         </div>
                 
-                <br><br>
-                    
-                    
-                    
-                    
-                    <button  id="default" type="button" class=""  onclick="useSelected()" style="width:100%"> Generate Link </button>
-                    
-                    
-                    <br><br>
-                    
-                    <label id="selectedDatabases"> Custom Link: </label><br>
-                    
-                    <div id="link" >
-                        
-
-                     <label id="customLink">
-                         Select Databases
-                     </label>
-                     
-                     </div>
+               
     </div>
     
 

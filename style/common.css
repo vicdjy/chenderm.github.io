@@ -213,7 +213,7 @@ font-weight: normal;
   background-color: #1e90ff;
 }
 
-#selectedList
+.selectedList
 {
     border:10px solid #ccc;
     width:100%;
@@ -228,12 +228,12 @@ font-weight: normal;
     
 }
 
-#selectedList label {
+.selectedList label {
   display: block;
 font-weight: normal;
 }
 
-#selectedList label:hover {
+.selectedList label:hover {
   background-color: #1e90ff;
   text-decoration: line-through;
 }
