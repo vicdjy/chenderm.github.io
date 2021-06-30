@@ -105,8 +105,7 @@ function updateSelected(){
     var checks = document.getElementsByClassName("check");
     var checkTitle = document.getElementsByClassName("checkTitle");
     
-    console.log(checks.length);
-    console.log(checkTitle.length);
+   
     
     //go through the checkboxes and make a list of the selected ones
     for(var i = 0; i < checks.length; i++){
@@ -257,7 +256,7 @@ function updateChecks(){
 }
 
 
-//generate the link
+//generate the code
 function useSelected(){
     
     var linkDiv = document.getElementById("link");
@@ -268,6 +267,7 @@ function useSelected(){
     
     //temporary value, will be replaced with a custom link
     
+    //populate the custom code div
     var link = "historyindata.org/dv4l/" + lastName.value;
     
     var title = document.createElement("label");
@@ -279,6 +279,43 @@ function useSelected(){
       
       title.appendChild(description);
       linkDiv.appendChild(title);
+    
+    
+    //send data to sql data base
+    
+    console.log(selected);
+    console.log(selectedDQ);
+    
+    
+    
+    var submitdata = {
+        
+        'code': lastName.value,
+        'databases': lastName.value,
+        'drivingQuestions': selectedDQ,
+        
+    };
+    
+    var submitdatastr = JSON.stringify(submitdata);
+    
+    $.ajax({
+        
+        url:'../sendData.php',
+        type: 'POST',
+    data: {submitdata: submitdatastr },
+    success: function(response){
+        console.log("data sent");
+        console.log(response);
+    },
+        
+    error: function (XMLHttpRequest, textStatus, errorThrown) {
+  
+        alert('Status: ' + textStatus);
+        alert('Error: ' + errorThrown);
+    },
+        
+        
+    });
     
     
 }
@@ -406,10 +443,10 @@ function addCustomQuestion(){
       checkbox.name = question.value;
     
     //add an event listener
-//      checkbox.addEventListener("click", updateSelected);
+      checkbox.addEventListener("click", updateSelectedDQ);
     
-      title.className = "dqcheckTitle";
-      checkbox.className = "DQcheck";
+      title.className = "checkTitleDQ";
+      checkbox.className = "checkDQ";
 
         
     checkbox.checked = true;
@@ -423,9 +460,59 @@ function addCustomQuestion(){
     var linebreak = document.createElement("br");
     DQList.appendChild(linebreak);
     
-    
+    updateSelectedDQ();
 }
 
+
+
+var selectedDQ = [];
+ 
+function updateSelectedDQ(){
+    
+    var checks = document.getElementsByClassName("checkDQ");
+    var checkTitle = document.getElementsByClassName("checkTitleDQ");
+    
+    
+    
+    //go through the checkboxes and make a list of the selected ones
+    for(var i = 0; i < checks.length; i++){
+        
+        
+        //if checked ensure that it is in the selected list
+        if(checks[i].checked === true){
+            var add = 1;
+            for(var j = 0; j < selectedDQ.length; j++){
+                
+                if(selectedDQ[j] == checkTitle[i].outerText){
+                    add = 0;
+                }
+                
+            }
+            
+            if(add){
+                selectedDQ.push(checkTitle[i].outerText);
+            }
+            
+        } else {
+        
+            //if unchecked ensure that it is not in the selected list
+            
+            for(var j = 0; j < selectedDQ.length; j++){
+                
+                if(selectedDQ[j] == checkTitle[i].outerText){
+                    
+                    selectedDQ.splice(j, 1);
+                }
+                
+            }
+            
+        }
+        
+        
+    }
+    
+    
+}
 
 
 //defining the keywords for each database
