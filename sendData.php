@@ -22,13 +22,15 @@ try{
     $dbh->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
     
     $statement = $dbh->prepare("INSERT INTO customCodes
-    (code, databases)
+    (code, dbs, dqs)
     
 VALUES
-    (:code, :databases)");
+    (:code, :dbs, :dqs)");
 
     $statement->bindValue(':code', $decoded['code']);
-    $statement->bindValue(':databases', $decoded['databases']);
+    $statement->bindValue(':dbs', $decoded['dbs']);
+    $statement->bindValue(':dqs', $decoded['dqs']);
+//    $statement->bindValue(':databases', $decoded['databases']);
 //    $statement->bindValue(':drivingQuestions', $decoded['drivingQuestions']);
     $statement->execute();
    

@@ -284,15 +284,19 @@ function useSelected(){
     //send data to sql data base
     
     console.log(selected);
-    console.log(selectedDQ);
+    console.log(selected.toString());
+//    console.log(selectedDQ);
     
     
+    
+    
+    selectedstr = selected + "";
     
     var submitdata = {
         
         'code': lastName.value,
-        'databases': lastName.value,
-        'drivingQuestions': selectedDQ,
+        'dbs': selected.toString(),
+        'dqs': selectedDQ.toString(),
         
     };
     
