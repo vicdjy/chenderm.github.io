@@ -213,7 +213,10 @@ $(document).ready(function () {
     hide_min_max: true,
     prettify_enabled: false,
   });
+    
+    
 
+    
 
   switchToDefault(); //load default view when the page first loads
 
@@ -1422,10 +1425,9 @@ function sendData(n, savedNum) {
 
 
 }//send data
-//make a new URL - embed PHP inside of a webpage
-//dump database.html <? php code > in the code
-//-loop to walk thru everything in the database, output to an html page using echo
 
+
+//go to historyindata.org/dv4l/getData.php to get all the data from mySQL
 function getData() {
   $.ajax({
     url: '../getData.php',
@@ -1442,4 +1444,101 @@ function getData() {
       alert('Error: ' + errorThrown); //error?
     },
   });
+}
+
+
+//use the php id from the url to configure the databases and the driving questions
+function configureCustomDV4L(id){
+    
+//    alert(id); 
+    var idPHP = JSON.stringify(id);
+    
+    
+    //search in the database for matching primary key(id)
+    $.ajax({
+      url: '../getCustomInfo.php',
+      type: 'POST',
+      data: { idPHP: id },
+      success: function (data) {
+          
+//          console.log(data);
+          
+       var newData = data.split("|");
+
+        var databases = newData[0].split(",");
+        console.log(databases);
+
+          useCustomDatabases(databases);
+          
+      
+      
+      },
+      error: function (XMLHttpRequest, textStatus, errorThrown) {
+        alert('Status: ' + textStatus);
+        alert('Error: ' + errorThrown); //error?
+      },
+    });
+    
+    
+    
+
+    
+
+    
+    
+  
+}
+
+function useCustomDatabases(databases){
+    
+//    database_dict = databases;
+    
+    console.log(typeof databases);
+    console.log(databases[0]);
+    
+
+    var dbMenu1 = document.getElementById('database1');
+    var dbMenu2 = document.getElementById('database2');
+    
+    
+    dbMenu1.innerHTML = "";
+    dbMenu2.innerHTML = "";
+    
+    //have both database menus state that they are using a custom list
+    var option = document.createElement('option');
+    
+    option.appendChild(document.createTextNode("Instructor Selected Databases"));
+    option.value = "Custom Selected Databases";
+    option.selected = true;
+    option.disabled = true;
+    dbMenu1.appendChild(option);
+    
+    option = document.createElement('option');
+    
+    option.appendChild(document.createTextNode("Instructor Selected Databases"));
+    option.value = "Custom Selected Databases";
+    option.selected = true;
+    option.disabled = true;
+    dbMenu2.appendChild(option);
+   
+    
+    //populate the drop down menus
+    for(var i = 0; i < databases.length; i++){
+        
+        var option = document.createElement('option');
+        
+        option.appendChild(document.createTextNode(databases[i]));
+        option.value = databases[i];
+        dbMenu1.appendChild(option);
+        
+        option = document.createElement("option");
+        option.appendChild(document.createTextNode(databases[i]));
+        option.value = databases[i];
+        
+        
+       
+        dbMenu2.appendChild(option);
+    
+    }
+    
 }

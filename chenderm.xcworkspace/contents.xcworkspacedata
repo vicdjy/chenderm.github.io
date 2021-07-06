@@ -2,6 +2,12 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:getCustomInfo.php">
+   </FileRef>
+   <FileRef
+      location = "group:customDV4L.php">
+   </FileRef>
+   <FileRef
       location = "group:style/basic.css">
    </FileRef>
    <FileRef
