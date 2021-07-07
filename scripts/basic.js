@@ -256,36 +256,11 @@ function updateChecks(){
 }
 
 
-//generate the code
+//send the data to the sql database
 function useSelected(){
     
     var linkDiv = document.getElementById("link");
     var lastName = document.getElementById("lastname");
-    
-    
-    linkDiv.innerHTML = '' ;
-    
-    //temporary value, will be replaced with a custom link
-    
-    //populate the custom code div
-    var link = "historyindata.org/dv4l/" + lastName.value;
-    
-    var title = document.createElement("label");
-    var description = document.createTextNode(link);
-    
-    title.addEventListener("click",copy, false);
-    
-    var name = 'aban';
-      
-      title.appendChild(description);
-      linkDiv.appendChild(title);
-    
-    
-    //send data to sql data base
-    
-    console.log(selected);
-    console.log(selected.toString());
-//    console.log(selectedDQ);
     
     
     
@@ -308,8 +283,100 @@ function useSelected(){
         type: 'POST',
     data: {submitdata: submitdatastr },
     success: function(data){
-        console.log("data sent");
-//        console.log(response);
+
+        
+        console.log(data);
+        
+        generateLink(data);
+        
+
+        
+    },
+        
+    error: function (XMLHttpRequest, textStatus, errorThrown) {
+  
+        alert('Status: ' + textStatus);
+        alert('Error: ' + errorThrown);
+        
+    },
+        
+        
+    });
+    
+    
+    
+}
+
+function generateLink(data){
+    
+    var linkDiv = document.getElementById("link");
+    var lastName = document.getElementById("lastname");
+   
+    var customCode = lastname.value;
+    
+    
+    console.log(data);
+    //the last name already exists, alter it
+    if(data == "fail"){
+        
+        modifyCode(customCode);
+        return;
+    }
+    
+   
+    
+    
+    linkDiv.innerHTML = '' ;
+    
+    
+    //populate the custom code div
+    var link = "historyindata.org/dv4l/customDV4l.php?id=" + customCode;
+    
+    var title = document.createElement("label");
+    var description = document.createTextNode(link);
+    
+    title.addEventListener("click",copy, false);
+    
+    
+      
+      title.appendChild(description);
+      linkDiv.appendChild(title);
+    
+
+    
+}
+
+
+function modifyCode(customCode){
+    
+    customCode += "1";
+    
+    selectedstr = selected + "";
+    
+    var submitdata = {
+        
+        'code': customCode,
+        'dbs': selected.toString(),
+        'dqs': selectedDQ.toString(),
+        
+    };
+    
+    var submitdatastr = JSON.stringify(submitdata);
+    
+    $.ajax({
+        
+        url:'../sendData.php',
+        type: 'POST',
+    data: {submitdata: submitdatastr },
+    success: function(data){
+
+        
+//        console.log(data);
+        
+        generateLink(data);
+        
+
+        
     },
         
     error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -324,6 +391,10 @@ function useSelected(){
     
     
 }
+
+
+
+
 
 //grays out and removes functionality of databaselist if default checkbox selected
 function updateDatabaseList(){

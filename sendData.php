@@ -37,9 +37,13 @@ VALUES
 }catch(PDOException $ex){
     
     
-    echo $ex;
-    echo '{"status":0, "line":'.__LINE__.'}';
+    //below line displays the pdo message, commented out because it was not returning any data
+    //uncomment if the database is not being updated properly
+//    echo $ex;
+    echo "fail";
+//    echo '{"status":0, "line":'.__LINE__.'}';
     exit;
+
 }
 
 ?>
