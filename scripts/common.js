@@ -1400,7 +1400,7 @@ function sendData(n, savedNum) {
     success: function (response) {
       //alert('info sent to database');
       //alert(response.message);
-      console.log(response);
+      
     },
     error: function (XMLHttpRequest, textStatus, errorThrown) {
       alert('Status: ' + textStatus);
@@ -1466,10 +1466,11 @@ function configureCustomDV4L(id){
        var newData = data.split("|");
 
         var databases = newData[0].split(",");
-        console.log(databases);
+        
+          var dqs = newData[1].split(",");
 
           useCustomDatabases(databases);
-          
+          useCustomDQs(dqs);
       
       
       },
@@ -1492,9 +1493,6 @@ function configureCustomDV4L(id){
 function useCustomDatabases(databases){
     
 //    database_dict = databases;
-    
-    console.log(typeof databases);
-    console.log(databases[0]);
     
 
     var dbMenu1 = document.getElementById('database1');
@@ -1525,20 +1523,52 @@ function useCustomDatabases(databases){
     //populate the drop down menus
     for(var i = 0; i < databases.length; i++){
         
-        var option = document.createElement('option');
         
+        //1
+        var option = document.createElement('option');
         option.appendChild(document.createTextNode(databases[i]));
         option.value = databases[i];
         dbMenu1.appendChild(option);
         
+        //2
         option = document.createElement("option");
         option.appendChild(document.createTextNode(databases[i]));
         option.value = databases[i];
-        
-        
-       
         dbMenu2.appendChild(option);
     
     }
+    
+}
+
+//populate driving questions with what the teacher chose
+function useCustomDQs(dqs){
+    
+    console.log("here");
+    console.log(dqs);
+    console.log(dqs.length);
+    
+    var dqDiv = document.getElementById("textinput");
+    dqDiv.innerHTML = "";
+    
+    var title = document.createElement("option");
+    title.appendChild(document.createTextNode("Instructor Selected Driving Questions"));
+    title.value = 0;
+    title.selected = true;
+    title.disabled = true;
+    dqDiv.appendChild(title);
+    
+    
+    for(var i = 0; i < dqs.length; i++){
+        
+        var option = document.createElement('option');
+        
+        
+        
+        option.appendChild(document.createTextNode(dqs[i]));
+        option.value = dqs[i];
+        dqDiv.appendChild(option);
+        
+    }
+    
     
 }

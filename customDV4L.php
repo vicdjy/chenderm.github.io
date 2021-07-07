@@ -97,19 +97,9 @@
                        <label for="customDQ">Enter a Custom Driving Question:</label><br>
                        <input style="width: 75%" placeholder="Enter Driving Question here" id="textinput2"
                            name="textinput2" value="" onkeyup="addDrivingQuestion2()"></input>
-                       <!-- make different from onchange ^^                    -->
+                   
                        
-<!--                       <br><br>-->
-<!--                       -->
-<!--                       <label for="suggestedDB">Suggested Databases:</label><br>-->
-<!--                       <select style="width:75%" id="suggestedDBs" onchange="">-->
-<!--                           <option value="" disabled selected>Choose a Database</option>-->
-<!--                       </select>-->
-<!--                       -->
-<!--                       <br><br>-->
-<!--                       -->
-<!--                       <button  id="default" type="button" class=""  onclick="useSuggestedDatabase()"-->
-<!--                           style="width:75%">Use Suggested Database</button>-->
+
                        
                        <br><br>
                        
