@@ -35,6 +35,8 @@ VALUES
     $statement->execute();
    
 }catch(PDOException $ex){
+    
+    
     echo $ex;
     echo '{"status":0, "line":'.__LINE__.'}';
     exit;

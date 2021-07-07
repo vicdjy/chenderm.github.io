@@ -307,15 +307,16 @@ function useSelected(){
         url:'../sendData.php',
         type: 'POST',
     data: {submitdata: submitdatastr },
-    success: function(response){
+    success: function(data){
         console.log("data sent");
-        console.log(response);
+//        console.log(response);
     },
         
     error: function (XMLHttpRequest, textStatus, errorThrown) {
   
         alert('Status: ' + textStatus);
         alert('Error: ' + errorThrown);
+        
     },
         
         
