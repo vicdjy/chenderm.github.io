@@ -17,9 +17,13 @@ try{
     $user = 'root';
     $password = 'DV4L@uofm9163';//change
     $dbh = new PDO($dsn, $user, $password);
-
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $dbh->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+    
+    
+   
+
+   
     
     $statement = $dbh->prepare("INSERT INTO customCodes
     (code, dbs, dqs)
@@ -30,8 +34,7 @@ VALUES
     $statement->bindValue(':code', $decoded['code']);
     $statement->bindValue(':dbs', $decoded['dbs']);
     $statement->bindValue(':dqs', $decoded['dqs']);
-//    $statement->bindValue(':databases', $decoded['databases']);
-//    $statement->bindValue(':drivingQuestions', $decoded['drivingQuestions']);
+
     $statement->execute();
    
 }catch(PDOException $ex){

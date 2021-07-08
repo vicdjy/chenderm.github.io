@@ -262,8 +262,7 @@ function useSelected(){
     var linkDiv = document.getElementById("link");
     var lastName = document.getElementById("lastname");
     
-    
-    
+    var customCode = lastName.value;
     
     selectedstr = selected + "";
     
@@ -273,9 +272,27 @@ function useSelected(){
         'dbs': selected.toString(),
         'dqs': selectedDQ.toString(),
         
+        
     };
     
+    
     var submitdatastr = JSON.stringify(submitdata);
+
+    
+    if(Updating){
+        
+        //write a get code function which looks through the link and gets the right code
+        //write replacedata.php
+        //upload to cpanel 
+        
+        
+    }
+    
+  
+    
+    
+    
+
     
     $.ajax({
         
@@ -287,7 +304,8 @@ function useSelected(){
         
         console.log(data);
         
-        generateLink(data);
+        //-1 to signify use lastname as custom code
+        generateLink(data, -1);
         
 
         
@@ -307,15 +325,18 @@ function useSelected(){
     
 }
 
-function generateLink(data){
+function generateLink(data, customCode){
     
     var linkDiv = document.getElementById("link");
     var lastName = document.getElementById("lastname");
-   
-    var customCode = lastname.value;
+    
+    if(customCode == -1){
+        customCode = lastName.value;
+    }
     
     
     console.log(data);
+    
     //the last name already exists, alter it
     if(data == "fail"){
         
@@ -373,7 +394,7 @@ function modifyCode(customCode){
         
 //        console.log(data);
         
-        generateLink(data);
+        generateLink(data, customCode);
         
 
         
@@ -418,6 +439,8 @@ function updateDatabaseList(){
             check[i].checked = true;
             
         }
+        
+        updateSelected();
     
     }
     else {
@@ -435,6 +458,8 @@ function updateDatabaseList(){
             check[i].checked = false;
             
         }
+        
+        updateSelected();
    
     }
     
@@ -460,7 +485,7 @@ function updateDQList(){
          
         
         //check all of the boxes in the list
-        var check = document.getElementsByClassName("DQcheck");
+        var check = document.getElementsByClassName("checkDQ");
         
         for(var i = 0; i < check.length; i++){
             
@@ -468,6 +493,7 @@ function updateDQList(){
             
         }
     
+        updateSelectedDQ();
     }
     else {
         
@@ -478,13 +504,15 @@ function updateDQList(){
          
         
         //uncheck all of the boxes in the list
-        var check = document.getElementsByClassName("DQcheck");
+        var check = document.getElementsByClassName("checkDQ");
         
         for(var i = 0; i < check.length; i++){
             
             check[i].checked = false;
             
         }
+        
+        updateSelectedDQ();
    
     }
     
@@ -540,9 +568,10 @@ function addCustomQuestion(){
 }
 
 
-
+//contains the selected driving questions
 var selectedDQ = [];
  
+
 function updateSelectedDQ(){
     
     var checks = document.getElementsByClassName("checkDQ");
@@ -566,7 +595,12 @@ function updateSelectedDQ(){
             }
             
             if(add){
-                selectedDQ.push(checkTitle[i].outerText);
+                
+                var question = checkTitle[i].outerText
+              var temp = question.replace(/[.,()]/g,"");
+              question = temp.replace(/\s{2,}/g," ");
+                
+                selectedDQ.push(question);
             }
             
         } else {
@@ -589,6 +623,175 @@ function updateSelectedDQ(){
     
     
 }
+
+
+
+//using an entered custom link
+function configureDV4L(){
+    
+    //get the customCode from the entered link
+    var link = document.getElementById("customLink");
+    
+    console.log(link.value);
+    
+    //remove the starting part of the link
+    var customCode = link.value.slice(41);
+
+    
+    
+    
+        var idPHP = JSON.stringify(customCode);
+   
+        
+        
+        //search in the database for matching primary key(id)
+        $.ajax({
+          url: '../getCustomInfo.php',
+          type: 'POST',
+          data: { idPHP: customCode },
+          success: function (data) {
+//              console.log(data);
+              console.log(idPHP);
+              //"|" would be the only output if nothing is found
+              if(idPHP == "" || data == "|"){
+                  
+                  alert("Custom Link Not Found, Configure a New Version of DV4L");
+                  
+              }
+              else {
+              
+    //          console.log(data);
+              
+           var newData = data.split("|");
+
+            var databases = newData[0].split(",");
+            
+              var dqs = newData[1].split(",");
+
+              useCustomDatabases(databases);
+              useCustomDQs(dqs);
+              
+              console.log(databases);
+              console.log(dqs);
+              
+              }
+          
+          },
+          error: function (XMLHttpRequest, textStatus, errorThrown) {
+            alert('Status: ' + textStatus);
+            alert('Error: ' + errorThrown); //error?
+          },
+        });
+    
+    
+    
+}
+
+var Updating = 0;
+function useCustomDatabases(databases){
+    Updating = 1;
+    
+    
+    selected = databases;
+    
+    
+    //loop through the options and select if in the databases list
+    var checkTitles = document.getElementsByClassName("checkTitle");
+    var checks = document.getElementsByClassName("check");
+    
+    for(var i = 0 ; i < checks.length; i++){
+        
+        for(var j = 0; j < databases.length; j++){
+            
+            if(databases[j] == checkTitles[i].outerText){
+                
+                checks[i].checked = true;
+            }
+            
+        }
+        
+    }
+    
+    updateSelected();
+    
+}
+
+
+function useCustomDQs(dqs){
+  
+    selectedDQ = dqs;
+    
+    
+    //loop through the options and select if in the databases list
+    var checkTitles = document.getElementsByClassName("checkTitleDQ");
+    var checks = document.getElementsByClassName("checkDQ");
+    
+
+    
+    //loop through the selectedDQs and check the appropiate ones, create if not
+    
+    for(var i = 0; i < dqs.length; i++){
+        
+        var added = 0;
+        
+        for(var j = 0; j < checkTitles.length; j++){
+            
+            if(dqs[i] == checks[j].outerText){
+                
+                checks[i].checked = true;
+                added = 1;
+                
+            }
+            
+        }
+        
+        //have to add the custom question
+        if(added == 0){
+            
+            
+            
+            var question = dqs[i];
+            
+            var DQList = document.getElementById("DQList");
+            
+            
+            var option = document.createElement('option');
+            var title = document.createElement("label");
+            var description = document.createTextNode(question);
+            var checkbox = document.createElement("input");
+
+              checkbox.type = "checkbox";
+              checkbox.name = question;
+            
+            //add an event listener
+              checkbox.addEventListener("click", updateSelectedDQ);
+            
+              title.className = "checkTitleDQ";
+              checkbox.className = "checkDQ";
+
+                
+            checkbox.checked = true;
+            
+
+              title.appendChild(checkbox);
+              title.appendChild(description);
+            DQList.appendChild(title);
+            
+            
+            var linebreak = document.createElement("br");
+            DQList.appendChild(linebreak);
+            
+        }
+        
+    }
+    
+    
+    updateSelectedDQ();
+    
+    
+}
+
+
 
 
 //defining the keywords for each database
