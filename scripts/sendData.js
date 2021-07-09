@@ -127,7 +127,7 @@ function sendData(n, savedNum) {
         data: { submitdata: submitdatastr },
         success: function (response) {
             //do whatever.
-            alert('Its done!');
+            
             //alert(response.message);
             console.log(response);
         },

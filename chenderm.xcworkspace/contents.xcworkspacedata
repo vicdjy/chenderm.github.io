@@ -38,9 +38,6 @@
       location = "group:scripts/script r.js">
    </FileRef>
    <FileRef
-      location = "group:getData.php">
-   </FileRef>
-   <FileRef
       location = "group:scripts/script.js">
    </FileRef>
    <FileRef
