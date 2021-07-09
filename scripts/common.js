@@ -1323,7 +1323,12 @@ function sendData(n, savedNum) {
       .replace(/[\u0000-\u0019]+/g, "")
       .replace(/[\u0000-\u001F]+/g, "");
     // remove non-printable and other non-valid JSON chars
-    var mydata = JSON.parse(data);
+      
+      var mydata = "";
+      if(data != ""){
+         mydata = JSON.parse(data);
+      }
+      
     rangestart = mydata.lowDate;
     rangesend = mydata.highDate;
     ydatabase = mydata.DB;

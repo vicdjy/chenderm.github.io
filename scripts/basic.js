@@ -58,6 +58,8 @@ function saveGraph(saveNum, graphNum, swap) {
             }
             document.getElementById("exit" + saveNum).style.visibility = "hidden";
             document.getElementById("swap" + saveNum).style.visibility = "hidden";
+            document.getElementById("cust" + saveNum).style.visibility = "hidden";
+            
             return;
         }
     }
@@ -121,6 +123,7 @@ function saveGraph(saveNum, graphNum, swap) {
     //display x and swap buttons next to saved region
     document.getElementById("exit" + saveNum).style.visibility = "visible";
     document.getElementById("swap" + saveNum).style.visibility = "visible";
+    document.getElementById("cust" + saveNum).style.visibility = "visible";
 }
 
 //Transfers a saved graph to one of the main graphs,
@@ -223,6 +226,7 @@ function relocate(prevSave, nextSave) {
         //display x and swap buttons next to saved region
         document.getElementById("exit" + nextSave).style.visibility = "visible";
         document.getElementById("swap" + nextSave).style.visibility = "visible";
+        document.getElementById("cust" + nextSave).style.visibility = "visible";
     }
     else {  //swap saved graphs, as opposed to just moving one to an empty slot
         //temporarily store data
@@ -322,6 +326,7 @@ function relocate(prevSave, nextSave) {
         //display x and swap buttons next to saved region
         document.getElementById("exit" + nextSave).style.visibility = "visible";
         document.getElementById("swap" + nextSave).style.visibility = "visible";
+        document.getElementById("cust" + nextSave).style.visibility = "visible";
 
         //graph data in new region
         var canvas2 = document.getElementById("saved" + prevSave);
@@ -374,6 +379,7 @@ function relocate(prevSave, nextSave) {
         //display x and swap buttons next to saved region
         document.getElementById("exit" + prevSave).style.visibility = "visible";
         document.getElementById("swap" + prevSave).style.visibility = "visible";
+        document.getElementById("cust" + nextSave).style.visibility = "visible";
     }
 }
 //changes bool to true if we are deleting the saved graph
@@ -397,6 +403,7 @@ function deleteGraph(savedNum) {
     //clears exit and swap buttons
     document.getElementById("exit" + savedNum).style.visibility = "hidden";
     document.getElementById("swap" + savedNum).style.visibility = "hidden";
+    document.getElementById("cust" + savedNum).style.visibility = "hidden";
     isDeleted[savedNum - 1] = false;
     sendData(-1, -100);//second param is a dummy val
 }
@@ -733,6 +740,7 @@ function resave(saveNum) {
     //display exit and swap buttons for saved region
     document.getElementById("exit" + saveNum).style.visibility = "visible";
     document.getElementById("swap" + saveNum).style.visibility = "visible";
+    document.getElementById("cust" + nextSave).style.visibility = "visible";
 }
 
 //Exports current graph into new page
@@ -1265,6 +1273,48 @@ function useSelected(){
     
     //close the popup
     closeModal();
+}
+
+
+//allow students to edit their graph json with a custom dv4l scripting link
+function customize(n){
+    
+    //insert graph data into an sql database using our session id as the key
+    var key = rstring;
+    var jsonCode = document.getElementById("tip" + n);
+    
+    console.log(jsonCode.textContent);
+    
+    var submitdata = {
+        
+        'sessionid' : key,
+        'json' : jsonCode.textContent,
+        
+    };
+    
+    var submitdatastr = JSON.stringify(submitdata);
+    
+    $.ajax({
+      url: '../customScripting.php',
+      type: 'POST',
+      data: { submitdata: submitdatastr },
+      success: function (data) {
+        //alert('info sent to database');
+//        alert(response.message);
+          
+          console.log(data);
+        
+      },
+      error: function (XMLHttpRequest, textStatus, errorThrown) {
+        alert('Status: ' + textStatus);
+        alert('Error: ' + errorThrown); //error msg
+      },
+    });
+    
+    
+    
+    
+    
 }
 
 

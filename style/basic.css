@@ -140,3 +140,13 @@
 	color: white;
 	z-index: 2;
 }
+
+.customize {
+    visibility : hidden;
+    display: block;
+    float: left;
+/*    margin-left: 5px;*/
+    background-color: #097000;
+    color: white;
+    z-index: 2;
+}

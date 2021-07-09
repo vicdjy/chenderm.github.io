@@ -5,7 +5,7 @@
       location = "group:getCustomInfo.php">
    </FileRef>
    <FileRef
-      location = "group:customDV4L.php">
+      location = "group:sendData.php">
    </FileRef>
    <FileRef
       location = "group:style/basic.css">
@@ -17,21 +17,18 @@
       location = "group:style/scripting.css">
    </FileRef>
    <FileRef
-      location = "group:data.php">
-   </FileRef>
-   <FileRef
-      location = "group:export.html">
-   </FileRef>
-   <FileRef
-      location = "group:index.html">
-   </FileRef>
-   <FileRef
       location = "group:scripts/basic.js">
    </FileRef>
    <FileRef
       location = "group:scripts/common.js">
    </FileRef>
    <FileRef
-      location = "group:scripts/export.js">
+      location = "group:customScripting.php">
+   </FileRef>
+   <FileRef
+      location = "group:index.html">
+   </FileRef>
+   <FileRef
+      location = "group:customDV4L.php">
    </FileRef>
 </Workspace>
