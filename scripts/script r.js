@@ -919,3 +919,66 @@ function regraph(n) {
 
     graphData(db, x, y, n, lowDate, highDate, minDate, maxDate, graphType, color);
 }
+
+
+
+function populateGraph(id){
+    
+    var idPHP = JSON.stringify(id);
+      
+      
+      //search in the database for matching primary key(id)
+      $.ajax({
+        url: '../getData.php',
+        type: 'POST',
+        data: { idPHP: id },
+        success: function (data) {
+            
+            
+            
+            var title = document.getElementById("title");
+            title.innerHTML = "";
+            title.innerHTML = "Graph 1: Imported From DV4L"
+           
+            
+            console.log(data);
+                
+            
+            //removes spaces to put data in a json format
+            data = data.replace(/\s\s/g, '');
+
+            
+            console.log(data);
+            
+            
+            var json = JSON.parse(data);
+            
+            
+            db = json["DB"];
+            y = json["Yaxis"];
+            lowDate = json["lowDate"];
+            highDate = json["highDate"];
+            graphType = json['gtype'];
+            color = 'orange'; //change
+        
+
+        setOptions(db, y, "Year", graphType, lowDate, highDate, 0, color);
+        
+        updateScript(0, db, y, lowDate, highDate, graphType, color);
+            
+
+            
+            
+            
+        
+        
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+          alert('Status: ' + textStatus);
+          alert('Error: ' + errorThrown);
+        },
+      });
+    
+    
+    
+}
