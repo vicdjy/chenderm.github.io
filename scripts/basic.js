@@ -271,27 +271,32 @@ function useSelected(){
         'code': lastName.value,
         'dbs': selected.toString(),
         'dqs': selectedDQ.toString(),
+        'replace': 0,
         
         
     };
     
     
-    var submitdatastr = JSON.stringify(submitdata);
+   
 
     
+    //if we are updating an already existing link, then replace its sql row
     if(Updating){
         
-        //write a get code function which looks through the link and gets the right code
-        //write replacedata.php
-        //upload to cpanel 
+        alert("DV4L Updated");
         
+        //change the code from last name to the custom id entered
+        submitdata['code'] = getId();
+        
+        submitdata['replace'] = 1;
+
+        console.log("here");
+        console.log(submitdata);
         
     }
     
-  
     
-    
-    
+    var submitdatastr = JSON.stringify(submitdata);
 
     
     $.ajax({
@@ -304,10 +309,13 @@ function useSelected(){
         
         console.log(data);
         
+        //only generate a link if we are not replacing data
+        if(submitdata['replace'] == 0){
+            
         //-1 to signify use lastname as custom code
         generateLink(data, -1);
         
-
+        }
         
     },
         
@@ -320,6 +328,7 @@ function useSelected(){
         
         
     });
+    
     
     
     
@@ -356,7 +365,7 @@ function generateLink(data, customCode){
     var title = document.createElement("label");
     var description = document.createTextNode(link);
     
-    title.addEventListener("click",copy, false);
+    
     
     
       
@@ -522,12 +531,7 @@ function updateDQList(){
 
 
 
-//copy custom link to clipboard
-function copy(){
-    
-    alert("Copied to Clipboard");
-    
-}
+
 
 
 //add the custom driving question to the DQList and selected list
@@ -625,20 +629,32 @@ function updateSelectedDQ(){
 }
 
 
-
-//using an entered custom link
-function configureDV4L(){
+//gets the id from the entered custom link
+function getId(){
     
     //get the customCode from the entered link
     var link = document.getElementById("customLink");
     
     console.log(link.value);
     
-    //remove the starting part of the link
-    var customCode = link.value.slice(41);
+    //get the id
+    var id = link.value.substring(link.value.lastIndexOf('=') + 1);
+    
+    return id;
+    
+    console.log(id);
+    
+}
+
+
+
+//using an entered custom link
+function configureDV4L(){
+    
+   
 
     
-    
+        var customCode = getId();
     
         var idPHP = JSON.stringify(customCode);
    
@@ -671,8 +687,8 @@ function configureDV4L(){
               useCustomDatabases(databases);
               useCustomDQs(dqs);
               
-              console.log(databases);
-              console.log(dqs);
+                  //displays the new link
+                  updateLink();
               
               }
           
@@ -686,6 +702,35 @@ function configureDV4L(){
     
     
 }
+
+//updates the link
+function updateLink(){
+    
+    var linkDiv = document.getElementById("link");
+    
+    linkDiv.innerHTML = "";
+    
+    var link = document.getElementById("customLink").value;
+    
+    var title = document.createElement("label");
+    var description = document.createTextNode(link);
+    
+    
+    
+    
+      
+      title.appendChild(description);
+      linkDiv.appendChild(title);
+    
+    
+    var linkDiv = document.getElementById("generateLink");
+    
+    linkDiv.innerHTML = "Update Link";
+    
+    
+    
+}
+
 
 var Updating = 0;
 function useCustomDatabases(databases){
@@ -736,7 +781,7 @@ function useCustomDQs(dqs){
         
         for(var j = 0; j < checkTitles.length; j++){
             
-            if(dqs[i] == checks[j].outerText){
+            if(dqs[i] == checkTitles[j].outerText){
                 
                 checks[i].checked = true;
                 added = 1;

@@ -108,6 +108,12 @@ body {
 	display: inline-block;
 }
 
+#generateLink {
+    background-color: #b7b7b7;
+    color: black;
+    display: inline-block;
+}
+
 #clear {
 	background-color: #990000;
 	color: white;

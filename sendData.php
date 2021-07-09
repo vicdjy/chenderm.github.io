@@ -22,7 +22,17 @@ try{
     
     
    
+    if($decoded['replace'] == 1){
 
+        $statement = $dbh->prepare("REPLACE INTO customCodes
+        (code, dbs, dqs)
+
+    VALUES
+        (:code, :dbs, :dqs)");
+        
+        echo "replace";
+
+    } else {
    
     
     $statement = $dbh->prepare("INSERT INTO customCodes
@@ -30,11 +40,16 @@ try{
     
 VALUES
     (:code, :dbs, :dqs)");
+        
+        
+        echo "insert";
+        
+        }
 
     $statement->bindValue(':code', $decoded['code']);
     $statement->bindValue(':dbs', $decoded['dbs']);
     $statement->bindValue(':dqs', $decoded['dqs']);
-
+    
     $statement->execute();
    
 }catch(PDOException $ex){
