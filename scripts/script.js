@@ -16,7 +16,6 @@ Once you get the ngrok URL that looks something like [jumbledMess].ngrok.io, jus
 [jumbledMess].ngrok.io/index.html
 */
 
-
 var defaultDatabase1 = "Populations";
 var defaultXAxis1 = "Year";
 var defaultYAxis1 = "Rwanda";
@@ -326,6 +325,3 @@ function verifyOptions(n) {
         document.getElementById("submit" + n).disabled = false;
     }
 }
-
-
-

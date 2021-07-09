@@ -32,6 +32,9 @@
       location = "group:customize.php">
    </FileRef>
    <FileRef
+      location = "group:data.php">
+   </FileRef>
+   <FileRef
       location = "group:scripts/script r.js">
    </FileRef>
    <FileRef

@@ -13,6 +13,7 @@ function randomstring(length, chars) {
 }
 
 function sendData(n, savedNum) {
+    console.log(savedNum);
     //Sessionid code
     var sessionid = rstring;
 
@@ -34,20 +35,17 @@ function sendData(n, savedNum) {
 
     var ydatabase = null;
     var locationname = null;
-    var ranges = null;
     var rangestart = null;
     var rangesend = null;
     var gtypedata = null;
     var colordata = null;
     var graphNum = null;
-    var actionItem = null;
+    var actionItem = "loadPage";
 
 
     if (savedNum == 'submit') {
         var el = document.getElementById("database" + n);
         var ydatabase = el.options[el.selectedIndex].value;
-
-        //var xOption = "Year";
 
         el = document.getElementById("yaxis" + n);
         locationname = el.options[el.selectedIndex].value;
@@ -67,9 +65,6 @@ function sendData(n, savedNum) {
     else if (savedNum == 'setOptions') {
         var el = document.getElementById("database" + n);
         var ydatabase = el.options[el.selectedIndex].value;
-
-        //var xOption = "Year";
-
         el = document.getElementById("yaxis" + n);
         locationname = el.options[el.selectedIndex].value;
 
@@ -89,8 +84,6 @@ function sendData(n, savedNum) {
         var el = document.getElementById("database" + n);
         var ydatabase = el.options[el.selectedIndex].value;
 
-        //var xOption = "Year";
-
         el = document.getElementById("yaxis" + n);
         locationname = el.options[el.selectedIndex].value;
 
@@ -108,10 +101,6 @@ function sendData(n, savedNum) {
     }
 
 
-
-
-
-
     var submitdata = {
         'sessionid': sessionid,
         'accesstime': accesstime,
@@ -121,7 +110,7 @@ function sendData(n, savedNum) {
         'highdate': rangesend,
         'graphtype': gtypedata,
         'color': colordata,
-        'graphNum': graphNum,
+        'graphNum': graphNum + 1,
         'actionItem': actionItem
     };
 
@@ -138,7 +127,7 @@ function sendData(n, savedNum) {
         data: { submitdata: submitdatastr },
         success: function (response) {
             //do whatever.
-            
+            alert('Its done!');
             //alert(response.message);
             console.log(response);
         },

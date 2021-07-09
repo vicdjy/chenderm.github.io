@@ -531,7 +531,13 @@ function setOptions(databaseName, yaxis, xaxis, gtype, lowDate, highDate, n, col
     } else {
         sendData(n, 'setOptions');
     }
+<<<<<<< HEAD
     
+=======
+    else {
+        sendData(n, 'setOptions');
+    }
+>>>>>>> 61c9c87abee316880fc27bcb4f0d87c6167cf50b
 }
 
 //Runs when the user clicks the default button.
