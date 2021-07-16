@@ -21,9 +21,9 @@ try{
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $dbh->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
     $statement = $dbh->prepare("INSERT INTO export
-    (sessionid,accesstime,yaxis,locationdata,lowdate,highdate,graphtype,color,drivingQuestion, isDropDown, hasNotes, scriptSeen, savedGraphNum, exportNum)
+    (sessionid,accesstime,yaxis,locationdata,lowdate,highdate,graphtype,color,drivingQuestion, isDropDown, hasNotes, scriptSeen, savedGraphNum, exportNum, customCode)
 VALUES
-    (:sessionid, :accestime, :yaxis, :locationdata, :lowdate, :highdate, :graphtype, :color, :drivingQuestion, :isDropDown, :hasNotes, :scriptSeen, :savedGraphNum, :exportNum)");
+    (:sessionid, :accestime, :yaxis, :locationdata, :lowdate, :highdate, :graphtype, :color, :drivingQuestion, :isDropDown, :hasNotes, :scriptSeen, :savedGraphNum, :exportNum, :customCode)");
 
     $statement->bindValue(':sessionid', $decoded['sessionid']);
     $statement->bindValue(':accestime', $decoded['accesstime']);
@@ -39,6 +39,7 @@ VALUES
     $statement->bindValue(':scriptSeen', $decoded['scriptSeen']);
     $statement->bindValue(':savedGraphNum', $decoded['savedGraphNum']);
     $statement->bindValue(':exportNum', $decoded['exportNum']);
+    $statement->bindValue(':customCode', $decoded['customCode']);
     $statement->execute();
    
 }catch(PDOException $ex){

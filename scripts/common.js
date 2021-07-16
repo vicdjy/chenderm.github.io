@@ -1390,7 +1390,8 @@ function sendData(n, savedNum) {
     'hasNotes': hasNotes,
     'scriptSeen': scriptSeen,
     'savedGraphNum': savedGraphNum,
-    'exportNum': exportNum
+    'exportNum': exportNum,
+    'customCode': ID,
   };
 
   logs.push(submitdata);
@@ -1452,8 +1453,13 @@ function getData() {
 }
 
 
+
+var ID = null;
+
 //use the php id from the url to configure the databases and the driving questions
 function configureCustomDV4L(id){
+    
+    ID = id;
     
 //    alert(id); 
     var idPHP = JSON.stringify(id);
@@ -1577,3 +1583,11 @@ function useCustomDQs(dqs){
     
     
 }
+
+
+//called when the tab is closed, used to find out how long a user spent on dv4l
+window.addEventListener('beforeunload', function(event) {
+    
+    sendData(200, -1);
+    
+      });

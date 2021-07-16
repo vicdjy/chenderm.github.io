@@ -336,6 +336,7 @@
             <br>
             <div class="pillar">
 
+                
                 <div class="frame" id="frame1">
                     <div class="tile" ondrop="drop(event, 'saved1')" ondragover="allowDrop(event)"
                         onclick="showToolTip(1)">
@@ -348,8 +349,10 @@
                             <div class="hoverTip">transfer (drag & drop)</div>
                         </a>
                     </div>
+                    <br>
+                        <button class="customize" id="cust1" onclick="customize(1)"> Customize </button>
                 </div>
-                
+
 
                 <div class="frame">
                     <div class="tile" ondrop="drop(event, 'saved2')" ondragover="allowDrop(event)"
@@ -363,6 +366,8 @@
                             <div class="hoverTip">transfer (drag & drop)</div>
                         </a>
                     </div>
+                    <br>
+                        <button class="customize" id="cust2" onclick="customize(2)"> Customize </button>
                 </div>
 
                 <div class="frame">
@@ -377,6 +382,8 @@
                             <div class="hoverTip">transfer (drag & drop)</div>
                         </a>
                     </div>
+                    <br>
+                        <button class="customize" id="cust3" onclick="customize(3)"> Customize </button>
                 </div>
 
                 <div class="frame" id="hide1">
@@ -391,6 +398,8 @@
                             <div class="hoverTip">transfer (drag & drop)</div>
                         </a>
                     </div>
+                    <br>
+                        <button class="customize" id="cust4" onclick="customize(4)"> Customize </button>
                 </div>
 
                 <div class="frame" id="hide2">
@@ -405,9 +414,11 @@
                             <div class="hoverTip">transfer (drag & drop)</div>
                         </a>
                     </div>
+                    <br>
+                        <button class="customize" id="cust5" onclick="customize(5)"> Customize </button>
                 </div>
-            </div>
-            <div class="pillar">
+                </div>
+                <div class="pillar">
                 <div class="frame">
                     <div class="tile" ondrop="drop(event, 'saved6')" ondragover="allowDrop(event)"
                         onclick="showToolTip(6)">
@@ -420,6 +431,8 @@
                             <div class="hoverTip">transfer (drag & drop)</div>
                         </a>
                     </div>
+                    <br>
+                        <button class="customize" id="cust6" onclick="customize(6)"> Customize </button>
                 </div>
 
                 <div class="frame">
@@ -434,6 +447,8 @@
                             <div class="hoverTip">transfer (drag & drop)</div>
                         </a>
                     </div>
+                    <br>
+                        <button class="customize" id="cust7" onclick="customize(7)"> Customize </button>
                 </div>
 
                 <div class="frame">
@@ -448,6 +463,8 @@
                             <div class="hoverTip">transfer (drag & drop)</div>
                         </a>
                     </div>
+                    <br>
+                        <button class="customize" id="cust8" onclick="customize(8)"> Customize </button>
                 </div>
 
                 <div class="frame" id="hide3">
@@ -462,6 +479,8 @@
                             <div class="hoverTip">transfer (drag & drop)</div>
                         </a>
                     </div>
+                    <br>
+                        <button class="customize" id="cust9" onclick="customize(9)"> Customize </button>
                 </div>
 
                 <div class="frame" id="hide4">
@@ -476,6 +495,8 @@
                             <div class="hoverTip">transfer (drag & drop)</div>
                         </a>
                     </div>
+                    <br>
+                        <button class="customize" id="cust10" onclick="customize(10)"> Customize </button>
                 </div>
             </div>
 

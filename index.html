@@ -15,6 +15,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/js/ion.rangeSlider.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-colorschemes"></script>
     <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+    
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+    <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
+    <script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js"></script>
 
 
     <!-- CSS -->
@@ -25,6 +30,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="style/common.css">
     <link rel="stylesheet" type="text/css" href="style/basic.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 </head>
 
@@ -35,6 +41,10 @@
     
         <div class="col1">
             <img class="logo" src="img/HistoryInDatalogolight.png">
+                
+
+                
+                
 
             <div style="width: 100%">
                 <h2 style="display: inline-block;">Data</h2>
@@ -43,6 +53,28 @@
                     style="float: right; margin-left: 10px; margin-top: 30px;">DEFAULT</button>
                 
                  <button id="modal-btn" onclick="displayModal()" style="float: right; margin-left: 10px; margin-top: 30px;">ENTER DRIVING QUESTION</button>
+                 
+                 <button id="help" data-tooltip="" onclick="" style="float: right; margin-left: 10px; margin-top: 30px;">HELP</button>
+                 
+                 
+
+                 
+                 <script>
+                     
+                     tippy('#help', {
+                         placement: 'bottom',
+                         content: '<img src="help.gif" > ',
+                         allowHTML: true,
+                         maxWidth: '800px',
+                         animation: 'scale',
+
+                     });
+                     
+                     tippy('#default', {
+                            content: 'Return to default databases',
+                     });
+                     
+                 </script>
               
               
               <div class="modal" id="modalbox">
@@ -55,8 +87,9 @@
                        
                        <div id="text">
                        <label style="font-size: 30px"  for="dqs"> Select or Enter a Driving Question:</label><br>
-                       
-                       <label for="dqs">Select a Driving Question:</label><br>
+                      
+                       <label for="dqs">Select a Driving Question:</label>
+                       <span class="material-icons" id="tooltip1">help_outline</span> <br>
                        <select style="width: 75%" id="textinput" onchange="addDrivingQuestion()">
                            <option disabled selected>Select Driving Question</option>
                            <option>How do rates of population growth among countries in the same region/continent compare?
@@ -116,7 +149,7 @@
                        
                        <br><br>
                        
-                       <label id="selectedDatabases"> Selected Databases: </label><br>
+                       <label id="selectedDatabases"> Selected Databases: </label><span class="material-icons" id="tooltip2">help_outline</span> <br>
                        
                        
                        <center>
@@ -153,6 +186,8 @@
                     
                 <div>
                     <h3 style="margin-top: 10px;font-size:30px;font-weight: bold;">Driving Question:</h3>
+                    
+                   
                     <p id="textEntered">Not Selected</p>
                 </div>
             </div>
@@ -296,7 +331,11 @@
                 >
                 <canvas id="canvas1"></canvas>
                 <button class="saveButton" id="save1" draggable="true" ondragstart="drag(event, 'graph1')">SAVE GRAPH 1
-                    (drag & drop)</button>
+                    
+
+                    <!--                <div class="hoverTip"> DRAG TO THE RIGHT TO SAVE GRAPH </div>-->
+                
+                </button>
                 <button class="export" id="export1" onclick="exportGraph(1);">EXPORT</button>
 
             </div>
@@ -306,7 +345,7 @@
                >
                 <canvas id="canvas2"></canvas>
                 <button class="saveButton" id="save2" draggable="true" ondragstart="drag(event, 'graph2')">SAVE GRAPH 2
-                    (drag & drop)</button>
+                    </button>
                 <button class="export" id="export2" onclick="exportGraph(2);">EXPORT</button>
 
             </div>
@@ -314,7 +353,7 @@
 
         <div class="col3">
             <div id="themeToggle" style="margin-top: 5px;">
-                <h2>Saved Graphs</h2>
+                <h2>Saved Graphs</h2> <span class="material-icons" id="tooltip3">help_outline</span> <br>
                 <p align="right">
                     <c style="font-size: 20px;text-align:right">Add Notes</c>
                     <input type="checkbox" unchecked data-toggle="toggle" data-onstyle="primary" data-on=" "
@@ -336,7 +375,6 @@
                         <a id="swap1" class="swap" draggable="true" ondragstart="drag(event, 'saved1')">&#x21c4;
                             <div class="hoverTip">transfer (drag & drop)</div>
                         </a>
-                        
                     </div>
                     <br>
                         <button class="customize" id="cust1" onclick="customize(1)"> Customize </button>
@@ -499,7 +537,80 @@
 
         </div>
     
-    
+    <script>
+        //hover tool tip code
+        
+        tippy('#tooltip1', {
+               content: 'Based on your driving question, there will be suggested databases. Select the databases that can be used to answer your driving question.',
+               placement: "bottom",
+        });
+        
+        tippy('#tooltip2', {
+           content: "The databases that you select will populate the Y-Axis drop down menus.",
+           placement: "bottom",
+        });
+        
+        tippy('#tooltip3', {
+           content: "Click on the saved graphs to view the json code",
+           placement: "bottom",
+        });
+        
+        tippy('#save1', {
+           content: "Drag to an empty save slot to the right",
+           placement: "bottom",
+        });
+        
+        tippy('#save2', {
+           content: "Drag to an empty save slot to the right",
+           placement: "bottom",
+        });
+        
+        
+        tippy('#cust1', {
+           content: "Edit the json code in the scripting version of DV4L",
+           placement: "bottom",
+        });
+        tippy('#cust2', {
+           content: "Edit the json code in the scripting version of DV4L",
+           placement: "bottom",
+        });
+        tippy('#cust3', {
+           content: "Edit the json code in the scripting version of DV4L",
+           placement: "bottom",
+        });
+        tippy('#cust4', {
+           content: "Edit the json code in the scripting version of DV4L",
+           placement: "bottom",
+        });
+        tippy('#cust5', {
+           content: "Edit the json code in the scripting version of DV4L",
+           placement: "bottom",
+        });
+        tippy('#cust6', {
+           content: "Edit the json code in the scripting version of DV4L",
+           placement: "bottom",
+        });
+        tippy('#cust7', {
+           content: "Edit the json code in the scripting version of DV4L",
+           placement: "bottom",
+        });
+        tippy('#cust8', {
+           content: "Edit the json code in the scripting version of DV4L",
+           placement: "bottom",
+        });
+        tippy('#cust9', {
+           content: "Edit the json code in the scripting version of DV4L",
+           placement: "bottom",
+        });
+        tippy('#cust10', {
+           content: "Edit the json code in the scripting version of DV4L",
+           placement: "bottom",
+        });
+        
+        
+        
+        
+    </script>
 
 </body>
 

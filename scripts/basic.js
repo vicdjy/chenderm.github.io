@@ -411,7 +411,7 @@ function deleteGraph(savedNum) {
 //Shows tooltip over saved graph
 //Runs when the user clicks a saved graph
 function showToolTip(savedNum) {
-    //alert("in show tool tip");
+//    alert("in show tool tip");
     var tip = document.getElementById("tip" + savedNum);
     if (isDeleted[savedNum - 1]) {
         deleteGraph(savedNum);

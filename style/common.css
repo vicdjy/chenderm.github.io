@@ -105,6 +105,16 @@ body {
 	display: inline-block;
 }
 
+#help {
+    background-color: #b7b7b7;
+    color: black;
+    display: inline-block;
+}
+
+#help ::hover:: after {
+    content: attr(data-tooltip);
+}
+
 #clear {
 	background-color: #990000;
 	color: white;

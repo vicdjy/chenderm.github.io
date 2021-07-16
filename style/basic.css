@@ -132,6 +132,22 @@
 	cursor: move;
 }
 
+/*.saveButton .hoverTip {*/
+/*    font-size: 12px;*/
+/*    visibility: hidden;*/
+/*    right: 17px;*/
+/*    bottom: 1px;*/
+/*    background-color: #0000005c;*/
+/*    color: white;*/
+/*    padding: 3px 3px;*/
+/*    position: absolute;*/
+/*    z-index: 6;*/
+/*}*/
+/**/
+/*.saveButton:hover .hoverTip {*/
+/*    visibility: visible;*/
+/*}*/
+
 .export {
 	display: block;
 	float: left;
