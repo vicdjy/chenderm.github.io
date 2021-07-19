@@ -218,3 +218,66 @@ $(document).ready(function () {
 
 });
 
+
+
+//looks through the sql database to analyze
+function getStudentData(){
+    
+    var customCode = getId();
+
+    var idPHP = JSON.stringify(customCode);
+    
+    
+
+    
+    
+    //search in the database for matching primary key(id)
+    $.ajax({
+      url: '../getStudentData.php',
+      type: 'POST',
+      data: { idPHP: customCode },
+      success: function (data) {
+//              console.log(data);
+          console.log(idPHP);
+          
+          data = JSON.parse(data);
+          
+          console.log(data);
+          
+          populateStudentData(data);
+         
+          
+          
+      
+      },
+      error: function (XMLHttpRequest, textStatus, errorThrown) {
+        alert('Status: ' + textStatus);
+        alert('Error: ' + errorThrown);
+      },
+    });
+    
+}
+
+
+//populate the student data div
+function populateStudentData(data) {
+    
+    var div = document.getElementById("studentdata");
+    
+    div.innerHTML =   "<h4>Number of visits: " + data[0] + "<h4>";
+    
+    
+    div.innerHTML += "<h4>Average time spent: " + data[data.length-1] + " minutes<h4>";
+    
+    div.innerHTML+=  "<h4>Breakdown of each visit: <h4>";
+    
+    for(var i = 1; i < data.length - 2; i ++) {
+        
+        div.innerHTML += "<h4>Student " + i + ":<h4>";
+        div.innerHTML += "<label>Time Spent: " + data[i] + "</label>";
+        
+    }
+    
+    
+}
+

@@ -15,6 +15,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/js/ion.rangeSlider.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-colorschemes"></script>
     <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+  <script src="https://unpkg.com/tippy.js@6"></script>
+  <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
+  <script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js"></script>
 
 
     <!-- CSS -->
@@ -25,6 +29,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="style/common.css">
     <link rel="stylesheet" type="text/css" href="style/basic.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 </head>
 
@@ -39,7 +44,18 @@
                 <br><br>
                 
                 <div class="row">
-                <h2 style="font-weight: bold;">Instructor Portal </h2>
+                <h2 style="font-weight: bold;">Instructor Portal
+                <span class="material-icons" id="tooltip1">help_outline</span> </h2> <br>
+                
+                <script>
+                    
+                    tippy('#tooltip1', {
+                                             placement: 'bottom',
+                                             content: 'Enter your last name to customize DV4L. To edit an already existing website, enter the custom link.',
+
+                                         });
+                    
+                </script>
                 
                 <h4> Name: </h4>
                 <br>
@@ -78,7 +94,18 @@
                 
                 <div class="row">
                 
-                <h3 style="font-weight: bold;"> Select Databases: </h3>
+                <h3 style="font-weight: bold;"> Select Databases:
+                <span class="material-icons" id="tooltip2">help_outline</span> </h3> <br>
+                
+                <script>
+                    
+                    tippy('#tooltip2', {
+                                             placement: 'bottom',
+                                             content: 'Only the databases you select will be visible to your students. Ensure that the databases selected can be used to explore the driving questions.',
+
+                                         });
+                    
+                </script>
                 
                 <label>
                 <input id="defaultDatabase" type="checkbox" onclick="updateDatabaseList()" /> Use Default Databases
@@ -206,7 +233,19 @@
                 
                 <br><br>
                 
-                <label id="selectedDatabases"> Custom Link: </label><br>
+                <label id="selectedDatabases"> Custom Link: </label>
+                
+                <span class="material-icons" id="tooltip3">help_outline</span> <br>
+                
+                <script>
+                    
+                    tippy('#tooltip3', {
+                                             placement: 'bottom',
+                                             content: 'Copy and share this link with your students. This link can be used in the instructor portal to view student data and to edit your selections.',
+
+                                         });
+                    
+                </script>
                 
                 <div id="link" >
                     
@@ -227,9 +266,9 @@
                 <br><br><br>
                 <label id=""> Student Data:</label><br>
                 
-                <div id="" class="selectedList" style="height:55%">
+                <div id="studentdata" class="selectedList" style="height:55%">
                     
-    <!--                          this is the selected list div-->
+    
                  <label>
                      Enter custom link to view student data
                  </label>

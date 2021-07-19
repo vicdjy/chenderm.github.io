@@ -23,6 +23,15 @@
       location = "group:scripts/common.js">
    </FileRef>
    <FileRef
+      location = "group:customScripting.php">
+   </FileRef>
+   <FileRef
       location = "group:index.html">
+   </FileRef>
+   <FileRef
+      location = "group:customDV4L.php">
+   </FileRef>
+   <FileRef
+      location = "group:getStudentData.php">
    </FileRef>
 </Workspace>

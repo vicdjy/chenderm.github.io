@@ -700,6 +700,9 @@ function configureDV4L(){
         });
     
     
+    getStudentData();
+    
+    
     
 }
 
