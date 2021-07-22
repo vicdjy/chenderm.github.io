@@ -347,7 +347,7 @@ function generateLink(data, customCode){
     console.log(data);
     
     //the last name already exists, alter it
-    if(data == "fail"){
+    if(data == "insertfail"){
         
         modifyCode(customCode);
         return;
@@ -364,7 +364,8 @@ function generateLink(data, customCode){
     
     var title = document.createElement("label");
     var description = document.createTextNode(link);
-    
+//    description.id = "test";
+    title.id = "generatedLink";
     
     
     
@@ -668,6 +669,7 @@ function configureDV4L(){
           success: function (data) {
 //              console.log(data);
               console.log(idPHP);
+              
               //"|" would be the only output if nothing is found
               if(idPHP == "" || data == "|"){
                   
@@ -676,13 +678,14 @@ function configureDV4L(){
               }
               else {
               
-    //          console.log(data);
+//              console.log(data);
               
            var newData = data.split("|");
 
             var databases = newData[0].split(",");
             
               var dqs = newData[1].split(",");
+                  
 
               useCustomDatabases(databases);
               useCustomDQs(dqs);
@@ -769,6 +772,8 @@ function useCustomDQs(dqs){
   
     selectedDQ = dqs;
     
+   
+    
     
     //loop through the options and select if in the databases list
     var checkTitles = document.getElementsByClassName("checkTitleDQ");
@@ -786,7 +791,7 @@ function useCustomDQs(dqs){
             
             if(dqs[i] == checkTitles[j].outerText){
                 
-                checks[i].checked = true;
+                checks[j].checked = true;
                 added = 1;
                 
             }
@@ -842,366 +847,18 @@ function useCustomDQs(dqs){
 
 
 
-//defining the keywords for each database
-//there may be some repeated words in the dictionary because some words carry extra value
-//note: all keywords should be entered in lowercase
-var keyword_dict = {
-    'Populations': [
-                    'population','population','population',
-                    'populations','populations','populations','populations',
-                    'populated','populated',
-                    'populus' ,
-                    'industrial',
-                    ],
-    'Population Female Percentage': [
-                    'population', 'population','population',
-                    'populations','populations',
-                    'populated','populated',
-                    'female','female',
-                    'females',
-                    'women',
-                    'girl',
-                    'girls',
-                    'percentage'
-                    ],
-    'Population Female Percentage at Birth': [
-                      'population', 'population',
-                      'populations',
-                      'populated',
-                      'female','female',
-                      'females',
-                      'women',
-                      'girl',
-                      'girls',
-                  'percentage',
-                    'birth','birth',
-                    'child',
-                    'infant',
-                    'pastoral',
-                    ],
-
-    'Life Expectancy - Continents': [
-                     'life','life','life',
-                     'expectancy','expectancy','expectancy',
-                     'continents','continents','continents',
-                     'mortality',
-                     'death',
-                     'dying',
-                     'living','living',
-                     
-                      'pastoral',
-                                     
-                     ],
-    'Median Age': [
-                     'population',
-                     'median',
-                     'age',
-                   'median',
-                   'age',
-                   
-                     ],
-    'Births': [
-                     'birth','birth',
-                    'births', 'births',
-                     'expectancy',
-                     'population',
-                     'death',
-                     'dying',
-                
-                                     
-                     ],
+//copies the generated link to the clipboard
+function copy(){
     
-    'Births Per Woman': [
-                     'birth',
-                     'births','births',
-                     'expectancy',
-                     'continents',
-                     'population',
-                     'death',
-                     'dying',
-                    'woman','woman',
-                    'women',
-                                                       
-                     ],
+    alert("Copied to Clipboard! Share this Link With Your Students.");
     
-    'Births Per 1000 People': [
-                     'birth',
-                   'births','births',
-                     'expectancy',
-                     'continents',
-                     'population',
-                     '1000',
-                     'people',
-                               '1000',
-                               'people',
-                                     
-                     ],
+    var text = document.getElementById("generatedLink").innerHTML;
     
-    'Child Deaths': [
-                     
-                     'child',
-                     'deaths',
-                     'child',
-                     'deaths',
-                     'population',
-                     
-                     ],
+    const elem = document.createElement('textarea');
+   elem.value = text;
+   document.body.appendChild(elem);
+   elem.select();
+   document.execCommand('copy');
+   document.body.removeChild(elem);
     
-    'Child Mortality Rates': [
-                              
-                     'child', 'child',
-                     'mortality', 'mortality',
-                     'rates', 'rates',
-                     'birth',
-                                     
-                     ],
-    'Survival Rate to Age 65 - Male': [
-                                       
-                                       
-                     'survival',
-                     'rate',
-                     'age',
-                     '65',
-                     'male',
-                   'survival',
-                   'rate',
-                   'age',
-                   '65',
-                   'male',
-                     'sixty',
-                   'five',
-                   'sixty-five',
-                                       
-                     ],
-    
-    
-    'Survival Rate to Age 65 - Female': [
-                                         
-                     'survival',
-                     'rate',
-                     'age',
-                     '65',
-                     'female',
-                                         'survival',
-                                         'rate',
-                                         'age',
-                                         '65',
-                                         'female',
-                     'sixty',
-                   'five',
-                   'sixty-five',
-                    
-                     ],
-    
-    'Military Personnel': [
-                     'military',
-                     'personnel',
-                   'military',
-                   'personnel',
-                     'soldiers',
-                           
-                     ],
-    
-    'Military Personnel Percent of Population': [
-                                                 
-                     'military',
-                     'personnel',
-                     'percent',
-                     'population',
-                                                 'military',
-                                                 'personnel',
-                                                 'percent',
-                                                 'population'
-                    
-                   
-                     ],
-    
-    'Military Spending': [
-                                                 
-                     'military',
-                     'spending',
-                          'military',
-                          'spending',
-                     'army',
-                     'cost',
-                     'expense',
-                     'budget',
-                    'economy'
-                    
-                   
-                     ],
-    
-    'Military Spending Percent of GDP': [
-                                                 
-                     'military',
-                     'spending',
-                     'army',
-                     'cost',
-                     'expense',
-                     'budget',
-                    'gdp',
-                 'percent',
-                     
-                    
-                   
-                     ],
-    
-    'Military Spending in thousands of US dollars': [
-                                                 
-                     'military',
-                     'spending',
-                     'army',
-                     'cost',
-                     'expense',
-                     'budget',
-                     'thousands',
-                     'US',
-                     'dollars',
-                    
-                   
-                     ],
-    
-    'GDP': [
-                                                 
-                     'gdp','gdp','gdp','gdp',
-                     'gross',
-                     'domestic',
-                     'product',
-                     'spending',
-                     'budget','budget',
-                     'dollars',
-                    'money',
-                    'economy','economy',
-                    
-                   
-                     ],
-    
-    'GDP Per Capita': [
-                                                 
-                       'gdp','gdp','gdp','gdp',
-                       'gross',
-                       'domestic',
-                       'product',
-                       'spending',
-                       'budget','budget',
-                       'dollars',
-                      'money',
-                      'economy','economy',
-                    'capita'
-                    
-                   
-                     ],
-    
-    'Economic Freedom Scores': [
-                                                 
-                     'economic',
-                     'freedom',
-                     'scores',
-                     'economy','economy',
-                     'spend',
-                     'spending',
-                    
-                   
-                     ],
-    
-    'CO2 Emissions': [
-                                                 
-                     'CO2','CO2',
-                     'emissions','emissions',
-                     'carbon',
-                     'emission',
-                     'dioxide',
-                    
-                   
-                     ],
-    
-    'CO2 Emissions Per Capita': [
-                                                 
-                                 'CO2','CO2',
-                                 'emissions','emissions',
-                     'carbon',
-                     'emission',
-                     'dioxide',
-                      
-                      'capita',
-                    
-                   
-                     ],
-    
-    'CO2 Emissions Percentages': [
-                                                 
-                                  'CO2','CO2',
-                                  'emissions','emissions',
-                     'carbon',
-                     'emission',
-                     'dioxide',
-                    'percentages',
-                   
-                     ],
-    
-    'CO2 Emissions Cumulative': [
-                                                 
-                     'CO2','CO2',
-                     'emissions','emissions',
-                     'carbon',
-                     'emission',
-                     'dioxide',
-                    'cumulative',
-                   
-                     ],
-    
-    'CO2 Emissions Cumulative Percentages': [
-                                                 
-                     'CO2','CO2',
-                 'emissions','emissions',
-                     'carbon',
-                     'emission',
-                     'dioxide',
-                    'cumulative',
-                     'percentages',
-                   
-                     ],
-    
-    
-    'Battle Related Deaths in State Based Conflicts': [
-                                                     
-                    'conflicts','conflicts',
-                    'conflict','conflict',
-                    'battle', 'battle',
-                    'related',
-                    'death',
-                    'deaths',
-                    'state',
-                                
-                                                       
-                                                    ],
-    
-    'Nuclear Warhead Inventory in Nuclear Powers': [
-    
-                    'nuclear', 'nuclear',
-                    'warhead', 'warhead',
-                    'nuke', 'nukes',
-                    'power', 'powers',
-                    'superpower',
-                                                    
-                                                    
-                                                    
-                                                    ],
-    
-    'Registered Mobile Money Accounts' :[
-                                         
-                 'registered',
-                'mobile',
-                'money', 'money',
-                'account','account',
-                 'accounts','accounts',
-                                         
-                                         ],
-    
-    
-                                                    
-                                                       
-                                                    
-                                                   
-    
-};
+}

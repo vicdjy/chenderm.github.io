@@ -238,15 +238,19 @@ function getStudentData(){
       data: { idPHP: customCode },
       success: function (data) {
 //              console.log(data);
-          console.log(idPHP);
-          
-          data = JSON.parse(data);
+//          console.log(idPHP);
           
           console.log(data);
           
+          if(data != "no students") {
+          
+          data = JSON.parse(data);
+          
+//          console.log(data);
+          
           populateStudentData(data);
          
-          
+          }
           
       
       },
@@ -262,19 +266,59 @@ function getStudentData(){
 //populate the student data div
 function populateStudentData(data) {
     
+    
+    
     var div = document.getElementById("studentdata");
     
-    div.innerHTML =   "<h4>Number of visits: " + data[0] + "<h4>";
+    div.innerHTML =   "<h4><b>Number of visits:</b> " + data[0] + " student(s)</h4>";
     
     
-    div.innerHTML += "<h4>Average time spent: " + data[data.length-1] + " minutes<h4>";
+    div.innerHTML += "<h4><b>Average time spent: </b>" + data[data.length-1].toFixed(2) + " minutes</h4>";
     
-    div.innerHTML+=  "<h4>Breakdown of each visit: <h4>";
-    
-    for(var i = 1; i < data.length - 2; i ++) {
+    var custCount = 0;
+    for(var i = 1; i < (data.length - 1) ; i++) {
+     
+        if(data[i] == "true"){
+            
+            custCount++;
+            
+        }
         
-        div.innerHTML += "<h4>Student " + i + ":<h4>";
-        div.innerHTML += "<label>Time Spent: " + data[i] + "</label>";
+    }
+    
+    div.innerHTML += "<h4><b>Number of students who edited the JSON: </b>" + custCount + " student(s)</h4><br>";
+    
+    
+    
+    div.innerHTML+=  "<h4><b>Breakdown of each visit: </b> </h4>";
+    
+    var studentNum = 1;
+    
+    for(var i = 1; i < (data.length - 1) ; i++) {
+        
+        div.innerHTML += "<h4>Student " + studentNum + ":</h4>";
+        studentNum++;
+        div.innerHTML += "<h5>Time Spent: " + data[i] + "</h5>";
+        
+        i++;
+        
+//        data[i].join(" ");
+        
+        div.innerHTML += "<h5>Databases Explored:  [" + data[i] + "]</h5>";
+        
+        i++;
+        
+        div.innerHTML += "<h5>Driving Questions:  [" + data[i] + "]</h5>";
+        
+        i++;
+//
+        div.innerHTML += "<h5>Edited JSON:  [" + data[i] + "]</h5>";
+        
+        
+        
+        
+        
+        div.innerHTML += "<br>";
         
     }
     

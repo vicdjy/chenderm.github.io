@@ -5,6 +5,12 @@
       location = "group:getCustomInfo.php">
    </FileRef>
    <FileRef
+      location = "group:getStudentData.php">
+   </FileRef>
+   <FileRef
+      location = "group:oldgetStudentData.php">
+   </FileRef>
+   <FileRef
       location = "group:sendData.php">
    </FileRef>
    <FileRef
@@ -30,8 +36,5 @@
    </FileRef>
    <FileRef
       location = "group:customDV4L.php">
-   </FileRef>
-   <FileRef
-      location = "group:getStudentData.php">
    </FileRef>
 </Workspace>
