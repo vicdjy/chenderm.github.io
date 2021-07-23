@@ -727,11 +727,12 @@ function updateLink(){
       
       title.appendChild(description);
       linkDiv.appendChild(title);
+        title.id = "generatedLink";
     
     
     var linkDiv = document.getElementById("generateLink");
     
-    linkDiv.innerHTML = "Update Link";
+    linkDiv.innerHTML = "Update Your Configuration of DV4L";
     
     
     
