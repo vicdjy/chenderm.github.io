@@ -51,15 +51,20 @@
                     
                     tippy('#tooltip1', {
                                              placement: 'bottom',
-                                             content: 'Enter your last name to customize DV4L. To edit an already existing website, enter the custom link.',
+                                             content: 'Select if you are creating or updating your version of DV4L. Creating generates a new link. Updating takes your exisiting link and allows you to modify your selections and view student data.',
 
                                          });
                     
                 </script>
                 
+                <div id="idInfo">
+                <h4> I am  <button  id="default" onclick="creating();"> creating</button> OR  <button  id="default" onclick="updating();"> updating</button> my version of DV4L<h4>
+                    </div>
+                
+                <div id="creating" style="display:none">
                 <h4> Name: </h4>
                 <br>
-                
+                   
                 
                 <select style="width: 13%" id="textinput" onchange="">
                     <option disabled selected>Prefix</option>
@@ -74,21 +79,23 @@
                 
                 <input style="width: 83%" placeholder="Last Name" id="lastname"
                      value=""></input>
+                </div>
                 
+                <div id="updating" style="display:none">
+                
+                <h4> Custom Link: </h4>
                 
                 <br>
-                
-                <h4> Custom Link(Optional): </h4>
-                
-                <br>
-                <input style="width: 83%" placeholder="link" id="customLink"
+                <input style="width: 83%; height:3.75%" placeholder="link" id="customLink"
                      value=""></input>
                 
-                <button style="width: 13%; height:1.75%" id="default" onclick="configureDV4L()">
+                <button  style="width: 14.5%; height:3.75%"id="default" onclick="configureDV4L()">
                         Configure
                 </button>
                 
                 
+                
+                    </div>
                 </div>
                 
                 <br>
@@ -203,20 +210,20 @@
             
             <label class="checkTitleDQ">
             <input class="checkDQ" type="checkbox" onclick="updateSelectedDQ();"/> What accounts for sharp increases or decreases in military spending? Do increases in
-            military spending seem to be cause consequence or deterrent of violent conflict? <br />
+            military spending seem to be cause consequence or deterrent of violent conflict?
             </label>
             
             <br>
             
             <label class="checkTitleDQ">
-            <input class="checkDQ" type="checkbox" onclick="updateSelectedDQ();"/> Is there a consistent relationship between child mortality rates and births per women? What explains consistencies and inconsistencies in this relationship across countries? <br />
+            <input class="checkDQ" type="checkbox" onclick="updateSelectedDQ();"/> Is there a consistent relationship between child mortality rates and births per women? What explains consistencies and inconsistencies in this relationship across countries?
             </label>
               
               <br>
               
               <label class="checkTitleDQ">
               <input class="checkDQ" type="checkbox" onclick="updateSelectedDQ();"/> How do CO2 emissions per capita compare among countries? What are the implications of
-              similarities/differences for national/international policymaking? <br />
+              similarities/differences for national/international policymaking?
               </label>
                 
                 <br>

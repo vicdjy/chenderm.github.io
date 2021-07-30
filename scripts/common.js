@@ -240,7 +240,7 @@ function getStudentData(){
 //              console.log(data);
 //          console.log(idPHP);
           
-          console.log(data);
+//          console.log(data);
           
           if(data != "no students") {
           

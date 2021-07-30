@@ -5,7 +5,7 @@ $(document).ready(function () {
 });
 
 
-
+    
 
 
 ////populate database dropdown menus with the selected databases
@@ -37,6 +37,8 @@ $(document).ready(function () {
 var selected = [];
 
 function populateCheckboxList(){
+    
+    console.log("here");
     
     var div = document.getElementById('textEntered');
     var checkboxList = document.getElementById('checkboxlist');
@@ -100,7 +102,7 @@ function populateCheckboxList(){
 //updates the list of selected databases to be used
 function updateSelected(){
 
-    
+    console.log("here");
     
     var checks = document.getElementsByClassName("check");
     var checkTitle = document.getElementsByClassName("checkTitle");
@@ -258,6 +260,14 @@ function updateChecks(){
 
 //send the data to the sql database
 function useSelected(){
+    
+    //if user has not selected either creating or updating
+    if(Updating == null){
+        
+        alert("Please select wether you are updating or creating your version of DV4L");
+        return;
+        
+    }
     
     var linkDiv = document.getElementById("link");
     var lastName = document.getElementById("lastname");
@@ -643,7 +653,7 @@ function getId(){
     
     return id;
     
-    console.log(id);
+    
     
 }
 
@@ -739,7 +749,9 @@ function updateLink(){
 }
 
 
-var Updating = 0;
+//if null, the teacher has not picked creating or updating, if 0 then the teacher is creating, if 1 then the teacher is updating
+var Updating = null;
+
 function useCustomDatabases(databases){
     Updating = 1;
     
@@ -772,8 +784,7 @@ function useCustomDatabases(databases){
 function useCustomDQs(dqs){
   
     selectedDQ = dqs;
-    
-   
+
     
     
     //loop through the options and select if in the databases list
@@ -790,7 +801,11 @@ function useCustomDQs(dqs){
         
         for(var j = 0; j < checkTitles.length; j++){
             
+            
+            
             if(dqs[i] == checkTitles[j].outerText){
+                
+                
                 
                 checks[j].checked = true;
                 added = 1;
@@ -861,5 +876,35 @@ function copy(){
    elem.select();
    document.execCommand('copy');
    document.body.removeChild(elem);
+    
+}
+
+
+
+//displays the input div for entering last name
+function creating(){
+    
+    Updating = 0;
+    
+    document.getElementById('idInfo').style.display = "none";
+    
+    var div = document.getElementById("creating");
+    
+    div.style.display = "block";
+    
+    
+    
+}
+
+//displays the input div for entering the custom link
+function updating(){
+    
+    Updating = 1;
+    
+    document.getElementById('idInfo').style.display = "none";
+    
+    var div = document.getElementById("updating");
+    
+    div.style.display = "block";
     
 }
