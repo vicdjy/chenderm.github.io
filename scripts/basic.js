@@ -118,14 +118,18 @@ function updateSelected(){
             var add = 1;
             for(var j = 0; j < selected.length; j++){
                 
-                if(selected[j] == checkTitle[i].outerText){
+                if(selected[j] == checkTitle[i].innerText){
                     add = 0;
                 }
                 
             }
             
             if(add){
-                selected.push(checkTitle[i].outerText);
+                
+//                console.log(checkTitle[i].innerText);
+//                console.log(typeof String(checkTitle[i].innerText));
+                
+                selected.push(checkTitle[i].innerText);
             }
             
         } else {
@@ -134,7 +138,9 @@ function updateSelected(){
             
             for(var j = 0; j < selected.length; j++){
                 
-                if(selected[j] == checkTitle[i].outerText){
+                if(selected[j] == checkTitle[i].innerText){
+                    
+                    
                     
                     selected.splice(j, 1);
                 }
@@ -603,7 +609,7 @@ function updateSelectedDQ(){
             var add = 1;
             for(var j = 0; j < selectedDQ.length; j++){
                 
-                if(selectedDQ[j] == checkTitle[i].outerText){
+                if(selectedDQ[j] == checkTitle[i].innerText){
                     add = 0;
                 }
                 
@@ -611,7 +617,7 @@ function updateSelectedDQ(){
             
             if(add){
                 
-                var question = checkTitle[i].outerText
+                var question = checkTitle[i].innerText
               var temp = question.replace(/[.,()]/g,"");
               question = temp.replace(/\s{2,}/g," ");
                 
@@ -624,7 +630,7 @@ function updateSelectedDQ(){
             
             for(var j = 0; j < selectedDQ.length; j++){
                 
-                if(selectedDQ[j] == checkTitle[i].outerText){
+                if(selectedDQ[j] == checkTitle[i].innerText){
                     
                     selectedDQ.splice(j, 1);
                 }
@@ -767,7 +773,7 @@ function useCustomDatabases(databases){
         
         for(var j = 0; j < databases.length; j++){
             
-            if(databases[j] == checkTitles[i].outerText){
+            if(databases[j] == checkTitles[i].innerText){
                 
                 checks[i].checked = true;
             }
@@ -803,7 +809,7 @@ function useCustomDQs(dqs){
             
             
             
-            if(dqs[i] == checkTitles[j].outerText){
+            if(dqs[i] == checkTitles[j].innerText){
                 
                 
                 

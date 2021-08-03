@@ -14,9 +14,9 @@
             filePath = "scripts/basic.js"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "456"
-            endingLineNumber = "456"
-            landmarkName = "populateCheckboxList"
+            startingLineNumber = "462"
+            endingLineNumber = "462"
+            landmarkName = "updateDatabaseList"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
