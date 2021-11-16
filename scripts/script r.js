@@ -418,17 +418,77 @@ function updateScript(Id, DB, Yaxis, lowDate, highDate, gtype, color) {
     //console.log(" updateScript");
 }
 
+function fixStringFormat(input){ //Pop
+    console.log("input: ", input);
+    input = input.toLowerCase();
+    console.log(input);
+
+    let ret = "";
+    ret += input.charAt(0).toUpperCase();
+
+    // input = input.toLowerCase();
+    // input[0] = input[0].toString().toUpperCase();
+    let isSpace = false;
+    console.log(ret);
+
+    for (let i = 1; i < input.length; i++){
+        if (input[i] == " "){
+            // console.log("in here1");
+
+            isSpace = true;
+            ret+= " ";
+        }
+        else if (isSpace){
+            // console.log("in here2");
+
+            ret+= input.charAt(i).toUpperCase();
+            isSpace = false;
+        }
+        else{
+            ret += input.charAt(i);
+        }
+
+        if (i < input.length -4){
+            if (input[i-1] == " " && input[i] == "a" && input[i+1] == "n" && input[i+2] == "d" && input[i+3] == " "){
+                ret = ret.slice(0,-1);
+                ret+= "a";
+            }
+            else if (input[i] == "t" && input[i+1] == "h" && input[i+2] == "e" && input[i+3] == " "){
+                ret = ret.slice(0,-1);
+                ret+= "t";
+            }
+            else if (i < input.length -3){
+                if (input[i-1] == " " && input[i] == "t" && input[i+1] == "o" && input[i+2] == " "){
+                    ret = ret.slice(0,-1);
+                    ret+= "t";
+                }
+                else if (input[i-1] == " "  &&input[i] == "o" && input[i+1] == "r" && input[i+2] == " "){
+                    ret = ret.slice(0,-1);
+                    ret+= "o";
+                }
+            }
+        }
+    }
+    console.log("output: ", ret);
+    return ret;
+}
+
+
 //Runs when user clicks the submit button.
 //n = 0 when the button is for the first graph
 //n = 1 when the button is for the second graph
 function submitGraphData(n) {
     var el = document.getElementById("database" + n);
     var dbOption = el.options[el.selectedIndex].value;
+    dbOption = fixStringFormat(dbOption);
 
     var xOption = "Year";
 
     el = document.getElementById("yaxis" + n);
     var yOption = el.options[el.selectedIndex].value;
+    console.log(yOption.toString());
+    yOption = fixStringFormat(yOption);
+    console.log(yOption);
 
     el = document.getElementById("gtype" + n);
     var gtype = el.options[el.selectedIndex].value;
