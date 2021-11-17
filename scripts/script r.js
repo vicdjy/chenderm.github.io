@@ -111,7 +111,7 @@ var jsonObj = {};
 
 //When the page first loads.
 $(document).ready(function () {
-    console.log("Ready!");
+    //console.log("Ready!");
     Chart.defaults.global.defaultFontColor = "#524636";
 
     //initialize date range sliders
@@ -201,7 +201,7 @@ function loadHandler(event) {
     for (i in jsonObj.Graphs) {
         g = jsonObj.Graphs[i];
         textValue = JSON.stringify(g, null, 2);
-        console.log(textValue);
+        //console.log(textValue);
         document.getElementById("box" + i).value = textValue;
         submitText(i);
     }
@@ -223,7 +223,7 @@ function submitText(id) {
     g = JSON.parse(textFromFileLoaded);
     database = g.DB;
     xaxis = "Year";
-    yaxis = g.Yaxis;
+    yaxis = fixStringFormat(g.Yaxis);
     n = id;
     lowDate = g.lowDate;
     highDate = g.highDate;
@@ -418,29 +418,18 @@ function updateScript(Id, DB, Yaxis, lowDate, highDate, gtype, color) {
     //console.log(" updateScript");
 }
 
-function fixStringFormat(input){ //Pop
-    console.log("input: ", input);
+//Converts user entered script text to format in database
+function fixStringFormat(input){
     input = input.toLowerCase();
-    console.log(input);
-
-    let ret = "";
-    ret += input.charAt(0).toUpperCase();
-
-    // input = input.toLowerCase();
-    // input[0] = input[0].toString().toUpperCase();
+    let ret = input.charAt(0).toUpperCase();
     let isSpace = false;
-    console.log(ret);
 
     for (let i = 1; i < input.length; i++){
         if (input[i] == " "){
-            // console.log("in here1");
-
             isSpace = true;
             ret+= " ";
         }
         else if (isSpace){
-            // console.log("in here2");
-
             ret+= input.charAt(i).toUpperCase();
             isSpace = false;
         }
@@ -448,7 +437,7 @@ function fixStringFormat(input){ //Pop
             ret += input.charAt(i);
         }
 
-        if (i < input.length -4){
+        if (i < input.length - 4){
             if (input[i-1] == " " && input[i] == "a" && input[i+1] == "n" && input[i+2] == "d" && input[i+3] == " "){
                 ret = ret.slice(0,-1);
                 ret+= "a";
@@ -457,7 +446,7 @@ function fixStringFormat(input){ //Pop
                 ret = ret.slice(0,-1);
                 ret+= "t";
             }
-            else if (i < input.length -3){
+            else if (i < input.length - 3){
                 if (input[i-1] == " " && input[i] == "t" && input[i+1] == "o" && input[i+2] == " "){
                     ret = ret.slice(0,-1);
                     ret+= "t";
@@ -469,7 +458,6 @@ function fixStringFormat(input){ //Pop
             }
         }
     }
-    console.log("output: ", ret);
     return ret;
 }
 
@@ -486,9 +474,6 @@ function submitGraphData(n) {
 
     el = document.getElementById("yaxis" + n);
     var yOption = el.options[el.selectedIndex].value;
-    console.log(yOption.toString());
-    yOption = fixStringFormat(yOption);
-    console.log(yOption);
 
     el = document.getElementById("gtype" + n);
     var gtype = el.options[el.selectedIndex].value;
@@ -980,21 +965,16 @@ function regraph(n) {
     graphData(db, x, y, n, lowDate, highDate, minDate, maxDate, graphType, color);
 }
 
-
-
 function populateGraph(id){
     
     var idPHP = JSON.stringify(id);
-      
-      
-      //search in the database for matching primary key(id)
+
+    //search in the database for matching primary key(id)
       $.ajax({
         url: '../getCustomInfo.php',
         type: 'POST',
         data: { idPHP: id },
         success: function (data) {
-            
-            
             
             var title = document.getElementById("title");
             title.innerHTML = "";
@@ -1025,20 +1005,11 @@ function populateGraph(id){
         setOptions(db, y, "Year", graphType, lowDate, highDate, 0, color);
         
         updateScript(0, db, y, lowDate, highDate, graphType, color);
-            
 
-            
-            
-            
-        
-        
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
           alert('Status: ' + textStatus);
           alert('Error: ' + errorThrown);
         },
-      });
-    
-    
-    
+    });
 }
