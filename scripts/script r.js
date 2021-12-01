@@ -86,7 +86,7 @@ var defaultTextValue = {
     "Graphs": [
         {
             "DB": "Populations",
-            "Yaxis": "Rwanda",
+            "Location": "Rwanda",
             "lowDate": 1800,
             "highDate": 2019,
             "gtype": "bar",
@@ -94,7 +94,7 @@ var defaultTextValue = {
         },
         {
             "DB": "Populations",
-            "Yaxis": "Algeria",
+            "Location": "Algeria",
             "lowDate": 1800,
             "highDate": 2019,
             "gtype": "bar",
@@ -221,9 +221,12 @@ function submitText(id) {
     var textFromFileLoaded = document.getElementById("box" + id).value;
 
     g = JSON.parse(textFromFileLoaded);
+    g.DB = fixStringFormat(g.DB);
+
     database = g.DB;
     xaxis = "Year";
-    yaxis = fixStringFormat(g.Yaxis);
+    g.Location = fixStringFormat(g.Location);
+    yaxis = g.Location;
     n = id;
     lowDate = g.lowDate;
     highDate = g.highDate;
@@ -405,7 +408,7 @@ function graphData(database, xaxis, yaxis, n, lowDate, highDate, minDate, maxDat
 function updateScript(Id, DB, Yaxis, lowDate, highDate, gtype, color) {
     var newTextValue = {
         "DB": DB,
-        "Yaxis": Yaxis,
+        "Location": Yaxis,
         "lowDate": lowDate,
         "highDate": highDate,
         "gtype": gtype,
@@ -424,7 +427,19 @@ function fixStringFormat(input){
     let ret = input.charAt(0).toUpperCase();
     let isSpace = false;
 
-    for (let i = 1; i < input.length; i++){
+    let i = 1
+    if (input[0] == "g" && input[1] == "d" && input[2] == "p"){
+        i = 4;
+        ret = "GDP ";
+        if (input.length ==3){
+            return "GDP";
+        }
+    } else  if (input[0] == "c" && input[1] == "o" && input[2] == "2"){
+        i = 4;
+        ret = "CO2 ";
+    }
+
+    for (; i < input.length; i++){
         if (input[i] == " "){
             isSpace = true;
             ret+= " ";
@@ -439,6 +454,9 @@ function fixStringFormat(input){
 
         if (i < input.length - 4){
             if (input[i-1] == " " && input[i] == "a" && input[i+1] == "n" && input[i+2] == "d" && input[i+3] == " "){
+                ret = ret.slice(0,-1);
+                ret+= "a";
+            } else if (input[i] == "c" && input[i+1] == "o" && input[i+2] == "2" && input[i+3] == " "){
                 ret = ret.slice(0,-1);
                 ret+= "a";
             }
@@ -458,9 +476,18 @@ function fixStringFormat(input){
             }
         }
     }
+
     return ret;
 }
 
+// function fixGDPCO2(input){
+//     if (input.length <3 ){
+//         return input;
+//     }
+//     if (input[0] == "G" && input[1] == "d" && input[2] == "p"){
+
+//     }
+// }
 
 //Runs when user clicks the submit button.
 //n = 0 when the button is for the first graph
@@ -995,7 +1022,7 @@ function populateGraph(id){
             
             
             db = json["DB"];
-            y = json["Yaxis"];
+            y = json["Location"];
             lowDate = json["lowDate"];
             highDate = json["highDate"];
             graphType = json['gtype'];
