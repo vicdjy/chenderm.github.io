@@ -531,6 +531,9 @@ function changeColorTheme(element) {
         for (var y = 0; y < x.length; y++) {
             x[y].style.color = "white";
         }
+
+        document.getElementById("textinput").style.backgroundColor = "black";
+        document.getElementById("textinput2").style.backgroundColor = "black";
     }
     else {  //light theme chosen
         //change color for graph text
@@ -605,6 +608,9 @@ function changeColorTheme(element) {
         for (var y = 0; y < x.length; y++) {
             x[y].style.color = "black";
         }
+
+        document.getElementById("textinput").style.backgroundColor = "white";
+        document.getElementById("textinput2").style.backgroundColor = "white";
     }
 }
 
